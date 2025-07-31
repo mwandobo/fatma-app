@@ -1,6 +1,6 @@
-import 'package:active_ecommerce_cms_demo_app/custom/useful_elements.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/blog_mode.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
+import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
+import 'package:active_ecommerce_flutter/data_model/blog_mode.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
@@ -29,10 +29,9 @@ class BlogDetailsScreen extends StatelessWidget {
             data: blog.description,
             style: {
               "html": Style(
-                  fontSize: FontSize(
-                    12,
-                  ),
-                  backgroundColor: MyTheme.mainColor),
+                fontSize: FontSize(12),
+                backgroundColor: MyTheme.mainColor,
+              ),
             },
           ),
         ),

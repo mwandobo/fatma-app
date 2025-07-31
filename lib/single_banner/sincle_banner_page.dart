@@ -1,4 +1,4 @@
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,20 +13,23 @@ class PhotoWidget extends StatelessWidget {
       future: Provider.of<PhotoProvider>(context, listen: false).fetchPhotos(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return ShimmerHelper()
-              .buildBasicShimmer(height: 50); // Show shimmer while loading
+          return ShimmerHelper().buildBasicShimmer(
+            height: 50,
+          ); // Show shimmer while loading
         }
 
         if (snapshot.hasError) {
           return Center(
-              child: Text('Error loading photos')); // Handle API call errors
+            child: Text('Error loading photos'),
+          ); // Handle API call errors
         }
 
         return Consumer<PhotoProvider>(
           builder: (context, photoProvider, child) {
             if (photoProvider.singleBanner.isEmpty) {
               return Center(
-                  child: Text('No photos available.')); // No photos fallback
+                child: Text('No photos available.'),
+              ); // No photos fallback
             }
 
             final photoData = photoProvider.singleBanner[0];

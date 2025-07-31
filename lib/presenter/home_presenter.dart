@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/flash_deal_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/slider_response.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/category_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/flash_deal_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/product_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/sliders_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/single_banner/model.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/data_model/flash_deal_response.dart';
+import 'package:active_ecommerce_flutter/data_model/slider_response.dart';
+import 'package:active_ecommerce_flutter/repositories/category_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/flash_deal_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/sliders_repository.dart';
+import 'package:active_ecommerce_flutter/single_banner/model.dart';
 import 'package:flutter/material.dart';
 
 class HomePresenter extends ChangeNotifier {
@@ -179,8 +179,9 @@ class HomePresenter extends ChangeNotifier {
   }
 
   fetchAllProducts() async {
-    var productResponse =
-        await ProductRepository().getFilteredProducts(page: allProductPage);
+    var productResponse = await ProductRepository().getFilteredProducts(
+      page: allProductPage,
+    );
 
     if (productResponse.products != null) {
       allProductList.addAll(productResponse.products!);
@@ -240,9 +241,7 @@ class HomePresenter extends ChangeNotifier {
       if (mainScrollController.position.pixels ==
           mainScrollController.position.maxScrollExtent) {
         allProductPage++;
-        ToastComponent.showDialog(
-          "More Products Loading...",
-        );
+        ToastComponent.showDialog("More Products Loading...");
         showAllLoadingContainer = true;
         fetchAllProducts();
       }
@@ -250,11 +249,13 @@ class HomePresenter extends ChangeNotifier {
   }
 
   initPiratedAnimation(vnc) {
-    pirated_logo_controller =
-        AnimationController(vsync: vnc, duration: Duration(milliseconds: 2000));
+    pirated_logo_controller = AnimationController(
+      vsync: vnc,
+      duration: Duration(milliseconds: 2000),
+    );
     pirated_logo_animation = Tween(begin: 40.0, end: 60.0).animate(
-        CurvedAnimation(
-            curve: Curves.bounceOut, parent: pirated_logo_controller));
+      CurvedAnimation(curve: Curves.bounceOut, parent: pirated_logo_controller),
+    );
 
     pirated_logo_controller.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) {

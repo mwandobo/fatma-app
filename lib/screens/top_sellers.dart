@@ -1,9 +1,9 @@
-import 'package:active_ecommerce_cms_demo_app/custom/lang_text.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/useful_elements.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/shop_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/ui_elements/shop_square_card.dart';
+import 'package:active_ecommerce_flutter/custom/lang_text.dart';
+import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/shop_repository.dart';
+import 'package:active_ecommerce_flutter/ui_elements/shop_square_card.dart';
 import 'package:flutter/material.dart';
 
 import '../data_model/shop_response.dart';
@@ -57,8 +57,9 @@ class _TopSellersState extends State<TopSellers> {
       body: RefreshIndicator(
         onRefresh: onRefresh,
         child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: buildTopSellerList(context)),
+          physics: AlwaysScrollableScrollPhysics(),
+          child: buildTopSellerList(context),
+        ),
       ),
     );
   }
@@ -71,9 +72,10 @@ class _TopSellersState extends State<TopSellers> {
       title: Text(
         LangText(context).local.top_sellers_ucf,
         style: TextStyle(
-            fontSize: 16,
-            color: MyTheme.dark_font_grey,
-            fontWeight: FontWeight.bold),
+          fontSize: 16,
+          color: MyTheme.dark_font_grey,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       elevation: 0.0,
       scrolledUnderElevation: 0.0,
@@ -90,10 +92,11 @@ class _TopSellersState extends State<TopSellers> {
         itemCount: topSellers.length,
         controller: _scrollController,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 14,
-            mainAxisSpacing: 14,
-            childAspectRatio: 0.68),
+          crossAxisCount: 2,
+          crossAxisSpacing: 14,
+          mainAxisSpacing: 14,
+          childAspectRatio: 0.68,
+        ),
         padding: EdgeInsets.only(top: 20, bottom: 10, left: 18, right: 18),
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -109,8 +112,9 @@ class _TopSellersState extends State<TopSellers> {
         },
       );
     } else {
-      return ShimmerHelper()
-          .buildSquareGridShimmer(scontroller: _scrollController);
+      return ShimmerHelper().buildSquareGridShimmer(
+        scontroller: _scrollController,
+      );
     }
   }
 }

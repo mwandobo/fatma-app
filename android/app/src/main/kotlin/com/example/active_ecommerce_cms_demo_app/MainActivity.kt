@@ -1,4 +1,4 @@
-package com.example.active_ecommerce_cms_demo_app
+package com.example.active_ecommerce_flutter
 
 import io.flutter.embedding.android.FlutterActivity
 

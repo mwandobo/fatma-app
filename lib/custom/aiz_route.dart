@@ -1,29 +1,35 @@
-import 'package:active_ecommerce_cms_demo_app/data_model/address_response.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/system_config.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/auth/otp.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/checkout/select_address.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/profile.dart';
+import 'package:active_ecommerce_flutter/data_model/address_response.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/system_config.dart';
+import 'package:active_ecommerce_flutter/screens/auth/otp.dart';
+import 'package:active_ecommerce_flutter/screens/checkout/select_address.dart';
+import 'package:active_ecommerce_flutter/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class AIZRoute {
-  static final otpRoute = Otp(
-    title: "Verify your account",
-  );
+  static final otpRoute = Otp(title: "Verify your account");
 
   static Future<T?> push<T extends Object?>(
-      BuildContext context, Widget route) {
+    BuildContext context,
+    Widget route,
+  ) {
     if (_isMailVerifiedRoute(route)) {
       return Navigator.push(
-          context, MaterialPageRoute(builder: (context) => otpRoute));
+        context,
+        MaterialPageRoute(builder: (context) => otpRoute),
+      );
     }
     return Navigator.push(
-        context, MaterialPageRoute(builder: (context) => route));
+      context,
+      MaterialPageRoute(builder: (context) => route),
+    );
   }
 
   static Future<T?> slideLeft<T extends Object?>(
-      BuildContext context, Widget route) {
+    BuildContext context,
+    Widget route,
+  ) {
     if (_isMailVerifiedRoute(route)) {
       return Navigator.push(context, _leftTransition<T>(otpRoute));
     }
@@ -32,7 +38,9 @@ class AIZRoute {
   }
 
   static Future<T?> slideRight<T extends Object?>(
-      BuildContext context, Widget route) {
+    BuildContext context,
+    Widget route,
+  ) {
     if (_isMailVerifiedRoute(route)) {
       return Navigator.push(context, _rightTransition<T>(otpRoute));
     }
@@ -48,13 +56,12 @@ class AIZRoute {
         const end = Offset.zero;
         const curve = Curves.ease;
 
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var tween = Tween(
+          begin: begin,
+          end: end,
+        ).chain(CurveTween(curve: curve));
 
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
+        return SlideTransition(position: animation.drive(tween), child: child);
       },
     );
   }
@@ -67,13 +74,12 @@ class AIZRoute {
         const end = Offset.zero;
         const curve = Curves.ease;
 
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var tween = Tween(
+          begin: begin,
+          end: end,
+        ).chain(CurveTween(curve: curve));
 
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
+        return SlideTransition(position: animation.drive(tween), child: child);
       },
     );
   }
@@ -87,21 +93,23 @@ class AIZRoute {
         const end = Offset.zero;
         const curve = Curves.ease;
 
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var tween = Tween(
+          begin: begin,
+          end: end,
+        ).chain(CurveTween(curve: curve));
 
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
+        return SlideTransition(position: animation.drive(tween), child: child);
       },
     );
   }
 
   static bool _isMailVerifiedRoute(Widget widget) {
     bool mailVerifiedRoute = false;
-    mailVerifiedRoute = <Type>[SelectAddress, Address, Profile]
-        .any((element) => widget.runtimeType == element);
+    mailVerifiedRoute = <Type>[
+      SelectAddress,
+      Address,
+      Profile,
+    ].any((element) => widget.runtimeType == element);
     if (is_logged_in.$ &&
         mailVerifiedRoute &&
         SystemConfig.systemUser != null) {

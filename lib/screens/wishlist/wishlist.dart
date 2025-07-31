@@ -1,8 +1,8 @@
-import 'package:active_ecommerce_cms_demo_app/custom/useful_elements.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/wishlist_repository.dart';
+import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/wishlist_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -73,24 +73,23 @@ class _WishlistState extends State<Wishlist> {
       textDirection:
           app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
-          backgroundColor: MyTheme.mainColor,
-          appBar: buildAppBar(context),
-          body: RefreshIndicator(
-            color: MyTheme.accent_color,
-            backgroundColor: Colors.white,
-            onRefresh: _onPageRefresh,
-            child: CustomScrollView(
-              controller: _mainScrollController,
-              physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics()),
-              slivers: [
-                SliverList(
-                    delegate: SliverChildListDelegate([
-                  buildWishlist(),
-                ])),
-              ],
+        backgroundColor: MyTheme.mainColor,
+        appBar: buildAppBar(context),
+        body: RefreshIndicator(
+          color: MyTheme.accent_color,
+          backgroundColor: Colors.white,
+          onRefresh: _onPageRefresh,
+          child: CustomScrollView(
+            controller: _mainScrollController,
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
             ),
-          )),
+            slivers: [
+              SliverList(delegate: SliverChildListDelegate([buildWishlist()])),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -130,24 +129,26 @@ class _WishlistState extends State<Wishlist> {
       scrolledUnderElevation: 0.0,
       centerTitle: false,
       leading: Builder(
-        builder: (context) => IconButton(
-          icon: UsefulElements.backButton(context),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        builder:
+            (context) => IconButton(
+              icon: UsefulElements.backButton(context),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
       ),
       title: Text(
         AppLocalizations.of(context)!.my_wishlist_ucf,
         style: TextStyle(
-            fontSize: 16,
-            color: MyTheme.dark_font_grey,
-            fontWeight: FontWeight.bold),
+          fontSize: 16,
+          color: MyTheme.dark_font_grey,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       elevation: 0.0,
       titleSpacing: 0,
     );
   }
 
-// buildWishListItem(index) {
+  // buildWishListItem(index) {
   //   return InkWell(
   //     onTap: () {
   //       Navigator.push(context, MaterialPageRoute(builder: (context) {

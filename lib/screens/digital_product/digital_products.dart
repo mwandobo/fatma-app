@@ -1,22 +1,20 @@
-import 'package:active_ecommerce_cms_demo_app/custom/lang_text.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/useful_elements.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/string_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/system_config.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/product_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/auction/auction_products_details.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/product/digital_product_details.dart';
+import 'package:active_ecommerce_flutter/custom/lang_text.dart';
+import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/string_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/system_config.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
+import 'package:active_ecommerce_flutter/screens/auction/auction_products_details.dart';
+import 'package:active_ecommerce_flutter/screens/product/digital_product_details.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class DigitalProducts extends StatefulWidget {
-  const DigitalProducts({
-    super.key,
-  });
+  const DigitalProducts({super.key});
 
   @override
   _DigitalProductsState createState() => _DigitalProductsState();
@@ -67,8 +65,9 @@ class _DigitalProductsState extends State<DigitalProducts> {
   }
 
   fetchData() async {
-    var digitalProductRes =
-        await ProductRepository().getDigitalProducts(page: _page);
+    var digitalProductRes = await ProductRepository().getDigitalProducts(
+      page: _page,
+    );
 
     _digitalProducts.addAll(digitalProductRes.products!);
     _totalData = digitalProductRes.meta!.total;
@@ -88,17 +87,18 @@ class _DigitalProductsState extends State<DigitalProducts> {
       textDirection:
           app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
-          backgroundColor: MyTheme.mainColor,
-          appBar: buildAppBar(context),
-          body: Stack(
-            children: [
-              body(),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: buildLoadingContainer(),
-              )
-            ],
-          )),
+        backgroundColor: MyTheme.mainColor,
+        appBar: buildAppBar(context),
+        body: Stack(
+          children: [
+            body(),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: buildLoadingContainer(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -108,9 +108,11 @@ class _DigitalProductsState extends State<DigitalProducts> {
       width: double.infinity,
       color: Colors.white,
       child: Center(
-        child: Text(_totalData == _digitalProducts.length
-            ? AppLocalizations.of(context)!.no_more_products_ucf
-            : AppLocalizations.of(context)!.loading_more_products_ucf),
+        child: Text(
+          _totalData == _digitalProducts.length
+              ? AppLocalizations.of(context)!.no_more_products_ucf
+              : AppLocalizations.of(context)!.loading_more_products_ucf,
+        ),
       ),
     );
   }
@@ -136,16 +138,14 @@ class _DigitalProductsState extends State<DigitalProducts> {
             Text(
               AppLocalizations.of(context)!.digital_product_ucf,
               style: TextStyle(
-                  fontSize: 16,
-                  color: MyTheme.dark_font_grey,
-                  fontWeight: FontWeight.bold),
+                fontSize: 16,
+                color: MyTheme.dark_font_grey,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             GestureDetector(
               onTap: () {},
-              child: Image.asset(
-                'assets/search.png',
-                height: 20,
-              ),
+              child: Image.asset('assets/search.png', height: 20),
             ),
           ],
         ),
@@ -157,14 +157,13 @@ class _DigitalProductsState extends State<DigitalProducts> {
 
   Widget body() {
     if (!_dataFetch) {
-      return ShimmerHelper()
-          .buildProductGridShimmer(scontroller: _mainScrollController);
+      return ShimmerHelper().buildProductGridShimmer(
+        scontroller: _mainScrollController,
+      );
     }
 
     if (_digitalProducts.isEmpty) {
-      return Center(
-        child: Text(LangText(context).local.no_data_is_available),
-      );
+      return Center(child: Text(LangText(context).local.no_data_is_available));
     }
     return RefreshIndicator(
       onRefresh: _onPageRefresh,
@@ -223,7 +222,7 @@ class DigitalProductCard extends StatefulWidget {
     this.has_discount = false,
     bool? is_wholesale = false, // Corrected to use is_wholesale
     this.discount,
-  })  : isWholesale = is_wholesale;
+  }) : isWholesale = is_wholesale;
 
   @override
   _DigitalProductCardState createState() => _DigitalProductCardState();
@@ -233,7 +232,8 @@ class _DigitalProductCardState extends State<DigitalProductCard> {
   @override
   Widget build(BuildContext context) {
     debugPrint(
-        'Wholesale status: ${widget.isWholesale}'); // Debug print to check wholesale status
+      'Wholesale status: ${widget.isWholesale}',
+    ); // Debug print to check wholesale status
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -254,56 +254,61 @@ class _DigitalProductCardState extends State<DigitalProductCard> {
               children: <Widget>[
                 AspectRatio(
                   aspectRatio: 1,
-                  child: Stack(children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: ClipRRect(
-                        clipBehavior: Clip.hardEdge,
-                        borderRadius: BorderRadius.circular(10),
-                        child: FadeInImage.assetNetwork(
-                          placeholder: 'assets/placeholder.png',
-                          image: widget.image ?? 'assets/placeholder.png',
-                          fit: BoxFit.cover,
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: ClipRRect(
+                          clipBehavior: Clip.hardEdge,
+                          borderRadius: BorderRadius.circular(10),
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'assets/placeholder.png',
+                            image: widget.image ?? 'assets/placeholder.png',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                    //    if (whole_sale_addon_installed.$ && widget.isWholesale !)
-                    if ((whole_sale_addon_installed.$) &&
-                        (widget.isWholesale ?? false))
-                      Positioned(
-                        bottom: 0,
-                        child: Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.blueGrey,
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(6),
-                              bottomLeft: Radius.circular(6),
+                      //    if (whole_sale_addon_installed.$ && widget.isWholesale !)
+                      if ((whole_sale_addon_installed.$) &&
+                          (widget.isWholesale ?? false))
+                        Positioned(
+                          bottom: 0,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 4,
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0x14000000),
-                                offset: Offset(-1, 1),
-                                blurRadius: 1,
+                            decoration: BoxDecoration(
+                              color: Colors.blueGrey,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(6),
+                                bottomLeft: Radius.circular(6),
                               ),
-                            ],
-                          ),
-                          child: Text(
-                            "Wholesale",
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              height: 1.8,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0x14000000),
+                                  offset: Offset(-1, 1),
+                                  blurRadius: 1,
+                                ),
+                              ],
                             ),
-                            textHeightBehavior: TextHeightBehavior(
-                                applyHeightToFirstAscent: false),
-                            softWrap: false,
+                            child: Text(
+                              "Wholesale",
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                height: 1.8,
+                              ),
+                              textHeightBehavior: TextHeightBehavior(
+                                applyHeightToFirstAscent: false,
+                              ),
+                              softWrap: false,
+                            ),
                           ),
                         ),
-                      ),
-                  ]),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   width: double.infinity,
@@ -331,8 +336,9 @@ class _DigitalProductCardState extends State<DigitalProductCard> {
                           child: Text(
                             SystemConfig.systemCurrency != null
                                 ? widget.stroked_price?.replaceAll(
-                                        SystemConfig.systemCurrency!.code!,
-                                        SystemConfig.systemCurrency!.symbol!) ??
+                                      SystemConfig.systemCurrency!.code!,
+                                      SystemConfig.systemCurrency!.symbol!,
+                                    ) ??
                                     ''
                                 : widget.stroked_price ?? '',
                             textAlign: TextAlign.left,
@@ -353,8 +359,9 @@ class _DigitalProductCardState extends State<DigitalProductCard> {
                         child: Text(
                           SystemConfig.systemCurrency != null
                               ? widget.main_price?.replaceAll(
-                                      SystemConfig.systemCurrency!.code!,
-                                      SystemConfig.systemCurrency!.symbol!) ??
+                                    SystemConfig.systemCurrency!.code!,
+                                    SystemConfig.systemCurrency!.symbol!,
+                                  ) ??
                                   ''
                               : widget.main_price ?? '',
                           textAlign: TextAlign.left,
@@ -405,7 +412,8 @@ class _DigitalProductCardState extends State<DigitalProductCard> {
                               height: 1.8,
                             ),
                             textHeightBehavior: TextHeightBehavior(
-                                applyHeightToFirstAscent: false),
+                              applyHeightToFirstAscent: false,
+                            ),
                             softWrap: false,
                           ),
                         ),

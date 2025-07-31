@@ -1,8 +1,8 @@
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/system_config.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/auction/auction_products_details.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/product/product_details.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/system_config.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/screens/auction/auction_products_details.dart';
+import 'package:active_ecommerce_flutter/screens/product/product_details.dart';
 import 'package:flutter/material.dart';
 
 class ProductCardBlack extends StatefulWidget {
@@ -100,8 +100,9 @@ class _ProductCardBlackState extends State<ProductCardBlack> {
                           child: Text(
                             SystemConfig.systemCurrency != null
                                 ? widget.stroked_price?.replaceAll(
-                                        SystemConfig.systemCurrency!.code!,
-                                        SystemConfig.systemCurrency!.symbol!) ??
+                                      SystemConfig.systemCurrency!.code!,
+                                      SystemConfig.systemCurrency!.symbol!,
+                                    ) ??
                                     ''
                                 : widget.stroked_price ?? '',
                             textAlign: TextAlign.left,
@@ -122,8 +123,9 @@ class _ProductCardBlackState extends State<ProductCardBlack> {
                         child: Text(
                           SystemConfig.systemCurrency != null
                               ? widget.main_price?.replaceAll(
-                                      SystemConfig.systemCurrency!.code!,
-                                      SystemConfig.systemCurrency!.symbol!) ??
+                                    SystemConfig.systemCurrency!.code!,
+                                    SystemConfig.systemCurrency!.symbol!,
+                                  ) ??
                                   ''
                               : widget.main_price ?? '',
                           textAlign: TextAlign.left,
@@ -152,9 +154,13 @@ class _ProductCardBlackState extends State<ProductCardBlack> {
                       Container(
                         // padding:
                         //     EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                        height: 20, width: 48,
+                        height: 20,
+                        width: 48,
                         margin: EdgeInsets.only(
-                            top: 8, right: 8, bottom: 15), // Adjusted margin
+                          top: 8,
+                          right: 8,
+                          bottom: 15,
+                        ), // Adjusted margin
                         decoration: BoxDecoration(
                           color: const Color(0xffe62e04),
                           borderRadius: BorderRadius.circular(10),
@@ -176,15 +182,18 @@ class _ProductCardBlackState extends State<ProductCardBlack> {
                               height: 1.8,
                             ),
                             textHeightBehavior: TextHeightBehavior(
-                                applyHeightToFirstAscent: false),
+                              applyHeightToFirstAscent: false,
+                            ),
                             softWrap: false,
                           ),
                         ),
                       ),
                     if (whole_sale_addon_installed.$ && widget.isWholesale!)
                       Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.blueGrey,
                           borderRadius: BorderRadius.only(
@@ -208,7 +217,8 @@ class _ProductCardBlackState extends State<ProductCardBlack> {
                             height: 1.8,
                           ),
                           textHeightBehavior: TextHeightBehavior(
-                              applyHeightToFirstAscent: false),
+                            applyHeightToFirstAscent: false,
+                          ),
                           softWrap: false,
                         ),
                       ),

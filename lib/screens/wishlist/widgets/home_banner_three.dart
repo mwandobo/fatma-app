@@ -1,5 +1,5 @@
-import 'package:active_ecommerce_cms_demo_app/custom/aiz_image.dart';
-import 'package:active_ecommerce_cms_demo_app/presenter/home_presenter.dart';
+import 'package:active_ecommerce_flutter/custom/aiz_image.dart';
+import 'package:active_ecommerce_flutter/presenter/home_presenter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -17,12 +17,16 @@ class HomeBannerThree extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (homeData!.isBannerOneInitial &&
-        homeData!.bannerOneImageList.isEmpty) {
+    if (homeData!.isBannerOneInitial && homeData!.bannerOneImageList.isEmpty) {
       return Padding(
-          padding:
-              const EdgeInsets.only(left: 18.0, right: 18, top: 10, bottom: 20),
-          child: ShimmerHelper().buildBasicShimmer(height: 120));
+        padding: const EdgeInsets.only(
+          left: 18.0,
+          right: 18,
+          top: 10,
+          bottom: 20,
+        ),
+        child: ShimmerHelper().buildBasicShimmer(height: 120),
+      );
     } else if (homeData!.bannerOneImageList.isNotEmpty) {
       return Container(
         height: 160,
@@ -51,40 +55,42 @@ class HomeBannerThree extends StatelessWidget {
               // Optionally handle page change
             },
           ),
-          items: homeData!.bannerOneImageList.map((i) {
-            return Builder(
-              builder: (BuildContext context) {
-                return SizedBox(
-                  width: 156,
-                  height: 156,
-                  child: InkWell(
-                    onTap: () {
-                      var url = i.url?.split(AppConfig.DOMAIN_PATH).last ?? "";
-                      print(url);
-                      GoRouter.of(context).go(url);
-                    },
-                    child: AIZImage.radiusImage(i.photo, 6),
-                  ),
+          items:
+              homeData!.bannerOneImageList.map((i) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return SizedBox(
+                      width: 156,
+                      height: 156,
+                      child: InkWell(
+                        onTap: () {
+                          var url =
+                              i.url?.split(AppConfig.DOMAIN_PATH).last ?? "";
+                          print(url);
+                          GoRouter.of(context).go(url);
+                        },
+                        child: AIZImage.radiusImage(i.photo, 6),
+                      ),
+                    );
+                  },
                 );
-              },
-            );
-          }).toList(),
+              }).toList(),
         ),
       );
     } else if (!homeData!.isBannerOneInitial &&
         homeData!.bannerOneImageList.isEmpty) {
       return SizedBox(
-          height: 100,
-          child: Center(
-              child: Text(
+        height: 100,
+        child: Center(
+          child: Text(
             AppLocalizations.of(context)!.no_carousel_image_found,
             style: TextStyle(color: MyTheme.font_grey),
-          )));
+          ),
+        ),
+      );
     } else {
       // should not be happening
-      return Container(
-        height: 100,
-      );
+      return Container(height: 100);
     }
   }
 }

@@ -1,6 +1,6 @@
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/currency_response.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/api-request.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/data_model/currency_response.dart';
+import 'package:active_ecommerce_flutter/repositories/api-request.dart';
 
 class CurrencyRepository {
   Future<CurrencyResponse> getListResponse() async {

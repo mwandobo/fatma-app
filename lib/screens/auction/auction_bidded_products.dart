@@ -1,5 +1,5 @@
-import 'package:active_ecommerce_cms_demo_app/repositories/auction_products_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/checkout/cart.dart';
+import 'package:active_ecommerce_flutter/repositories/auction_products_repository.dart';
+import 'package:active_ecommerce_flutter/screens/checkout/cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -21,7 +21,9 @@ class AuctionBiddedProducts extends StatefulWidget {
 }
 
 class _AuctionBiddedProductsState extends State<AuctionBiddedProducts> {
-  final ScrollController _scrollController = ScrollController(initialScrollOffset: 0);
+  final ScrollController _scrollController = ScrollController(
+    initialScrollOffset: 0,
+  );
   bool _isDataFetch = false;
   double mHeight = 0.0, mWidht = 0.0;
   int _page = 1;
@@ -42,8 +44,8 @@ class _AuctionBiddedProductsState extends State<AuctionBiddedProducts> {
   }
 
   getBiddedList() async {
-    var biddedResponse =
-        await AuctionProductsRepository().getAuctionBiddedProducts(page: _page);
+    var biddedResponse = await AuctionProductsRepository()
+        .getAuctionBiddedProducts(page: _page);
     if (biddedResponse.data!.isEmpty) {
       ToastComponent.showDialog(
         AppLocalizations.of(context)!.no_more_products_ucf,
@@ -74,22 +76,27 @@ class _AuctionBiddedProductsState extends State<AuctionBiddedProducts> {
   }
 
   addToCart(id) async {
-    var cartAddResponse =
-        await CartRepository().getCartAddResponse(id, "", user_id.$, 1);
+    var cartAddResponse = await CartRepository().getCartAddResponse(
+      id,
+      "",
+      user_id.$,
+      1,
+    );
 
     if (cartAddResponse.result == false) {
-      ToastComponent.showDialog(
-        cartAddResponse.message,
-      );
+      ToastComponent.showDialog(cartAddResponse.message);
       return;
     } else {
       resetAll();
       fetchAll();
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return Cart(
-          has_bottomnav: false,
-        );
-      })).then((value) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return Cart(has_bottomnav: false);
+          },
+        ),
+      ).then((value) {
         resetAll();
       });
     }
@@ -121,14 +128,15 @@ class _AuctionBiddedProductsState extends State<AuctionBiddedProducts> {
             controller: _scrollController,
             child: Column(
               children: [
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 Container(
-                  child: _isDataFetch
-                      ? productsContainer()
-                      : ShimmerHelper()
-                          .buildListShimmer(item_count: 20, item_height: 80.0),
+                  child:
+                      _isDataFetch
+                          ? productsContainer()
+                          : ShimmerHelper().buildListShimmer(
+                            item_count: 20,
+                            item_height: 80.0,
+                          ),
                 ),
               ],
             ),
@@ -144,9 +152,7 @@ class _AuctionBiddedProductsState extends State<AuctionBiddedProducts> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
             itemCount: _biddedList.length + 1,
@@ -189,9 +195,7 @@ class _AuctionBiddedProductsState extends State<AuctionBiddedProducts> {
       backgroundColor: MyTheme.white,
       height: 140,
       width: mWidht,
-      margin: const EdgeInsets.only(
-        bottom: 20,
-      ),
+      margin: const EdgeInsets.only(bottom: 20),
       borderColor: MyTheme.light_grey,
       borderRadius: 6,
       child: Row(
@@ -208,9 +212,7 @@ class _AuctionBiddedProductsState extends State<AuctionBiddedProducts> {
               ),
             ),
           ),
-          const SizedBox(
-            width: 11,
-          ),
+          const SizedBox(width: 11),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(top: 8, bottom: 8, left: 8),
@@ -223,9 +225,7 @@ class _AuctionBiddedProductsState extends State<AuctionBiddedProducts> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        constraints: const BoxConstraints(
-                          maxWidth: 250,
-                        ),
+                        constraints: const BoxConstraints(maxWidth: 250),
                         child: Text(
                           name!,
                           style: const TextStyle(
@@ -237,9 +237,7 @@ class _AuctionBiddedProductsState extends State<AuctionBiddedProducts> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      const SizedBox(
-                        height: 3,
-                      ),
+                      const SizedBox(height: 3),
                     ],
                   ),
                   Row(
@@ -248,17 +246,22 @@ class _AuctionBiddedProductsState extends State<AuctionBiddedProducts> {
                       Text(
                         AppLocalizations.of(context)!.auction_my_bid_ucf,
                         style: const TextStyle(
-                            fontSize: 12,
-                            color: MyTheme.font_grey,
-                            fontWeight: FontWeight.w400),
+                          fontSize: 12,
+                          color: MyTheme.font_grey,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                       Row(
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(right: 15.0),
-                            child: Text(convertPrice(myBid!),
-                                style: TextStyle(
-                                    fontSize: 12, color: MyTheme.grey_153)),
+                            child: Text(
+                              convertPrice(myBid!),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: MyTheme.grey_153,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -270,17 +273,22 @@ class _AuctionBiddedProductsState extends State<AuctionBiddedProducts> {
                       Text(
                         AppLocalizations.of(context)!.auction_highest_bid_ucf,
                         style: const TextStyle(
-                            fontSize: 12,
-                            color: MyTheme.font_grey,
-                            fontWeight: FontWeight.w400),
+                          fontSize: 12,
+                          color: MyTheme.font_grey,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                       Row(
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(right: 15.0),
-                            child: Text(convertPrice(highestBid!),
-                                style: TextStyle(
-                                    fontSize: 12, color: MyTheme.grey_153)),
+                            child: Text(
+                              convertPrice(highestBid!),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: MyTheme.grey_153,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -289,18 +297,25 @@ class _AuctionBiddedProductsState extends State<AuctionBiddedProducts> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(AppLocalizations.of(context)!.auction_end_date_ucf,
-                          style: const TextStyle(
-                              fontSize: 12,
-                              color: MyTheme.font_grey,
-                              fontWeight: FontWeight.w400)),
+                      Text(
+                        AppLocalizations.of(context)!.auction_end_date_ucf,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: MyTheme.font_grey,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                       Row(
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(right: 15.0),
-                            child: Text(endDate!,
-                                style: TextStyle(
-                                    fontSize: 12, color: MyTheme.grey_153)),
+                            child: Text(
+                              endDate!,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: MyTheme.grey_153,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -309,36 +324,43 @@ class _AuctionBiddedProductsState extends State<AuctionBiddedProducts> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("",
-                          style: const TextStyle(
-                              fontSize: 12,
-                              color: MyTheme.accent_color,
-                              fontWeight: FontWeight.w400)),
+                      Text(
+                        "",
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: MyTheme.accent_color,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                       Row(
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(right: 15.0),
                             child: TextButton(
-                                style: TextButton.styleFrom(
-                                  foregroundColor: MyTheme.noColor,
-                                  backgroundColor: isBuyable!
-                                      ? MyTheme.accent_color
-                                      : MyTheme.noColor,
-                                  disabledForegroundColor: Colors.blue,
-                                ),
-                                child: Text(
-                                  action!,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: isBuyable
+                              style: TextButton.styleFrom(
+                                foregroundColor: MyTheme.noColor,
+                                backgroundColor:
+                                    isBuyable!
+                                        ? MyTheme.accent_color
+                                        : MyTheme.noColor,
+                                disabledForegroundColor: Colors.blue,
+                              ),
+                              child: Text(
+                                action!,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color:
+                                      isBuyable
                                           ? MyTheme.white
-                                          : MyTheme.accent_color),
+                                          : MyTheme.accent_color,
                                 ),
-                                onPressed: () {
-                                  if (isBuyable) {
-                                    addToCart(productId);
-                                  }
-                                }),
+                              ),
+                              onPressed: () {
+                                if (isBuyable) {
+                                  addToCart(productId);
+                                }
+                              },
+                            ),
                           ),
                         ],
                       ),
@@ -356,25 +378,19 @@ class _AuctionBiddedProductsState extends State<AuctionBiddedProducts> {
   Widget moreProductLoading() {
     return _showMoreProductLoadingContainer
         ? Container(
-            alignment: Alignment.center,
-            child: const SizedBox(
-              height: 40,
-              width: 40,
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 2,
-                    height: 2,
-                  ),
-                  CircularProgressIndicator(),
-                ],
-              ),
+          alignment: Alignment.center,
+          child: const SizedBox(
+            height: 40,
+            width: 40,
+            child: Row(
+              children: [
+                SizedBox(width: 2, height: 2),
+                CircularProgressIndicator(),
+              ],
             ),
-          )
-        : const SizedBox(
-            height: 5,
-            width: 5,
-          );
+          ),
+        )
+        : const SizedBox(height: 5, width: 5);
   }
 
   AppBar buildAppBar(BuildContext context) {
@@ -385,9 +401,10 @@ class _AuctionBiddedProductsState extends State<AuctionBiddedProducts> {
       title: Text(
         AppLocalizations.of(context)!.all_bidded_products,
         style: TextStyle(
-            fontSize: 16,
-            color: MyTheme.dark_font_grey,
-            fontWeight: FontWeight.bold),
+          fontSize: 16,
+          color: MyTheme.dark_font_grey,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       elevation: 0.0,
       titleSpacing: 0,

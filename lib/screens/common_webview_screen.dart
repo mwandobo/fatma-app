@@ -1,5 +1,5 @@
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -52,9 +52,7 @@ class _CommonWebviewScreenState extends State<CommonWebviewScreen> {
 
   buildBody() {
     return SizedBox.expand(
-      child: Container(
-        child: WebViewWidget(controller: _webViewController),
-      ),
+      child: Container(child: WebViewWidget(controller: _webViewController)),
     );
   }
 
@@ -63,10 +61,11 @@ class _CommonWebviewScreenState extends State<CommonWebviewScreen> {
       backgroundColor: Colors.white,
       centerTitle: true,
       leading: Builder(
-        builder: (context) => IconButton(
-          icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        builder:
+            (context) => IconButton(
+              icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
       ),
       title: Text(
         widget.page_name,

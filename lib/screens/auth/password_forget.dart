@@ -1,12 +1,12 @@
-import 'package:active_ecommerce_cms_demo_app/custom/btn.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/input_decorations.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/intl_phone_input.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/auth_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/auth/password_otp.dart';
-import 'package:active_ecommerce_cms_demo_app/ui_elements/auth_ui.dart';
+import 'package:active_ecommerce_flutter/custom/btn.dart';
+import 'package:active_ecommerce_flutter/custom/input_decorations.dart';
+import 'package:active_ecommerce_flutter/custom/intl_phone_input.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
+import 'package:active_ecommerce_flutter/screens/auth/password_otp.dart';
+import 'package:active_ecommerce_flutter/ui_elements/auth_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -34,8 +34,10 @@ class _PasswordForgetState extends State<PasswordForget> {
   @override
   void initState() {
     //on Splash Screen hide statusbar
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom],
+    );
     super.initState();
     fetch_country();
   }
@@ -43,8 +45,10 @@ class _PasswordForgetState extends State<PasswordForget> {
   @override
   void dispose() {
     //before going to other screen show statusbar
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
+    );
     super.dispose();
   }
 
@@ -52,9 +56,7 @@ class _PasswordForgetState extends State<PasswordForget> {
     var email = _emailController.text.toString();
 
     if (_send_code_by == 'email' && email == "") {
-      ToastComponent.showDialog(
-        AppLocalizations.of(context)!.enter_email,
-      );
+      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_email);
       return;
     } else if (_send_code_by == 'phone' && _phone == "") {
       ToastComponent.showDialog(
@@ -65,22 +67,23 @@ class _PasswordForgetState extends State<PasswordForget> {
 
     var passwordForgetResponse = await AuthRepository()
         .getPasswordForgetResponse(
-            _send_code_by == 'email' ? email : _phone, _send_code_by);
+          _send_code_by == 'email' ? email : _phone,
+          _send_code_by,
+        );
 
     if (passwordForgetResponse.result == false) {
-      ToastComponent.showDialog(
-        passwordForgetResponse.message!,
-      );
+      ToastComponent.showDialog(passwordForgetResponse.message!);
     } else {
-      ToastComponent.showDialog(
-        passwordForgetResponse.message!,
-      );
+      ToastComponent.showDialog(passwordForgetResponse.message!);
 
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return PasswordOtp(
-          verify_by: _send_code_by,
-        );
-      }));
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return PasswordOtp(verify_by: _send_code_by);
+          },
+        ),
+      );
     }
   }
 
@@ -94,16 +97,17 @@ class _PasswordForgetState extends State<PasswordForget> {
     final screen_height = MediaQuery.of(context).size.height;
     final screen_width = MediaQuery.of(context).size.width;
     return AuthScreen.buildScreen(
-        context, "Forget Password!", buildBody(screen_width, context));
+      context,
+      "Forget Password!",
+      buildBody(screen_width, context),
+    );
   }
 
   Column buildBody(double screen_width, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
-          height: 20,
-        ),
+        SizedBox(height: 20),
         SizedBox(
           width: screen_width * (3 / 4),
           child: Column(
@@ -116,7 +120,9 @@ class _PasswordForgetState extends State<PasswordForget> {
                       ? AppLocalizations.of(context)!.email_ucf
                       : AppLocalizations.of(context)!.phone_ucf,
                   style: TextStyle(
-                      color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                    color: MyTheme.accent_color,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               if (_send_code_by == "email")
@@ -131,26 +137,29 @@ class _PasswordForgetState extends State<PasswordForget> {
                           controller: _emailController,
                           autofocus: false,
                           decoration: InputDecorations.buildInputDecoration_1(
-                              hint_text: "johndoe@example.com"),
+                            hint_text: "johndoe@example.com",
+                          ),
                         ),
                       ),
                       otp_addon_installed.$
                           ? GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _send_code_by = "phone";
-                                });
-                              },
-                              child: Text(
-                                AppLocalizations.of(context)!
-                                    .or_send_code_via_phone_number,
-                                style: TextStyle(
-                                    color: MyTheme.accent_color,
-                                    fontStyle: FontStyle.italic,
-                                    decoration: TextDecoration.underline),
+                            onTap: () {
+                              setState(() {
+                                _send_code_by = "phone";
+                              });
+                            },
+                            child: Text(
+                              AppLocalizations.of(
+                                context,
+                              )!.or_send_code_via_phone_number,
+                              style: TextStyle(
+                                color: MyTheme.accent_color,
+                                fontStyle: FontStyle.italic,
+                                decoration: TextDecoration.underline,
                               ),
-                            )
-                          : Container()
+                            ),
+                          )
+                          : Container(),
                     ],
                   ),
                 )
@@ -178,16 +187,20 @@ class _PasswordForgetState extends State<PasswordForget> {
                           ),
                           ignoreBlank: false,
                           autoValidateMode: AutovalidateMode.disabled,
-                          selectorTextStyle:
-                              TextStyle(color: MyTheme.font_grey),
+                          selectorTextStyle: TextStyle(
+                            color: MyTheme.font_grey,
+                          ),
                           // initialValue: phoneCode,
                           textFieldController: _phoneNumberController,
                           formatInput: true,
                           keyboardType: TextInputType.numberWithOptions(
-                              signed: true, decimal: true),
+                            signed: true,
+                            decimal: true,
+                          ),
                           inputDecoration:
                               InputDecorations.buildInputDecoration_phone(
-                                  hint_text: "01710 333 558"),
+                                hint_text: "01710 333 558",
+                              ),
                           onSaved: (PhoneNumber number) {
                             //print('On Saved: $number');
                           },
@@ -202,11 +215,12 @@ class _PasswordForgetState extends State<PasswordForget> {
                         child: Text(
                           AppLocalizations.of(context)!.or_send_code_via_email,
                           style: TextStyle(
-                              color: MyTheme.accent_color,
-                              fontStyle: FontStyle.italic,
-                              decoration: TextDecoration.underline),
+                            color: MyTheme.accent_color,
+                            fontStyle: FontStyle.italic,
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -225,9 +239,10 @@ class _PasswordForgetState extends State<PasswordForget> {
                     child: Text(
                       "Send Code",
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600),
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     onPressed: () {
                       onPressSendCode();
@@ -237,7 +252,7 @@ class _PasswordForgetState extends State<PasswordForget> {
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

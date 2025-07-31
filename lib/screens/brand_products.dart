@@ -1,7 +1,7 @@
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/product_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/ui_elements/product_card.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
+import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -55,8 +55,11 @@ class _BrandProductsState extends State<BrandProducts> {
   }
 
   fetchData() async {
-    var productResponse = await ProductRepository()
-        .getBrandProducts(slug: widget.slug, page: _page, name: _searchKey);
+    var productResponse = await ProductRepository().getBrandProducts(
+      slug: widget.slug,
+      page: _page,
+      name: _searchKey,
+    );
     _productList.addAll(productResponse.products!);
     _isInitial = false;
     _totalData = productResponse.meta!.total;
@@ -81,16 +84,18 @@ class _BrandProductsState extends State<BrandProducts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: MyTheme.mainColor,
-        appBar: buildAppBar(context),
-        body: Stack(
-          children: [
-            buildProductList(),
-            Align(
-                alignment: Alignment.bottomCenter,
-                child: buildLoadingContainer())
-          ],
-        ));
+      backgroundColor: MyTheme.mainColor,
+      appBar: buildAppBar(context),
+      body: Stack(
+        children: [
+          buildProductList(),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: buildLoadingContainer(),
+          ),
+        ],
+      ),
+    );
   }
 
   Container buildLoadingContainer() {
@@ -112,10 +117,11 @@ class _BrandProductsState extends State<BrandProducts> {
     return AppBar(
       backgroundColor: Colors.white,
       leading: Builder(
-        builder: (context) => IconButton(
-          icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        builder:
+            (context) => IconButton(
+              icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
       ),
       title: SizedBox(
         width: 250,
@@ -134,17 +140,16 @@ class _BrandProductsState extends State<BrandProducts> {
           },
           autofocus: true,
           decoration: InputDecoration(
-              hintText:
-                  "${AppLocalizations.of(context)!.search_product_here} : ",
-              hintStyle:
-                  TextStyle(fontSize: 14.0, color: MyTheme.textfield_grey),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: MyTheme.white, width: 0.0),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: MyTheme.white, width: 0.0),
-              ),
-              contentPadding: EdgeInsets.all(0.0)),
+            hintText: "${AppLocalizations.of(context)!.search_product_here} : ",
+            hintStyle: TextStyle(fontSize: 14.0, color: MyTheme.textfield_grey),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: MyTheme.white, width: 0.0),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: MyTheme.white, width: 0.0),
+            ),
+            contentPadding: EdgeInsets.all(0.0),
+          ),
         ),
       ),
       elevation: 0.0,
@@ -169,8 +174,10 @@ class _BrandProductsState extends State<BrandProducts> {
   buildProductList() {
     if (_isInitial && _productList.isEmpty) {
       return SingleChildScrollView(
-          child: ShimmerHelper()
-              .buildProductGridShimmer(scontroller: _scrollController));
+        child: ShimmerHelper().buildProductGridShimmer(
+          scontroller: _scrollController,
+        ),
+      );
     } else if (_productList.isNotEmpty) {
       return RefreshIndicator(
         color: MyTheme.accent_color,
@@ -180,15 +187,20 @@ class _BrandProductsState extends State<BrandProducts> {
         child: SingleChildScrollView(
           controller: _xcrollController,
           physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics()),
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
           child: MasonryGridView.count(
             crossAxisCount: 2,
             mainAxisSpacing: 14,
             crossAxisSpacing: 14,
             itemCount: _productList.length,
             shrinkWrap: true,
-            padding:
-                EdgeInsets.only(top: 10.0, bottom: 10, left: 18, right: 18),
+            padding: EdgeInsets.only(
+              top: 10.0,
+              bottom: 10,
+              left: 18,
+              right: 18,
+            ),
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               // 3
@@ -209,7 +221,8 @@ class _BrandProductsState extends State<BrandProducts> {
       );
     } else if (_totalData == 0) {
       return Center(
-          child: Text(AppLocalizations.of(context)!.no_data_is_available));
+        child: Text(AppLocalizations.of(context)!.no_data_is_available),
+      );
     } else {
       return Container(); // should never be happening
     }

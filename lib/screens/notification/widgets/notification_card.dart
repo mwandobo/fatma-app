@@ -1,4 +1,4 @@
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,19 +22,20 @@ class NotificationListCard extends StatefulWidget {
   final String? image;
   final bool? isChecked;
   final Function(String, bool) onSelect;
-  const NotificationListCard(
-      {super.key,
-      this.id,
-      this.isChecked,
-      this.type,
-      this.orderId,
-      this.orderCode,
-      this.status,
-      this.notificationText,
-      this.link = '',
-      this.dateTime,
-      required this.onSelect,
-      this.image});
+  const NotificationListCard({
+    super.key,
+    this.id,
+    this.isChecked,
+    this.type,
+    this.orderId,
+    this.orderCode,
+    this.status,
+    this.notificationText,
+    this.link = '',
+    this.dateTime,
+    required this.onSelect,
+    this.image,
+  });
 
   @override
   State<NotificationListCard> createState() => _NotificationListCardState();
@@ -51,11 +52,11 @@ class _NotificationListCardState extends State<NotificationListCard> {
 
     if (widget.type == "App\\Notifications\\OrderNotification") {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => OrderDetails(
-                    id: widget.orderId,
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (context) => OrderDetails(id: widget.orderId),
+        ),
+      );
     }
   }
 
@@ -98,10 +99,12 @@ class _NotificationListCardState extends State<NotificationListCard> {
                       Text(
                         "${widget.notificationText}",
                         style: TextStyle(
-                            color: (widget.link != '' && widget.link != null)
-                                ? MyTheme.accent_color
-                                : Colors.black,
-                            fontSize: 16),
+                          color:
+                              (widget.link != '' && widget.link != null)
+                                  ? MyTheme.accent_color
+                                  : Colors.black,
+                          fontSize: 16,
+                        ),
                       ),
                     if (widget.type == "App\\Notifications\\OrderNotification")
                       Flexible(

@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/payment_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/orders/order_list.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/wallet.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/payment_repository.dart';
+import 'package:active_ecommerce_flutter/screens/orders/order_list.dart';
+import 'package:active_ecommerce_flutter/screens/wallet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,13 +21,14 @@ class PaypalScreen extends StatefulWidget {
   var package_id;
   int? orderId;
 
-  PaypalScreen(
-      {super.key,
-      this.amount = 0.00,
-      this.orderId = 0,
-      this.payment_type = "",
-      this.package_id = "0",
-      this.payment_method_key = ""});
+  PaypalScreen({
+    super.key,
+    this.amount = 0.00,
+    this.orderId = 0,
+    this.payment_type = "",
+    this.package_id = "0",
+    this.payment_method_key = "",
+  });
 
   @override
   _PaypalScreenState createState() => _PaypalScreenState();
@@ -56,13 +57,12 @@ class _PaypalScreenState extends State<PaypalScreen> {
   }
 
   createOrder() async {
-    var orderCreateResponse = await PaymentRepository()
-        .getOrderCreateResponse(widget.payment_method_key);
+    var orderCreateResponse = await PaymentRepository().getOrderCreateResponse(
+      widget.payment_method_key,
+    );
 
     if (orderCreateResponse.result == false) {
-      ToastComponent.showDialog(
-        orderCreateResponse.message,
-      );
+      ToastComponent.showDialog(orderCreateResponse.message);
       Navigator.of(context).pop();
       return;
     }
@@ -76,16 +76,15 @@ class _PaypalScreenState extends State<PaypalScreen> {
 
   getSetInitialUrl() async {
     var paypalUrlResponse = await PaymentRepository().getPaypalUrlResponse(
-        widget.payment_type,
-        _combined_order_id,
-        widget.package_id,
-        widget.amount,
-        widget.orderId);
+      widget.payment_type,
+      _combined_order_id,
+      widget.package_id,
+      widget.amount,
+      widget.orderId,
+    );
 
     if (paypalUrlResponse.result == false) {
-      ToastComponent.showDialog(
-        paypalUrlResponse.message!,
-      );
+      ToastComponent.showDialog(paypalUrlResponse.message!);
       Navigator.of(context).pop();
       return;
     }
@@ -109,9 +108,7 @@ class _PaypalScreenState extends State<PaypalScreen> {
             if (page.contains("/paypal/payment/done")) {
               getData();
             } else if (page.contains("/paypal/payment/cancel")) {
-              ToastComponent.showDialog(
-                "Payment cancelled",
-              );
+              ToastComponent.showDialog("Payment cancelled");
               Navigator.of(context).pop();
               return;
             }
@@ -138,46 +135,61 @@ class _PaypalScreenState extends State<PaypalScreen> {
     _webViewController
         .runJavaScriptReturningResult("document.body.innerText")
         .then((data) {
-      var responseJSON = jsonDecode(data as String);
+          var responseJSON = jsonDecode(data as String);
 
-      if (responseJSON.runtimeType == String) {
-        responseJSON = jsonDecode(responseJSON);
-      }
+          if (responseJSON.runtimeType == String) {
+            responseJSON = jsonDecode(responseJSON);
+          }
 
-      print("responseJSON");
-      print('order type${widget.payment_type}');
-      print(responseJSON);
+          print("responseJSON");
+          print('order type${widget.payment_type}');
+          print(responseJSON);
 
-      if (responseJSON["result"] == false) {
-        ToastComponent.showDialog(
-          responseJSON["message"],
-        );
-        Navigator.pop(context);
-      } else if (responseJSON["result"] == true) {
-        ToastComponent.showDialog(
-          responseJSON["message"],
-        );
+          if (responseJSON["result"] == false) {
+            ToastComponent.showDialog(responseJSON["message"]);
+            Navigator.pop(context);
+          } else if (responseJSON["result"] == true) {
+            ToastComponent.showDialog(responseJSON["message"]);
 
-        if (widget.payment_type == "cart_payment") {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return OrderList(from_checkout: true);
-          }));
-        } else if (widget.payment_type == "order_re_payment") {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return OrderList(from_checkout: true);
-          }));
-        } else if (widget.payment_type == "wallet_payment") {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Wallet(from_recharge: true);
-          }));
-        } else if (widget.payment_type == "customer_package_payment") {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) {
-            return Profile();
-          }));
-        }
-      }
-    });
+            if (widget.payment_type == "cart_payment") {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return OrderList(from_checkout: true);
+                  },
+                ),
+              );
+            } else if (widget.payment_type == "order_re_payment") {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return OrderList(from_checkout: true);
+                  },
+                ),
+              );
+            } else if (widget.payment_type == "wallet_payment") {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return Wallet(from_recharge: true);
+                  },
+                ),
+              );
+            } else if (widget.payment_type == "customer_package_payment") {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return Profile();
+                  },
+                ),
+              );
+            }
+          }
+        });
   }
 
   buildBody() {
@@ -200,9 +212,7 @@ class _PaypalScreenState extends State<PaypalScreen> {
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          child: WebViewWidget(
-            controller: _webViewController,
-          ),
+          child: WebViewWidget(controller: _webViewController),
         ),
       );
     }
@@ -213,10 +223,11 @@ class _PaypalScreenState extends State<PaypalScreen> {
       backgroundColor: Colors.white,
       centerTitle: true,
       leading: Builder(
-        builder: (context) => IconButton(
-          icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        builder:
+            (context) => IconButton(
+              icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
       ),
       title: Text(
         AppLocalizations.of(context)!.pay_with_paypal,

@@ -1,5 +1,5 @@
-import 'package:active_ecommerce_cms_demo_app/helpers/system_config.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/auth_repository.dart';
+import 'package:active_ecommerce_flutter/helpers/system_config.dart';
+import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
 
 import '../data_model/login_response.dart';
 import 'shared_value_helper.dart';

@@ -1,5 +1,5 @@
-import 'package:active_ecommerce_cms_demo_app/repositories/product_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/ui_elements/product_card.dart';
+import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
+import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -69,14 +69,13 @@ class _LastViewProductState extends State<LastViewProduct> {
 
   Widget body() {
     if (!_dataFetch) {
-      return ShimmerHelper()
-          .buildProductGridShimmer(scontroller: _mainScrollController);
+      return ShimmerHelper().buildProductGridShimmer(
+        scontroller: _mainScrollController,
+      );
     }
 
     if (_lastViewProducts.length == 0) {
-      return Center(
-        child: Text(LangText(context).local.no_data_is_available),
-      );
+      return Center(child: Text(LangText(context).local.no_data_is_available));
     }
     return RefreshIndicator(
       onRefresh: _onPageRefresh,
@@ -117,9 +116,10 @@ class _LastViewProductState extends State<LastViewProduct> {
       title: Text(
         AppLocalizations.of(context)!.last_view_product_ucf,
         style: TextStyle(
-            fontSize: 16,
-            color: MyTheme.dark_font_grey,
-            fontWeight: FontWeight.bold),
+          fontSize: 16,
+          color: MyTheme.dark_font_grey,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       elevation: 0.0,
       titleSpacing: 0,

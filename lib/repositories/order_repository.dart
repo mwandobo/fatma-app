@@ -1,20 +1,25 @@
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/common_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/order_detail_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/order_item_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/order_mini_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/purchased_ditital_product_response.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/main_helpers.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/middlewares/banned_user.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/api-request.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/data_model/common_response.dart';
+import 'package:active_ecommerce_flutter/data_model/order_detail_response.dart';
+import 'package:active_ecommerce_flutter/data_model/order_item_response.dart';
+import 'package:active_ecommerce_flutter/data_model/order_mini_response.dart';
+import 'package:active_ecommerce_flutter/data_model/purchased_ditital_product_response.dart';
+import 'package:active_ecommerce_flutter/helpers/main_helpers.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/middlewares/banned_user.dart';
+import 'package:active_ecommerce_flutter/repositories/api-request.dart';
 
 import '../data_model/reorder_response.dart';
 
 class OrderRepository {
-  Future<dynamic> getOrderList(
-      {page = 1, payment_status = "", delivery_status = ""}) async {
-    String url = ("${AppConfig.BASE_URL}/purchase-history" "?page=$page&payment_status=$payment_status&delivery_status=$delivery_status");
+  Future<dynamic> getOrderList({
+    page = 1,
+    payment_status = "",
+    delivery_status = "",
+  }) async {
+    String url =
+        ("${AppConfig.BASE_URL}/purchase-history"
+            "?page=$page&payment_status=$payment_status&delivery_status=$delivery_status");
 
     Map<String, String> header = commonHeader;
 
@@ -22,14 +27,16 @@ class OrderRepository {
     header.addAll(currencyHeader);
 
     final response = await ApiRequest.get(
-        url: url, headers: header, middleware: BannedUser());
+      url: url,
+      headers: header,
+      middleware: BannedUser(),
+    );
 
     return orderMiniResponseFromJson(response.body);
   }
 
   Future<dynamic> getOrderDetails({int? id = 0}) async {
-    String url =
-        ("${AppConfig.BASE_URL}/purchase-history-details/$id");
+    String url = ("${AppConfig.BASE_URL}/purchase-history-details/$id");
 
     Map<String, String> header = commonHeader;
 
@@ -37,7 +44,10 @@ class OrderRepository {
     header.addAll(currencyHeader);
 
     final response = await ApiRequest.get(
-        url: url, headers: header, middleware: BannedUser());
+      url: url,
+      headers: header,
+      middleware: BannedUser(),
+    );
     return orderDetailResponseFromJson(response.body);
   }
 
@@ -45,12 +55,13 @@ class OrderRepository {
     String url = ("${AppConfig.BASE_URL}/re-order/$id");
 
     final response = await ApiRequest.get(
-        url: url,
-        headers: {
-          "Authorization": "Bearer ${access_token.$}",
-          "App-Language": app_language.$!,
-        },
-        middleware: BannedUser());
+      url: url,
+      headers: {
+        "Authorization": "Bearer ${access_token.$}",
+        "App-Language": app_language.$!,
+      },
+      middleware: BannedUser(),
+    );
     return reOrderResponseFromJson(response.body);
   }
 
@@ -58,32 +69,33 @@ class OrderRepository {
     String url = "${AppConfig.BASE_URL}/order/cancel/$id";
 
     final response = await ApiRequest.get(
-        url: url,
-        headers: {
-          "Authorization": "Bearer ${access_token.$}",
-          "App-Language": app_language.$!,
-        },
-        middleware: BannedUser());
+      url: url,
+      headers: {
+        "Authorization": "Bearer ${access_token.$}",
+        "App-Language": app_language.$!,
+      },
+      middleware: BannedUser(),
+    );
     return commonResponseFromJson(response.body);
   }
 
   Future<dynamic> getOrderItems({int? id = 0}) async {
-    String url =
-        ("${AppConfig.BASE_URL}/purchase-history-items/$id");
+    String url = ("${AppConfig.BASE_URL}/purchase-history-items/$id");
     Map<String, String> header = commonHeader;
 
     header.addAll(authHeader);
     header.addAll(currencyHeader);
 
     final response = await ApiRequest.get(
-        url: url, headers: header, middleware: BannedUser());
+      url: url,
+      headers: header,
+      middleware: BannedUser(),
+    );
 
     return orderItemlResponseFromJson(response.body);
   }
 
-  Future<dynamic> getPurchasedDigitalProducts({
-    page = 1,
-  }) async {
+  Future<dynamic> getPurchasedDigitalProducts({page = 1}) async {
     String url = ("${AppConfig.BASE_URL}/digital/purchased-list?page=$page");
     Map<String, String> header = commonHeader;
 
@@ -91,7 +103,10 @@ class OrderRepository {
     header.addAll(currencyHeader);
 
     final response = await ApiRequest.get(
-        url: url, headers: header, middleware: BannedUser());
+      url: url,
+      headers: header,
+      middleware: BannedUser(),
+    );
 
     return purchasedDigitalProductResponseFromJson(response.body);
   }

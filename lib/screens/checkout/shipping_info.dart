@@ -1,21 +1,21 @@
 import 'dart:convert';
 
-import 'package:active_ecommerce_cms_demo_app/custom/box_decorations.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/btn.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/device_info.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/enum_classes.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/fade_network_image.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/lang_text.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/useful_elements.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/delivery_info_response.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/system_config.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/address_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/shipping_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/checkout/checkout.dart';
+import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
+import 'package:active_ecommerce_flutter/custom/btn.dart';
+import 'package:active_ecommerce_flutter/custom/device_info.dart';
+import 'package:active_ecommerce_flutter/custom/enum_classes.dart';
+import 'package:active_ecommerce_flutter/custom/fade_network_image.dart';
+import 'package:active_ecommerce_flutter/custom/lang_text.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
+import 'package:active_ecommerce_flutter/data_model/delivery_info_response.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/system_config.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/address_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/shipping_repository.dart';
+import 'package:active_ecommerce_flutter/screens/checkout/checkout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -23,10 +23,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ShippingInfo extends StatefulWidget {
   final String? guestCheckOutShippingAddress;
 
-  const ShippingInfo({
-    super.key,
-    this.guestCheckOutShippingAddress,
-  });
+  const ShippingInfo({super.key, this.guestCheckOutShippingAddress});
 
   @override
   _ShippingInfoState createState() => _ShippingInfoState();
@@ -52,21 +49,24 @@ class _ShippingInfoState extends State<ShippingInfo> {
     _isFetchDeliveryInfo = true;
 
     for (var element in _deliveryInfoList) {
-      var shippingOption = carrier_base_shipping.$
-          ? ShippingOption.Carrier
-          : ShippingOption.HomeDelivery;
+      var shippingOption =
+          carrier_base_shipping.$
+              ? ShippingOption.Carrier
+              : ShippingOption.HomeDelivery;
       int? shippingId;
       if (carrier_base_shipping.$ &&
           element.carriers!.data!.isNotEmpty &&
-          !(element.cartItems
-                  ?.every((element2) => element2.isDigital ?? false) ??
+          !(element.cartItems?.every(
+                (element2) => element2.isDigital ?? false,
+              ) ??
               false)) {
         shippingId = element.carriers!.data!.first.id;
       }
       print("carrier_base_shipping.${carrier_base_shipping.$}");
 
       _sellerWiseShippingOption.add(
-          SellerWithShipping(element.ownerId, shippingOption, shippingId));
+        SellerWithShipping(element.ownerId, shippingOption, shippingId),
+      );
     }
     getSetShippingCost();
     setState(() {});
@@ -74,8 +74,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
   getSetShippingCost() async {
     var shippingCostResponse;
-    shippingCostResponse = await AddressRepository()
-        .getShippingCostResponse(shipping_type: _sellerWiseShippingOption);
+    shippingCostResponse = await AddressRepository().getShippingCostResponse(
+      shipping_type: _sellerWiseShippingOption,
+    );
 
     if (shippingCostResponse.result == true) {
       _shipping_cost_string = shippingCostResponse.value_string;
@@ -145,8 +146,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
   onPressProceed(context) async {
     var shippingCostResponse;
 
-    var sellerWiseShippingOptionErrors =
-        _sellerWiseShippingOption.where((element) {
+    var sellerWiseShippingOptionErrors = _sellerWiseShippingOption.where((
+      element,
+    ) {
       print(element.shippingId);
       if ((element.shippingId == 0 || element.shippingId == null) &&
           !element.isAllDigital) {
@@ -165,23 +167,27 @@ class _ShippingInfoState extends State<ShippingInfo> {
       return;
     }
 
-    shippingCostResponse = await AddressRepository()
-        .getShippingCostResponse(shipping_type: _sellerWiseShippingOption);
+    shippingCostResponse = await AddressRepository().getShippingCostResponse(
+      shipping_type: _sellerWiseShippingOption,
+    );
 
     if (shippingCostResponse.result == false) {
-      ToastComponent.showDialog(
-        LangText(context).local.network_error,
-      );
+      ToastComponent.showDialog(LangText(context).local.network_error);
       return;
     }
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return Checkout(
-        title: AppLocalizations.of(context)!.checkout_ucf,
-        paymentFor: PaymentFor.Order,
-        guestCheckOutShippingAddress: widget.guestCheckOutShippingAddress,
-      );
-    })).then((value) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return Checkout(
+            title: AppLocalizations.of(context)!.checkout_ucf,
+            paymentFor: PaymentFor.Order,
+            guestCheckOutShippingAddress: widget.guestCheckOutShippingAddress,
+          );
+        },
+      ),
+    ).then((value) {
       onPopped(value);
     });
   }
@@ -210,9 +216,10 @@ class _ShippingInfoState extends State<ShippingInfo> {
       textDirection:
           app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
-          appBar: customAppBar(context) as PreferredSizeWidget?,
-          bottomNavigationBar: buildBottomAppBar(context),
-          body: buildBody(context)),
+        appBar: customAppBar(context) as PreferredSizeWidget?,
+        bottomNavigationBar: buildBottomAppBar(context),
+        body: buildBody(context),
+      ),
     );
   }
 
@@ -222,9 +229,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
       backgroundColor: Colors.white,
       onRefresh: _onRefresh,
       displacement: 0,
-      child: Container(
-        child: buildBodyChildren(context),
-      ),
+      child: Container(child: buildBodyChildren(context)),
     );
   }
 
@@ -244,10 +249,11 @@ class _ShippingInfoState extends State<ShippingInfo> {
       backgroundColor: Colors.white,
       centerTitle: true,
       leading: Builder(
-        builder: (context) => IconButton(
-          icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        builder:
+            (context) => IconButton(
+              icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
       ),
       title: Text(
         "${AppLocalizations.of(context)!.shipping_cost_ucf} $_shipping_cost_string",
@@ -268,12 +274,14 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
   SizedBox buildLoginWarning() {
     return SizedBox(
-        height: 100,
-        child: Center(
-            child: Text(
+      height: 100,
+      child: Center(
+        child: Text(
           LangText(context).local.you_need_to_log_in,
           style: TextStyle(color: MyTheme.font_grey),
-        )));
+        ),
+      ),
+    );
   }
 
   Widget buildPickupPoint(sellerArrayIndex) {
@@ -284,9 +292,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
       return buildCarrierShimmer();
     } else if (_deliveryInfoList[sellerArrayIndex].pickupPoints!.isNotEmpty) {
       return ListView.separated(
-        separatorBuilder: (context, index) => SizedBox(
-          height: 14,
-        ),
+        separatorBuilder: (context, index) => SizedBox(height: 14),
         itemCount: _deliveryInfoList[sellerArrayIndex].pickupPoints!.length,
         scrollDirection: Axis.vertical,
         physics: NeverScrollableScrollPhysics(),
@@ -327,16 +333,20 @@ class _ShippingInfoState extends State<ShippingInfo> {
       },
       child: Container(
         decoration: BoxDecorations.buildBoxDecoration_1(radius: 8).copyWith(
-            border: _sellerWiseShippingOption[sellerArrayIndex].shippingId ==
-                    _deliveryInfoList[sellerArrayIndex]
-                        .pickupPoints![pickupPointIndex]
-                        .id
-                ? Border.all(color: MyTheme.accent_color, width: 1.0)
-                : Border.all(color: MyTheme.light_grey, width: 1.0)),
+          border:
+              _sellerWiseShippingOption[sellerArrayIndex].shippingId ==
+                      _deliveryInfoList[sellerArrayIndex]
+                          .pickupPoints![pickupPointIndex]
+                          .id
+                  ? Border.all(color: MyTheme.accent_color, width: 1.0)
+                  : Border.all(color: MyTheme.light_grey, width: 1.0),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: buildPickUpPointInfoItemChildren(
-              pickupPointIndex, sellerArrayIndex),
+            pickupPointIndex,
+            sellerArrayIndex,
+          ),
         ),
       ),
     );
@@ -355,10 +365,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
                 width: 75,
                 child: Text(
                   AppLocalizations.of(context)!.address_ucf,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: MyTheme.dark_font_grey,
-                  ),
+                  style: TextStyle(fontSize: 13, color: MyTheme.dark_font_grey),
                 ),
               ),
               SizedBox(
@@ -369,17 +376,19 @@ class _ShippingInfoState extends State<ShippingInfo> {
                       .name!,
                   maxLines: 2,
                   style: TextStyle(
-                      fontSize: 13,
-                      color: MyTheme.dark_grey,
-                      fontWeight: FontWeight.w600),
+                    fontSize: 13,
+                    color: MyTheme.dark_grey,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               Spacer(),
               buildShippingSelectMarkContainer(
-                  _sellerWiseShippingOption[sellerArrayIndex].shippingId ==
-                      _deliveryInfoList[sellerArrayIndex]
-                          .pickupPoints![pickupPointIndex]
-                          .id)
+                _sellerWiseShippingOption[sellerArrayIndex].shippingId ==
+                    _deliveryInfoList[sellerArrayIndex]
+                        .pickupPoints![pickupPointIndex]
+                        .id,
+              ),
             ],
           ),
         ),
@@ -392,10 +401,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
                 width: 75,
                 child: Text(
                   AppLocalizations.of(context)!.phone_ucf,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: MyTheme.dark_font_grey,
-                  ),
+                  style: TextStyle(fontSize: 13, color: MyTheme.dark_font_grey),
                 ),
               ),
               SizedBox(
@@ -406,9 +412,10 @@ class _ShippingInfoState extends State<ShippingInfo> {
                       .phone!,
                   maxLines: 2,
                   style: TextStyle(
-                      fontSize: 13,
-                      color: MyTheme.dark_grey,
-                      fontWeight: FontWeight.w600),
+                    fontSize: 13,
+                    color: MyTheme.dark_grey,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ],
@@ -448,9 +455,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
       itemCount: _deliveryInfoList[sellerArrayIndex].carriers!.data!.length,
       scrollDirection: Axis.vertical,
       separatorBuilder: (context, index) {
-        return SizedBox(
-          height: 14,
-        );
+        return SizedBox(height: 14);
       },
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -487,13 +492,15 @@ class _ShippingInfoState extends State<ShippingInfo> {
       },
       child: Container(
         decoration: BoxDecorations.buildBoxDecoration_1(radius: 8).copyWith(
-            border: _sellerWiseShippingOption[sellerArrayIndex].shippingId ==
-                    _deliveryInfoList[sellerArrayIndex]
-                        .carriers!
-                        .data![carrierIndex]
-                        .id
-                ? Border.all(color: MyTheme.accent_color, width: 1.0)
-                : Border.all(color: MyTheme.light_grey, width: 1.0)),
+          border:
+              _sellerWiseShippingOption[sellerArrayIndex].shippingId ==
+                      _deliveryInfoList[sellerArrayIndex]
+                          .carriers!
+                          .data![carrierIndex]
+                          .id
+                  ? Border.all(color: MyTheme.accent_color, width: 1.0)
+                  : Border.all(color: MyTheme.light_grey, width: 1.0),
+        ),
         child: buildCarrierInfoItemChildren(carrierIndex, sellerArrayIndex),
       ),
     );
@@ -508,15 +515,18 @@ class _ShippingInfoState extends State<ShippingInfo> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               MyImage.imageNetworkPlaceholder(
-                  height: 75.0,
-                  width: 75.0,
-                  radius: BorderRadius.only(
-                      topLeft: Radius.circular(6),
-                      bottomLeft: Radius.circular(6)),
-                  url: _deliveryInfoList[sellerArrayIndex]
-                      .carriers!
-                      .data![carrierIndex]
-                      .logo),
+                height: 75.0,
+                width: 75.0,
+                radius: BorderRadius.only(
+                  topLeft: Radius.circular(6),
+                  bottomLeft: Radius.circular(6),
+                ),
+                url:
+                    _deliveryInfoList[sellerArrayIndex]
+                        .carriers!
+                        .data![carrierIndex]
+                        .logo,
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: Column(
@@ -531,23 +541,22 @@ class _ShippingInfoState extends State<ShippingInfo> {
                             .name!,
                         maxLines: 2,
                         style: TextStyle(
-                            fontSize: 13,
-                            color: MyTheme.dark_font_grey,
-                            fontWeight: FontWeight.bold),
+                          fontSize: 13,
+                          color: MyTheme.dark_font_grey,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Container(
                       padding: EdgeInsets.only(top: 10),
                       child: Text(
-                        "${_deliveryInfoList[sellerArrayIndex]
-                                .carriers!
-                                .data![carrierIndex]
-                                .transitTime} ${LangText(context).local.day_ucf}",
+                        "${_deliveryInfoList[sellerArrayIndex].carriers!.data![carrierIndex].transitTime} ${LangText(context).local.day_ucf}",
                         maxLines: 2,
                         style: TextStyle(
-                            fontSize: 13,
-                            color: MyTheme.dark_font_grey,
-                            fontWeight: FontWeight.bold),
+                          fontSize: 13,
+                          color: MyTheme.dark_font_grey,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -563,14 +572,13 @@ class _ShippingInfoState extends State<ShippingInfo> {
                       .toString(),
                   maxLines: 2,
                   style: TextStyle(
-                      fontSize: 13,
-                      color: MyTheme.dark_font_grey,
-                      fontWeight: FontWeight.w600),
+                    fontSize: 13,
+                    color: MyTheme.dark_font_grey,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
-              SizedBox(
-                width: 16,
-              )
+              SizedBox(width: 16),
             ],
           ),
         ),
@@ -578,12 +586,13 @@ class _ShippingInfoState extends State<ShippingInfo> {
           right: 16,
           top: 10,
           child: buildShippingSelectMarkContainer(
-              _sellerWiseShippingOption[sellerArrayIndex].shippingId ==
-                  _deliveryInfoList[sellerArrayIndex]
-                      .carriers!
-                      .data![carrierIndex]
-                      .id),
-        )
+            _sellerWiseShippingOption[sellerArrayIndex].shippingId ==
+                _deliveryInfoList[sellerArrayIndex]
+                    .carriers!
+                    .data![carrierIndex]
+                    .id,
+          ),
+        ),
       ],
     );
   }
@@ -591,15 +600,17 @@ class _ShippingInfoState extends State<ShippingInfo> {
   Container buildShippingSelectMarkContainer(bool check) {
     return check
         ? Container(
-            height: 16,
-            width: 16,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16.0), color: Colors.green),
-            child: Padding(
-              padding: const EdgeInsets.all(3),
-              child: Icon(Icons.check, color: Colors.white, size: 10),
-            ),
-          )
+          height: 16,
+          width: 16,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16.0),
+            color: Colors.green,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(3),
+            child: Icon(Icons.check, color: Colors.white, size: 10),
+          ),
+        )
         : Container();
   }
 
@@ -618,7 +629,10 @@ class _ShippingInfoState extends State<ShippingInfo> {
           child: Text(
             AppLocalizations.of(context)!.proceed_to_checkout,
             style: TextStyle(
-                color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           onPressed: () {
             onPressProceed(context);
@@ -644,18 +658,16 @@ class _ShippingInfoState extends State<ShippingInfo> {
       child: Text(
         "${AppLocalizations.of(context)!.shipping_cost_ucf} ${SystemConfig.systemCurrency != null ? _shipping_cost_string!.replaceAll(SystemConfig.systemCurrency!.code!, SystemConfig.systemCurrency!.symbol!) : _shipping_cost_string}",
         style: TextStyle(
-            fontSize: 16,
-            color: MyTheme.dark_font_grey,
-            fontWeight: FontWeight.bold),
+          fontSize: 16,
+          color: MyTheme.dark_font_grey,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
 
   SizedBox buildAppbarBackArrow() {
-    return SizedBox(
-      width: 40,
-      child: UsefulElements.backButton(context),
-    );
+    return SizedBox(width: 40, child: UsefulElements.backButton(context));
   }
 
   Widget buildChooseShippingOptions(BuildContext context, sellerIndex) {
@@ -669,9 +681,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
             buildCarrierOption(context, sellerIndex)
           else
             buildAddressOption(context, sellerIndex),
-          SizedBox(
-            width: 14,
-          ),
+          SizedBox(width: 14),
           if (pick_up_status.$) buildPickUpPointOption(context, sellerIndex),
         ],
       ),
@@ -680,13 +690,15 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
   Widget buildPickUpPointOption(BuildContext context, sellerIndex) {
     return Btn.basic(
-      color: _sellerWiseShippingOption[sellerIndex].shippingOption ==
-              ShippingOption.PickUpPoint
-          ? MyTheme.accent_color
-          : MyTheme.accent_color.withOpacity(0.1),
+      color:
+          _sellerWiseShippingOption[sellerIndex].shippingOption ==
+                  ShippingOption.PickUpPoint
+              ? MyTheme.accent_color
+              : MyTheme.accent_color.withOpacity(0.1),
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6),
-          side: BorderSide(color: MyTheme.accent_color)),
+        borderRadius: BorderRadius.circular(6),
+        side: BorderSide(color: MyTheme.accent_color),
+      ),
       padding: EdgeInsets.only(right: 14),
       onPressed: () {
         setState(() {
@@ -700,34 +712,35 @@ class _ShippingInfoState extends State<ShippingInfo> {
         child: Row(
           children: [
             Radio(
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                fillColor: WidgetStateProperty.resolveWith((states) {
-                  if (!states.contains(WidgetState.selected)) {
-                    return MyTheme.accent_color;
-                  }
-                  return MyTheme.white;
-                }),
-                value: ShippingOption.PickUpPoint,
-                groupValue:
-                    _sellerWiseShippingOption[sellerIndex].shippingOption,
-                onChanged: (dynamic newOption) {
-                  changeShippingOption(newOption, sellerIndex);
-                }),
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              fillColor: WidgetStateProperty.resolveWith((states) {
+                if (!states.contains(WidgetState.selected)) {
+                  return MyTheme.accent_color;
+                }
+                return MyTheme.white;
+              }),
+              value: ShippingOption.PickUpPoint,
+              groupValue: _sellerWiseShippingOption[sellerIndex].shippingOption,
+              onChanged: (dynamic newOption) {
+                changeShippingOption(newOption, sellerIndex);
+              },
+            ),
             //SizedBox(width: 10,),
             Text(
               AppLocalizations.of(context)!.pickup_point_ucf,
               style: TextStyle(
-                  fontSize: 12,
-                  color:
-                      _sellerWiseShippingOption[sellerIndex].shippingOption ==
-                              ShippingOption.PickUpPoint
-                          ? MyTheme.white
-                          : MyTheme.accent_color,
-                  fontWeight:
-                      _sellerWiseShippingOption[sellerIndex].shippingOption ==
-                              ShippingOption.PickUpPoint
-                          ? FontWeight.w700
-                          : FontWeight.normal),
+                fontSize: 12,
+                color:
+                    _sellerWiseShippingOption[sellerIndex].shippingOption ==
+                            ShippingOption.PickUpPoint
+                        ? MyTheme.white
+                        : MyTheme.accent_color,
+                fontWeight:
+                    _sellerWiseShippingOption[sellerIndex].shippingOption ==
+                            ShippingOption.PickUpPoint
+                        ? FontWeight.w700
+                        : FontWeight.normal,
+              ),
             ),
           ],
         ),
@@ -737,13 +750,15 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
   Widget buildAddressOption(BuildContext context, sellerIndex) {
     return Btn.basic(
-      color: _sellerWiseShippingOption[sellerIndex].shippingOption ==
-              ShippingOption.HomeDelivery
-          ? MyTheme.accent_color
-          : MyTheme.accent_color.withOpacity(0.1),
+      color:
+          _sellerWiseShippingOption[sellerIndex].shippingOption ==
+                  ShippingOption.HomeDelivery
+              ? MyTheme.accent_color
+              : MyTheme.accent_color.withOpacity(0.1),
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6),
-          side: BorderSide(color: MyTheme.accent_color)),
+        borderRadius: BorderRadius.circular(6),
+        side: BorderSide(color: MyTheme.accent_color),
+      ),
       padding: EdgeInsets.only(right: 14),
       onPressed: () {
         changeShippingOption(ShippingOption.HomeDelivery, sellerIndex);
@@ -755,33 +770,34 @@ class _ShippingInfoState extends State<ShippingInfo> {
         child: Row(
           children: [
             Radio(
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                fillColor: WidgetStateProperty.resolveWith((states) {
-                  if (!states.contains(WidgetState.selected)) {
-                    return MyTheme.accent_color;
-                  }
-                  return MyTheme.white;
-                }),
-                value: ShippingOption.HomeDelivery,
-                groupValue:
-                    _sellerWiseShippingOption[sellerIndex].shippingOption,
-                onChanged: (dynamic newOption) {
-                  changeShippingOption(newOption, sellerIndex);
-                }),
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              fillColor: WidgetStateProperty.resolveWith((states) {
+                if (!states.contains(WidgetState.selected)) {
+                  return MyTheme.accent_color;
+                }
+                return MyTheme.white;
+              }),
+              value: ShippingOption.HomeDelivery,
+              groupValue: _sellerWiseShippingOption[sellerIndex].shippingOption,
+              onChanged: (dynamic newOption) {
+                changeShippingOption(newOption, sellerIndex);
+              },
+            ),
             Text(
               AppLocalizations.of(context)!.home_delivery_ucf,
               style: TextStyle(
-                  fontSize: 12,
-                  color:
-                      _sellerWiseShippingOption[sellerIndex].shippingOption ==
-                              ShippingOption.HomeDelivery
-                          ? MyTheme.white
-                          : MyTheme.accent_color,
-                  fontWeight:
-                      _sellerWiseShippingOption[sellerIndex].shippingOption ==
-                              ShippingOption.HomeDelivery
-                          ? FontWeight.w700
-                          : FontWeight.normal),
+                fontSize: 12,
+                color:
+                    _sellerWiseShippingOption[sellerIndex].shippingOption ==
+                            ShippingOption.HomeDelivery
+                        ? MyTheme.white
+                        : MyTheme.accent_color,
+                fontWeight:
+                    _sellerWiseShippingOption[sellerIndex].shippingOption ==
+                            ShippingOption.HomeDelivery
+                        ? FontWeight.w700
+                        : FontWeight.normal,
+              ),
             ),
           ],
         ),
@@ -791,13 +807,15 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
   Widget buildCarrierOption(BuildContext context, sellerIndex) {
     return Btn.basic(
-      color: _sellerWiseShippingOption[sellerIndex].shippingOption ==
-              ShippingOption.Carrier
-          ? MyTheme.accent_color
-          : MyTheme.accent_color.withOpacity(0.1),
+      color:
+          _sellerWiseShippingOption[sellerIndex].shippingOption ==
+                  ShippingOption.Carrier
+              ? MyTheme.accent_color
+              : MyTheme.accent_color.withOpacity(0.1),
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6),
-          side: BorderSide(color: MyTheme.accent_color)),
+        borderRadius: BorderRadius.circular(6),
+        side: BorderSide(color: MyTheme.accent_color),
+      ),
       padding: EdgeInsets.only(right: 14),
       onPressed: () {
         changeShippingOption(ShippingOption.Carrier, sellerIndex);
@@ -809,33 +827,34 @@ class _ShippingInfoState extends State<ShippingInfo> {
         child: Row(
           children: [
             Radio(
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                fillColor: WidgetStateProperty.resolveWith((states) {
-                  if (!states.contains(WidgetState.selected)) {
-                    return MyTheme.accent_color;
-                  }
-                  return MyTheme.white;
-                }),
-                value: ShippingOption.Carrier,
-                groupValue:
-                    _sellerWiseShippingOption[sellerIndex].shippingOption,
-                onChanged: (dynamic newOption) {
-                  changeShippingOption(newOption, sellerIndex);
-                }),
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              fillColor: WidgetStateProperty.resolveWith((states) {
+                if (!states.contains(WidgetState.selected)) {
+                  return MyTheme.accent_color;
+                }
+                return MyTheme.white;
+              }),
+              value: ShippingOption.Carrier,
+              groupValue: _sellerWiseShippingOption[sellerIndex].shippingOption,
+              onChanged: (dynamic newOption) {
+                changeShippingOption(newOption, sellerIndex);
+              },
+            ),
             Text(
               AppLocalizations.of(context)!.carrier_ucf,
               style: TextStyle(
-                  fontSize: 12,
-                  color:
-                      _sellerWiseShippingOption[sellerIndex].shippingOption ==
-                              ShippingOption.Carrier
-                          ? MyTheme.white
-                          : MyTheme.accent_color,
-                  fontWeight:
-                      _sellerWiseShippingOption[sellerIndex].shippingOption ==
-                              ShippingOption.Carrier
-                          ? FontWeight.w700
-                          : FontWeight.normal),
+                fontSize: 12,
+                color:
+                    _sellerWiseShippingOption[sellerIndex].shippingOption ==
+                            ShippingOption.Carrier
+                        ? MyTheme.white
+                        : MyTheme.accent_color,
+                fontWeight:
+                    _sellerWiseShippingOption[sellerIndex].shippingOption ==
+                            ShippingOption.Carrier
+                        ? FontWeight.w700
+                        : FontWeight.normal,
+              ),
             ),
           ],
         ),
@@ -858,18 +877,23 @@ class _ShippingInfoState extends State<ShippingInfo> {
     // else
     if (_isFetchDeliveryInfo && _deliveryInfoList.isEmpty) {
       return SingleChildScrollView(
-          child: ShimmerHelper()
-              .buildListShimmer(item_count: 5, item_height: 100.0));
+        child: ShimmerHelper().buildListShimmer(
+          item_count: 5,
+          item_height: 100.0,
+        ),
+      );
     } else if (_deliveryInfoList.isNotEmpty) {
       return buildCartSellerListBody();
     } else if (_isFetchDeliveryInfo && _deliveryInfoList.isEmpty) {
       return SizedBox(
-          height: 100,
-          child: Center(
-              child: Text(
+        height: 100,
+        child: Center(
+          child: Text(
             AppLocalizations.of(context)!.cart_is_empty,
             style: TextStyle(color: MyTheme.font_grey),
-          )));
+          ),
+        ),
+      );
     }
     return Container();
   }
@@ -880,9 +904,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
         padding: const EdgeInsets.symmetric(horizontal: 18.0),
         child: ListView.separated(
           padding: EdgeInsets.only(bottom: 20),
-          separatorBuilder: (context, index) => SizedBox(
-            height: 26,
-          ),
+          separatorBuilder: (context, index) => SizedBox(height: 26),
           itemCount: _deliveryInfoList.length,
           scrollDirection: Axis.vertical,
           physics: NeverScrollableScrollPhysics(),
@@ -904,15 +926,16 @@ class _ShippingInfoState extends State<ShippingInfo> {
           child: Text(
             _deliveryInfoList[index].name!,
             style: TextStyle(
-                color: MyTheme.accent_color,
-                fontWeight: FontWeight.w700,
-                fontSize: 16),
+              color: MyTheme.accent_color,
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+            ),
           ),
         ),
         buildCartSellerItemList(index),
-        if (!(_deliveryInfoList[index]
-            .cartItems!
-            .every((element) => (element.isDigital ?? false))))
+        if (!(_deliveryInfoList[index].cartItems!.every(
+          (element) => (element.isDigital ?? false),
+        )))
           Column(
             children: [
               Padding(
@@ -920,18 +943,15 @@ class _ShippingInfoState extends State<ShippingInfo> {
                 child: Text(
                   LangText(context).local.choose_delivery_ucf,
                   style: TextStyle(
-                      color: MyTheme.dark_font_grey,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 12),
+                    color: MyTheme.dark_font_grey,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12,
+                  ),
                 ),
               ),
-              SizedBox(
-                height: 5,
-              ),
+              SizedBox(height: 5),
               buildChooseShippingOptions(context, index),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               buildShippingListBody(index),
             ],
           ),
@@ -942,9 +962,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
   SingleChildScrollView buildCartSellerItemList(sellerIndex) {
     return SingleChildScrollView(
       child: ListView.separated(
-        separatorBuilder: (context, index) => SizedBox(
-          height: 14,
-        ),
+        separatorBuilder: (context, index) => SizedBox(height: 14),
         itemCount: _deliveryInfoList[sellerIndex].cartItems!.length,
         scrollDirection: Axis.vertical,
         physics: NeverScrollableScrollPhysics(),
@@ -960,50 +978,55 @@ class _ShippingInfoState extends State<ShippingInfo> {
     return Container(
       height: 80,
       decoration: BoxDecorations.buildBoxDecoration_1(),
-      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-        SizedBox(
-          width: DeviceInfo(context).width! / 4,
-          height: 120,
-          child: ClipRRect(
-            borderRadius: BorderRadius.horizontal(
-                left: Radius.circular(6), right: Radius.zero),
-            child: FadeInImage.assetNetwork(
-              placeholder: 'assets/placeholder.png',
-              image: _deliveryInfoList[sellerIndex]
-                  .cartItems![itemIndex]
-                  .productThumbnailImage!,
-              fit: BoxFit.cover,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(
+            width: DeviceInfo(context).width! / 4,
+            height: 120,
+            child: ClipRRect(
+              borderRadius: BorderRadius.horizontal(
+                left: Radius.circular(6),
+                right: Radius.zero,
+              ),
+              child: FadeInImage.assetNetwork(
+                placeholder: 'assets/placeholder.png',
+                image:
+                    _deliveryInfoList[sellerIndex]
+                        .cartItems![itemIndex]
+                        .productThumbnailImage!,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ),
-        SizedBox(
-          width: 10,
-        ),
-        SizedBox(
-          //color: Colors.red,
-          width: DeviceInfo(context).width! / 2,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  _deliveryInfoList[sellerIndex]
-                      .cartItems![itemIndex]
-                      .productName!,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: TextStyle(
+          SizedBox(width: 10),
+          SizedBox(
+            //color: Colors.red,
+            width: DeviceInfo(context).width! / 2,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    _deliveryInfoList[sellerIndex]
+                        .cartItems![itemIndex]
+                        .productName!,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: TextStyle(
                       color: MyTheme.font_grey,
                       fontSize: 12,
-                      fontWeight: FontWeight.w400),
-                ),
-              ],
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 }
@@ -1016,19 +1039,25 @@ class SellerWithShipping {
   int? shippingId;
   bool isAllDigital;
 
-  SellerWithShipping(this.sellerId, this.shippingOption, this.shippingId,
-      {this.isAllDigital = false});
+  SellerWithShipping(
+    this.sellerId,
+    this.shippingOption,
+    this.shippingId, {
+    this.isAllDigital = false,
+  });
 
   Map toJson() => {
-        'seller_id': sellerId,
-        'shipping_type': shippingOption == ShippingOption.HomeDelivery
+    'seller_id': sellerId,
+    'shipping_type':
+        shippingOption == ShippingOption.HomeDelivery
             ? "home_delivery"
             : shippingOption == ShippingOption.Carrier
-                ? "carrier"
-                : "pickup_point",
-        'shipping_id': shippingId,
-      };
+            ? "carrier"
+            : "pickup_point",
+    'shipping_id': shippingId,
+  };
 }
+
 //
 // class SellerWithForReqBody{
 //   int sellerId;

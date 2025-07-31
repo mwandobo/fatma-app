@@ -1,4 +1,4 @@
-# active_ecommerce_cms_demo_app
+# active_ecommerce_flutter
 
 A new Flutter project.
 

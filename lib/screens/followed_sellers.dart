@@ -1,4 +1,4 @@
-import 'package:active_ecommerce_cms_demo_app/data_model/followed_sellers_response.dart';
+import 'package:active_ecommerce_flutter/data_model/followed_sellers_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -111,10 +111,11 @@ class _FollowedSellersState extends State<FollowedSellers> {
           itemCount: sellers.length,
           controller: _scrollController,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 14,
-              mainAxisSpacing: 14,
-              childAspectRatio: 0.7),
+            crossAxisCount: 2,
+            crossAxisSpacing: 14,
+            mainAxisSpacing: 14,
+            childAspectRatio: 0.7,
+          ),
           padding: EdgeInsets.only(top: 20, bottom: 10, left: 18, right: 18),
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -140,120 +141,138 @@ class _FollowedSellersState extends State<FollowedSellers> {
     return Container(
       decoration: BoxDecorations.buildBoxDecoration_1(),
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            InkWell(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return SellerDetails(
-                    slug: sellerInfo.shopSlug ?? "",
-                  );
-                }));
-              },
-              child: SizedBox(
-                  width: double.infinity,
-                  height: 100,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(16), bottom: Radius.zero),
-                      child: FadeInImage.assetNetwork(
-                        placeholder: 'assets/placeholder.png',
-                        image: sellerInfo.shopLogo!,
-                        fit: BoxFit.scaleDown,
-                        imageErrorBuilder: (BuildContext errorContext,
-                            Object obj, StackTrace? st) {
-                          return Image.asset('assets/placeholder.png');
-                        },
-                      ))),
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return SellerDetails(slug: sellerInfo.shopSlug ?? "");
+                  },
+                ),
+              );
+            },
+            child: SizedBox(
+              width: double.infinity,
+              height: 100,
+              child: ClipRRect(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(16),
+                  bottom: Radius.zero,
+                ),
+                child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/placeholder.png',
+                  image: sellerInfo.shopLogo!,
+                  fit: BoxFit.scaleDown,
+                  imageErrorBuilder: (
+                    BuildContext errorContext,
+                    Object obj,
+                    StackTrace? st,
+                  ) {
+                    return Image.asset('assets/placeholder.png');
+                  },
+                ),
+              ),
             ),
-            Container(
+          ),
+          Container(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+              child: Text(
+                sellerInfo.shopName!,
+                textAlign: TextAlign.left,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                style: TextStyle(
+                  color: MyTheme.dark_font_grey,
+                  fontSize: 13,
+                  height: 1.6,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: SizedBox(
+              height: 15,
+              child: RatingBar(
+                ignoreGestures: true,
+                initialRating: double.parse(sellerInfo.shopRating.toString()),
+                maxRating: 5,
+                direction: Axis.horizontal,
+                itemSize: 15.0,
+                itemCount: 5,
+                ratingWidget: RatingWidget(
+                  full: Icon(Icons.star, color: Colors.amber),
+                  half: Icon(Icons.star_half),
+                  empty: Icon(
+                    Icons.star,
+                    color: Color.fromRGBO(224, 224, 225, 1),
+                  ),
+                ),
+                onRatingUpdate: (newValue) {},
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              removedFollow(sellerInfo.shopId);
+            },
+            child: Container(
               child: Padding(
-                padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
                 child: Text(
-                  sellerInfo.shopName!,
+                  LangText(context).local.unfollow_ucf,
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style: TextStyle(
-                      color: MyTheme.dark_font_grey,
-                      fontSize: 13,
-                      height: 1.6,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: SizedBox(
-                height: 15,
-                child: RatingBar(
-                    ignoreGestures: true,
-                    initialRating:
-                        double.parse(sellerInfo.shopRating.toString()),
-                    maxRating: 5,
-                    direction: Axis.horizontal,
-                    itemSize: 15.0,
-                    itemCount: 5,
-                    ratingWidget: RatingWidget(
-                      full: Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      half: Icon(Icons.star_half),
-                      empty: Icon(Icons.star,
-                          color: Color.fromRGBO(224, 224, 225, 1)),
-                    ),
-                    onRatingUpdate: (newValue) {}),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                removedFollow(sellerInfo.shopId);
-              },
-              child: Container(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
-                  child: Text(
-                    LangText(context).local.unfollow_ucf,
-                    textAlign: TextAlign.left,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    style: TextStyle(
-                        color: Color.fromRGBO(230, 46, 4, 1),
-                        fontSize: 13,
-                        height: 1.6,
-                        fontWeight: FontWeight.bold),
+                    color: Color.fromRGBO(230, 46, 4, 1),
+                    fontSize: 13,
+                    height: 1.6,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return SellerDetails(
-                    slug: sellerInfo.shopSlug ?? "",
-                  );
-                }));
-              },
-              child: Container(
-                  height: 23,
-                  width: 103,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.amber),
-                      color: MyTheme.amber,
-                      borderRadius: BorderRadius.circular(6)),
-                  child: Text(
-                    "Visit Store",
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.amber.shade700,
-                        fontWeight: FontWeight.w500),
-                  )),
-            )
-          ]),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return SellerDetails(slug: sellerInfo.shopSlug ?? "");
+                  },
+                ),
+              );
+            },
+            child: Container(
+              height: 23,
+              width: 103,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.amber),
+                color: MyTheme.amber,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Text(
+                "Visit Store",
+                style: TextStyle(
+                  fontSize: 10,
+                  color: Colors.amber.shade700,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

@@ -1,4 +1,4 @@
-import 'package:active_ecommerce_cms_demo_app/custom/lang_text.dart';
+import 'package:active_ecommerce_flutter/custom/lang_text.dart';
 import 'package:flutter/material.dart';
 
 class Loading {
@@ -10,15 +10,14 @@ class Loading {
       builder: (BuildContext context) {
         Loading._context = context;
         return AlertDialog(
-            content: Row(
-          children: [
-            CircularProgressIndicator(),
-            const SizedBox(
-              width: 10,
-            ),
-            Text(LangText(context).local.please_wait_ucf),
-          ],
-        ));
+          content: Row(
+            children: [
+              CircularProgressIndicator(),
+              const SizedBox(width: 10),
+              Text(LangText(context).local.please_wait_ucf),
+            ],
+          ),
+        );
       },
     );
   }
@@ -32,13 +31,13 @@ class Loading {
   static Widget bottomLoading(bool value) {
     return value
         ? Container(
-            alignment: Alignment.center,
-            child: SizedBox(
-                height: 20, width: 20, child: CircularProgressIndicator()),
-          )
-        : SizedBox(
-            height: 5,
-            width: 5,
-          );
+          alignment: Alignment.center,
+          child: SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(),
+          ),
+        )
+        : SizedBox(height: 5, width: 5);
   }
 }

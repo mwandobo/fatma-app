@@ -1,6 +1,6 @@
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/blog_mode.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/data_model/blog_mode.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -19,7 +19,7 @@ class BlogProvider with ChangeNotifier {
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer ${access_token.$}",
-        "System-Key": AppConfig.system_key
+        "System-Key": AppConfig.system_key,
       },
     );
     print(response.body);

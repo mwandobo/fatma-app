@@ -1,4 +1,4 @@
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:flutter/material.dart';
 
 class HomeSearchBox extends StatelessWidget {
@@ -18,7 +18,7 @@ class HomeSearchBox extends StatelessWidget {
             blurRadius: 15,
             spreadRadius: 0.4,
             offset: Offset(0.0, 5.0),
-          )
+          ),
         ],
       ),
       child: Padding(
@@ -31,9 +31,7 @@ class HomeSearchBox extends StatelessWidget {
               height: 16,
               color: Color(0xff7B7980),
             ),
-            SizedBox(
-              width: 10,
-            ),
+            SizedBox(width: 10),
             Text(
               AppConfig.search_bar_text,
               style: TextStyle(fontSize: 13.0, color: Color(0xff7B7980)),

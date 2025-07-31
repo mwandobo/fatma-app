@@ -1,16 +1,16 @@
 import 'dart:convert';
 
-import 'package:active_ecommerce_cms_demo_app/custom/box_decorations.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/btn.dart';
+import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
+import 'package:active_ecommerce_flutter/custom/btn.dart';
 
-import 'package:active_ecommerce_cms_demo_app/custom/input_decorations.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/lang_text.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/custom/input_decorations.dart';
+import 'package:active_ecommerce_flutter/custom/lang_text.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 
-import 'package:active_ecommerce_cms_demo_app/helpers/file_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/profile_repository.dart';
+import 'package:active_ecommerce_flutter/helpers/file_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -27,16 +27,20 @@ class ProfileEdit extends StatefulWidget {
 class _ProfileEditState extends State<ProfileEdit> {
   final ScrollController _mainScrollController = ScrollController();
 
-  final TextEditingController _nameController =
-      TextEditingController(text: "${user_name.$}");
+  final TextEditingController _nameController = TextEditingController(
+    text: "${user_name.$}",
+  );
 
-  final TextEditingController _phoneController =
-      TextEditingController(text: user_phone.$);
+  final TextEditingController _phoneController = TextEditingController(
+    text: user_phone.$,
+  );
 
-  final TextEditingController _emailController =
-      TextEditingController(text: user_email.$);
+  final TextEditingController _emailController = TextEditingController(
+    text: user_email.$,
+  );
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _passwordConfirmController = TextEditingController();
+  final TextEditingController _passwordConfirmController =
+      TextEditingController();
 
   bool _showPassword = false;
   bool _showConfirmPassword = false;
@@ -90,21 +94,14 @@ class _ProfileEditState extends State<ProfileEdit> {
     String base64Image = FileHelper.getBase64FormateFile(_file!.path);
     String fileName = _file!.path.split("/").last;
 
-    var profileImageUpdateResponse =
-        await ProfileRepository().getProfileImageUpdateResponse(
-      base64Image,
-      fileName,
-    );
+    var profileImageUpdateResponse = await ProfileRepository()
+        .getProfileImageUpdateResponse(base64Image, fileName);
 
     if (profileImageUpdateResponse.result == false) {
-      ToastComponent.showDialog(
-        profileImageUpdateResponse.message,
-      );
+      ToastComponent.showDialog(profileImageUpdateResponse.message);
       return;
     } else {
-      ToastComponent.showDialog(
-        profileImageUpdateResponse.message,
-      );
+      ToastComponent.showDialog(profileImageUpdateResponse.message);
 
       avatar_original.$ = profileImageUpdateResponse.path;
       setState(() {});
@@ -118,9 +115,7 @@ class _ProfileEditState extends State<ProfileEdit> {
     var phone = _phoneController.text.toString();
 
     if (name == "") {
-      ToastComponent.showDialog(
-        AppLocalizations.of(context)!.enter_your_name,
-      );
+      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_your_name);
       return;
     }
     if (phone == "") {
@@ -136,13 +131,9 @@ class _ProfileEditState extends State<ProfileEdit> {
         .getProfileUpdateResponse(post_body: postBody);
 
     if (profileUpdateResponse.result == false) {
-      ToastComponent.showDialog(
-        profileUpdateResponse.message,
-      );
+      ToastComponent.showDialog(profileUpdateResponse.message);
     } else {
-      ToastComponent.showDialog(
-        profileUpdateResponse.message,
-      );
+      ToastComponent.showDialog(profileUpdateResponse.message);
 
       user_name.$ = name;
       user_phone.$ = phone;
@@ -154,14 +145,13 @@ class _ProfileEditState extends State<ProfileEdit> {
     var password = _passwordController.text.toString();
     var passwordConfirm = _passwordConfirmController.text.toString();
 
-    var changePassword = password != "" ||
+    var changePassword =
+        password != "" ||
         passwordConfirm !=
             ""; // if both fields are empty we will not change user's password
 
     if (!changePassword && password == "") {
-      ToastComponent.showDialog(
-        AppLocalizations.of(context)!.enter_password,
-      );
+      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_password);
       return;
     }
     if (!changePassword && passwordConfirm == "") {
@@ -172,8 +162,9 @@ class _ProfileEditState extends State<ProfileEdit> {
     }
     if (changePassword && password.length < 6) {
       ToastComponent.showDialog(
-        AppLocalizations.of(context)!
-            .password_must_contain_at_least_6_characters,
+        AppLocalizations.of(
+          context,
+        )!.password_must_contain_at_least_6_characters,
       );
       return;
     }
@@ -186,19 +177,13 @@ class _ProfileEditState extends State<ProfileEdit> {
 
     var postBody = jsonEncode({"password": password});
 
-    var profileUpdateResponse =
-        await ProfileRepository().getProfileUpdateResponse(
-      post_body: postBody,
-    );
+    var profileUpdateResponse = await ProfileRepository()
+        .getProfileUpdateResponse(post_body: postBody);
 
     if (profileUpdateResponse.result == false) {
-      ToastComponent.showDialog(
-        profileUpdateResponse.message,
-      );
+      ToastComponent.showDialog(profileUpdateResponse.message);
     } else {
-      ToastComponent.showDialog(
-        profileUpdateResponse.message,
-      );
+      ToastComponent.showDialog(profileUpdateResponse.message);
       setState(() {});
     }
   }
@@ -222,17 +207,19 @@ class _ProfileEditState extends State<ProfileEdit> {
       scrolledUnderElevation: 0.0,
       centerTitle: false,
       leading: Builder(
-        builder: (context) => IconButton(
-          icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        builder:
+            (context) => IconButton(
+              icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
       ),
       title: Text(
         AppLocalizations.of(context)!.edit_profile_ucf,
         style: TextStyle(
-            fontSize: 16,
-            color: Color(0xff3E4447),
-            fontWeight: FontWeight.bold),
+          fontSize: 16,
+          color: Color(0xff3E4447),
+          fontWeight: FontWeight.bold,
+        ),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -242,12 +229,14 @@ class _ProfileEditState extends State<ProfileEdit> {
   buildBody(context) {
     if (is_logged_in.$ == false) {
       return SizedBox(
-          height: 100,
-          child: Center(
-              child: Text(
+        height: 100,
+        child: Center(
+          child: Text(
             AppLocalizations.of(context)!.please_log_in_to_see_the_profile,
             style: TextStyle(color: MyTheme.font_grey),
-          )));
+          ),
+        ),
+      );
     } else {
       return RefreshIndicator(
         color: MyTheme.accent_color,
@@ -257,17 +246,16 @@ class _ProfileEditState extends State<ProfileEdit> {
         child: CustomScrollView(
           controller: _mainScrollController,
           physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics()),
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
           slivers: [
             SliverList(
               delegate: SliverChildListDelegate([
                 buildTopSection(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                ),
-                buildProfileForm(context)
+                Padding(padding: const EdgeInsets.symmetric(horizontal: 16.0)),
+                buildProfileForm(context),
               ]),
-            )
+            ),
           ],
         ),
       );
@@ -287,7 +275,6 @@ class _ProfileEditState extends State<ProfileEdit> {
               //     width: 80.0,
               //     borderRadius: BorderRadius.circular(60),
               //     elevation: 8.0),
-
               Container(
                 width: 80,
                 height: 80,
@@ -298,13 +285,14 @@ class _ProfileEditState extends State<ProfileEdit> {
                   //shape: BoxShape.rectangle,
                 ),
                 child: ClipRRect(
-                    clipBehavior: Clip.hardEdge,
-                    borderRadius: BorderRadius.all(Radius.circular(100.0)),
-                    child: FadeInImage.assetNetwork(
-                      placeholder: 'assets/placeholder.png',
-                      image: "${avatar_original.$}",
-                      fit: BoxFit.fill,
-                    )),
+                  clipBehavior: Clip.hardEdge,
+                  borderRadius: BorderRadius.all(Radius.circular(100.0)),
+                  child: FadeInImage.assetNetwork(
+                    placeholder: 'assets/placeholder.png',
+                    image: "${avatar_original.$}",
+                    fit: BoxFit.fill,
+                  ),
+                ),
               ),
               // Positioned(
               //   right: 2,
@@ -334,28 +322,25 @@ class _ProfileEditState extends State<ProfileEdit> {
                 right: 2,
                 bottom: 0,
                 child: Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      boxShadow: [MyTheme.commonShadow()],
-                      borderRadius: BorderRadius.circular(100),
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    boxShadow: [MyTheme.commonShadow()],
+                    borderRadius: BorderRadius.circular(100),
 
-                      //shape: BoxShape.rectangle,
-                    ),
-                    child: Btn.basic(
-                      padding: EdgeInsets.all(0),
-                      child: Icon(
-                        Icons.edit,
-                        color: Color(0xff3E4447),
-                        size: 14,
-                      ),
-                      shape: CircleBorder(),
-                      color: Color(0xffDBDFE2),
-                      onPressed: () {
-                        chooseAndUploadImage(context);
-                      },
-                    )),
-              )
+                    //shape: BoxShape.rectangle,
+                  ),
+                  child: Btn.basic(
+                    padding: EdgeInsets.all(0),
+                    child: Icon(Icons.edit, color: Color(0xff3E4447), size: 14),
+                    shape: CircleBorder(),
+                    color: Color(0xffDBDFE2),
+                    onPressed: () {
+                      chooseAndUploadImage(context);
+                    },
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -365,15 +350,16 @@ class _ProfileEditState extends State<ProfileEdit> {
 
   buildProfileForm(context) {
     return Padding(
-      padding:
-          const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
+      padding: const EdgeInsets.only(
+        top: 8.0,
+        bottom: 8.0,
+        left: 16.0,
+        right: 16.0,
+      ),
       child: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            buildBasicInfo(context),
-            buildChangePassword(context),
-          ],
+          children: [buildBasicInfo(context), buildChangePassword(context)],
         ),
       ),
     );
@@ -394,8 +380,9 @@ class _ProfileEditState extends State<ProfileEdit> {
                 color: Color(0xffE62E04),
                 fontWeight: FontWeight.bold,
               ),
-              textHeightBehavior:
-                  TextHeightBehavior(applyHeightToFirstAscent: false),
+              textHeightBehavior: TextHeightBehavior(
+                applyHeightToFirstAscent: false,
+              ),
               textAlign: TextAlign.center,
               softWrap: false,
             ),
@@ -406,9 +393,10 @@ class _ProfileEditState extends State<ProfileEdit> {
           child: Text(
             AppLocalizations.of(context)!.new_password_ucf,
             style: TextStyle(
-                fontSize: 12,
-                color: Color(0xff3E4447),
-                fontWeight: FontWeight.normal),
+              fontSize: 12,
+              color: Color(0xff3E4447),
+              fontWeight: FontWeight.normal,
+            ),
           ),
         ),
         Padding(
@@ -427,8 +415,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                   enableSuggestions: false,
                   autocorrect: false,
                   decoration: InputDecorations.buildInputDecoration_1(
-                          hint_text: "• • • • • • • •")
-                      .copyWith(
+                    hint_text: "• • • • • • • •",
+                  ).copyWith(
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide.none,
                     ),
@@ -453,12 +441,15 @@ class _ProfileEditState extends State<ProfileEdit> {
               Padding(
                 padding: const EdgeInsets.only(top: 4.0),
                 child: Text(
-                  AppLocalizations.of(context)!
-                      .password_must_contain_at_least_6_characters,
+                  AppLocalizations.of(
+                    context,
+                  )!.password_must_contain_at_least_6_characters,
                   style: TextStyle(
-                      color: Color(0xffE62E04), fontStyle: FontStyle.italic),
+                    color: Color(0xffE62E04),
+                    fontStyle: FontStyle.italic,
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -467,9 +458,10 @@ class _ProfileEditState extends State<ProfileEdit> {
           child: Text(
             AppLocalizations.of(context)!.retype_password_ucf,
             style: TextStyle(
-                fontSize: 12,
-                color: MyTheme.dark_font_grey,
-                fontWeight: FontWeight.normal),
+              fontSize: 12,
+              color: MyTheme.dark_font_grey,
+              fontWeight: FontWeight.normal,
+            ),
           ),
         ),
         Padding(
@@ -484,26 +476,25 @@ class _ProfileEditState extends State<ProfileEdit> {
               enableSuggestions: false,
               autocorrect: false,
               decoration: InputDecorations.buildInputDecoration_1(
-                      hint_text: "• • • • • • • •")
-                  .copyWith(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: MyTheme.accent_color),
-                      ),
-                      suffixIcon: InkWell(
-                        onTap: () {
-                          _showConfirmPassword = !_showConfirmPassword;
-                          setState(() {});
-                        },
-                        child: Icon(
-                          _showConfirmPassword
-                              ? Icons.visibility_outlined
-                              : Icons.visibility_off_outlined,
-                          color: MyTheme.accent_color,
-                        ),
-                      )),
+                hint_text: "• • • • • • • •",
+              ).copyWith(
+                enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: MyTheme.accent_color),
+                ),
+                suffixIcon: InkWell(
+                  onTap: () {
+                    _showConfirmPassword = !_showConfirmPassword;
+                    setState(() {});
+                  },
+                  child: Icon(
+                    _showConfirmPassword
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined,
+                    color: MyTheme.accent_color,
+                  ),
+                ),
+              ),
             ),
           ),
         ),
@@ -518,15 +509,17 @@ class _ProfileEditState extends State<ProfileEdit> {
               width: 129,
               height: 42,
               decoration: BoxDecoration(
-                  color: Color(0xffE62E04),
-                  borderRadius: BorderRadius.circular(8)),
+                color: Color(0xffE62E04),
+                borderRadius: BorderRadius.circular(8),
+              ),
               child: Text(
                 textAlign: TextAlign.center,
                 'Save Changes',
                 style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
@@ -544,9 +537,10 @@ class _ProfileEditState extends State<ProfileEdit> {
           child: Text(
             AppLocalizations.of(context)!.basic_information_ucf,
             style: TextStyle(
-                color: Color(0xff6B7377),
-                fontWeight: FontWeight.bold,
-                fontSize: 14.0),
+              color: Color(0xff6B7377),
+              fontWeight: FontWeight.bold,
+              fontSize: 14.0,
+            ),
           ),
         ),
         Padding(
@@ -554,29 +548,29 @@ class _ProfileEditState extends State<ProfileEdit> {
           child: Text(
             AppLocalizations.of(context)!.name_ucf,
             style: TextStyle(
-                fontSize: 12,
-                color: Color(0xff3E4447),
-                fontWeight: FontWeight.normal),
+              fontSize: 12,
+              color: Color(0xff3E4447),
+              fontWeight: FontWeight.normal,
+            ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 14.0),
           child: Container(
             decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(6),
-                boxShadow: [MyTheme.commonShadow()]),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(6),
+              boxShadow: [MyTheme.commonShadow()],
+            ),
             height: 40,
             child: TextField(
               controller: _nameController,
               autofocus: false,
               style: TextStyle(color: Color(0xff999999), fontSize: 12),
-              decoration:
-                  InputDecorations.buildInputDecoration_1(hint_text: "John Doe")
-                      .copyWith(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                ),
+              decoration: InputDecorations.buildInputDecoration_1(
+                hint_text: "John Doe",
+              ).copyWith(
+                enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: MyTheme.accent_color),
                 ),
@@ -589,18 +583,20 @@ class _ProfileEditState extends State<ProfileEdit> {
           child: Text(
             AppLocalizations.of(context)!.phone_ucf,
             style: TextStyle(
-                fontSize: 12,
-                color: Color(0xff3E4447),
-                fontWeight: FontWeight.normal),
+              fontSize: 12,
+              color: Color(0xff3E4447),
+              fontWeight: FontWeight.normal,
+            ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 14.0),
           child: Container(
             decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(6),
-                boxShadow: [MyTheme.commonShadow()]),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(6),
+              boxShadow: [MyTheme.commonShadow()],
+            ),
             height: 40,
             child: TextField(
               controller: _phoneController,
@@ -608,11 +604,9 @@ class _ProfileEditState extends State<ProfileEdit> {
               keyboardType: TextInputType.phone,
               style: TextStyle(color: Color(0xff999999), fontSize: 12),
               decoration: InputDecorations.buildInputDecoration_1(
-                      hint_text: "+01xxxxxxxxxx")
-                  .copyWith(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                ),
+                hint_text: "+01xxxxxxxxxx",
+              ).copyWith(
+                enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: MyTheme.accent_color),
                 ),
@@ -630,26 +624,28 @@ class _ProfileEditState extends State<ProfileEdit> {
                 child: Text(
                   AppLocalizations.of(context)!.email_ucf,
                   style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xff3E4447),
-                      fontWeight: FontWeight.normal),
+                    fontSize: 12,
+                    color: Color(0xff3E4447),
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 14.0),
                 child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(6),
-                        boxShadow: [MyTheme.commonShadow()]),
-                    height: 40,
-                    padding: EdgeInsets.symmetric(horizontal: 14),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      _emailController.text,
-                      style: TextStyle(fontSize: 12, color: Color(0xff999999)),
-                    )
-                    /*TextField(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6),
+                    boxShadow: [MyTheme.commonShadow()],
+                  ),
+                  height: 40,
+                  padding: EdgeInsets.symmetric(horizontal: 14),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    _emailController.text,
+                    style: TextStyle(fontSize: 12, color: Color(0xff999999)),
+                  ),
+                  /*TextField(
                           style: TextStyle(color:MyTheme.grey_153,fontSize: 12),
                           enabled: false,
                           enableIMEPersonalizedLearning: true,
@@ -669,7 +665,7 @@ class _ProfileEditState extends State<ProfileEdit> {
 
                         ),),
                         ),*/
-                    ),
+                ),
               ),
             ],
           ),
@@ -685,15 +681,17 @@ class _ProfileEditState extends State<ProfileEdit> {
               width: 129,
               height: 42,
               decoration: BoxDecoration(
-                  color: Color(0xffE62E04),
-                  borderRadius: BorderRadius.circular(8)),
+                color: Color(0xffE62E04),
+                borderRadius: BorderRadius.circular(8),
+              ),
               child: Text(
                 textAlign: TextAlign.center,
                 'Update Profile',
                 style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),

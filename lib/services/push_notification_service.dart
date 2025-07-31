@@ -1,9 +1,9 @@
-import 'package:active_ecommerce_cms_demo_app/custom/btn.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/profile_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/auth/login.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/orders/order_details.dart';
+import 'package:active_ecommerce_flutter/custom/btn.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
+import 'package:active_ecommerce_flutter/screens/auth/login.dart';
+import 'package:active_ecommerce_flutter/screens/orders/order_details.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -36,15 +36,16 @@ class PushNotificationService {
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin
+        >()
         ?.createNotificationChannel(channel);
 
     // print("--fcm token--");
     // print(fcmToken);
     if (is_logged_in.$ == true) {
       // update device token
-      var deviceTokenUpdateResponse =
-          await ProfileRepository().getDeviceTokenUpdateResponse(fcmToken);
+      var deviceTokenUpdateResponse = await ProfileRepository()
+          .getDeviceTokenUpdateResponse(fcmToken);
     }
 
     FirebaseMessaging.onMessage.listen((event) {
@@ -57,26 +58,29 @@ class PushNotificationService {
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
           FlutterLocalNotificationsPlugin();
       var initializationSettingsAndroid = AndroidInitializationSettings(
-          '@mipmap/ic_launcher'); // <- default icon name is @mipmap/ic_launcher
+        '@mipmap/ic_launcher',
+      ); // <- default icon name is @mipmap/ic_launcher
 
-      var initializationSettings =
-          InitializationSettings(android: initializationSettingsAndroid);
+      var initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid,
+      );
 
       flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
       if (notification != null && android != null) {
         flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                icon: android.smallIcon,
-                // other properties...
-              ),
-            ));
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              icon: android.smallIcon,
+              // other properties...
+            ),
+          ),
+        );
       }
     });
 
@@ -91,38 +95,42 @@ class PushNotificationService {
 
     OneContext().showDialog(
       // barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        content: ListTile(
-          title: Text(message.notification!.title!),
-          subtitle: Text(message.notification!.body!),
-        ),
-        actions: <Widget>[
-          Btn.basic(
-            child: Text('close'),
-            onPressed: () => Navigator.of(context).pop(),
+      builder:
+          (context) => AlertDialog(
+            content: ListTile(
+              title: Text(message.notification!.title!),
+              subtitle: Text(message.notification!.body!),
+            ),
+            actions: <Widget>[
+              Btn.basic(
+                child: Text('close'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              Btn.basic(
+                child: Text('GO'),
+                onPressed: () {
+                  if (is_logged_in.$ == false) {
+                    ToastComponent.showDialog("You are not logged in");
+                    return;
+                  }
+                  //print(message);
+                  Navigator.of(context).pop();
+                  if (message.data['item_type'] == 'order') {
+                    OneContext().push(
+                      MaterialPageRoute(
+                        builder: (_) {
+                          return OrderDetails(
+                            id: int.parse(message.data['item_type_id']),
+                            from_notification: true,
+                          );
+                        },
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
           ),
-          Btn.basic(
-            child: Text('GO'),
-            onPressed: () {
-              if (is_logged_in.$ == false) {
-                ToastComponent.showDialog(
-                  "You are not logged in",
-                );
-                return;
-              }
-              //print(message);
-              Navigator.of(context).pop();
-              if (message.data['item_type'] == 'order') {
-                OneContext().push(MaterialPageRoute(builder: (_) {
-                  return OrderDetails(
-                      id: int.parse(message.data['item_type_id']),
-                      from_notification: true);
-                }));
-              }
-            },
-          ),
-        ],
-      ),
     );
   }
 
@@ -130,33 +138,45 @@ class PushNotificationService {
     print(message.toString());
     if (is_logged_in.$ == false) {
       OneContext().showDialog(
-          // barrierDismissible: false,
-          builder: (context) => AlertDialog(
-                title: Text("You are not logged in"),
-                content: Text("Please log in"),
-                actions: <Widget>[
-                  Btn.basic(
-                    child: Text('close'),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                  Btn.basic(
-                      child: Text('Login'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        OneContext().push(MaterialPageRoute(builder: (_) {
+        // barrierDismissible: false,
+        builder:
+            (context) => AlertDialog(
+              title: Text("You are not logged in"),
+              content: Text("Please log in"),
+              actions: <Widget>[
+                Btn.basic(
+                  child: Text('close'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                Btn.basic(
+                  child: Text('Login'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    OneContext().push(
+                      MaterialPageRoute(
+                        builder: (_) {
                           return Login();
-                        }));
-                      }),
-                ],
-              ));
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+      );
       return;
     }
     if (message['data']['item_type'] == 'order') {
-      OneContext().push(MaterialPageRoute(builder: (_) {
-        return OrderDetails(
-            id: int.parse(message['data']['item_type_id']),
-            from_notification: true);
-      }));
+      OneContext().push(
+        MaterialPageRoute(
+          builder: (_) {
+            return OrderDetails(
+              id: int.parse(message['data']['item_type_id']),
+              from_notification: true,
+            );
+          },
+        ),
+      );
     } // If there's no view it'll just open the app on the first view    }
   }
 }

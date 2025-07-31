@@ -1,5 +1,5 @@
-import 'package:active_ecommerce_cms_demo_app/data_model/guest_customer_info_check_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/login_response.dart';
+import 'package:active_ecommerce_flutter/data_model/guest_customer_info_check_response.dart';
+import 'package:active_ecommerce_flutter/data_model/login_response.dart';
 
 import '../app_config.dart';
 import '../helpers/shared_value_helper.dart';
@@ -8,13 +8,14 @@ import 'api-request.dart';
 
 class GuestCheckoutRepository {
   Future<GuestCustomerInfoCheckResponse> guestCustomerInfoCheck(
-      postBody) async {
+    postBody,
+  ) async {
     String url = ("${AppConfig.BASE_URL}/guest-customer-info-check");
     final response = await ApiRequest.post(
       url: url,
       headers: {
         "Content-Type": "application/json",
-        "App-Language": app_language.$!
+        "App-Language": app_language.$!,
       },
       body: postBody,
       middleware: BannedUser(),

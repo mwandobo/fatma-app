@@ -1,6 +1,6 @@
-import 'package:active_ecommerce_cms_demo_app/custom/lang_text.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/address_repository.dart';
+import 'package:active_ecommerce_flutter/custom/lang_text.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/repositories/address_repository.dart';
 import 'package:flutter/material.dart';
 
 import '../helpers/shared_value_helper.dart';
@@ -96,19 +96,20 @@ class SelectAddressProvider with ChangeNotifier {
           .getAddressUpdateInCartResponse(address_id: selectedShippingAddress);
     }
     if (addressUpdateInCartResponse.result == false) {
-      ToastComponent.showDialog(
-        addressUpdateInCartResponse.message,
-      );
+      ToastComponent.showDialog(addressUpdateInCartResponse.message);
       return;
     }
 
-    ToastComponent.showDialog(
-      addressUpdateInCartResponse.message,
-    );
+    ToastComponent.showDialog(addressUpdateInCartResponse.message);
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return ShippingInfo();
-    })).then((value) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return ShippingInfo();
+        },
+      ),
+    ).then((value) {
       onPopped(value, context);
     });
   }

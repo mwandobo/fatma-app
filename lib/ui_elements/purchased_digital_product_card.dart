@@ -2,9 +2,9 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
@@ -29,8 +29,9 @@ class _PurchasedDigitalProductCardState
 
   @pragma('vm:entry-point')
   static void downloadCallback(String id, int status, int progress) {
-    final SendPort? send =
-        IsolateNameServer.lookupPortByName('downloader_send_port');
+    final SendPort? send = IsolateNameServer.lookupPortByName(
+      'downloader_send_port',
+    );
     send?.send([id, status, progress]);
   }
 
@@ -38,12 +39,12 @@ class _PurchasedDigitalProductCardState
   void initState() {
     super.initState();
     IsolateNameServer.registerPortWithName(
-        _port.sendPort, 'downloader_send_port');
+      _port.sendPort,
+      'downloader_send_port',
+    );
     _port.listen((dynamic data) {
       if (data[2] >= 100) {
-        ToastComponent.showDialog(
-          "File has downloaded successfully.",
-        );
+        ToastComponent.showDialog("File has downloaded successfully.");
       }
       setState(() {});
     });
@@ -139,9 +140,10 @@ class _PurchasedDigitalProductCardState
   }
 
   Future<String> createFolder() async {
-    final dirPath = Platform.isIOS
-        ? (await getApplicationDocumentsDirectory()).path
-        : "storage/emulated/0/Download/";
+    final dirPath =
+        Platform.isIOS
+            ? (await getApplicationDocumentsDirectory()).path
+            : "storage/emulated/0/Download/";
 
     final dir = Directory(dirPath);
 

@@ -1,17 +1,17 @@
-import 'package:active_ecommerce_cms_demo_app/custom/btn.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/useful_elements.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/reg_ex_inpur_formatter.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/brand_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/category_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/product_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/shop_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/ui_elements/brand_square_card.dart';
-import 'package:active_ecommerce_cms_demo_app/ui_elements/product_card.dart';
-import 'package:active_ecommerce_cms_demo_app/ui_elements/shop_square_card.dart';
+import 'package:active_ecommerce_flutter/custom/btn.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
+import 'package:active_ecommerce_flutter/helpers/reg_ex_inpur_formatter.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/brand_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/category_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/shop_repository.dart';
+import 'package:active_ecommerce_flutter/ui_elements/brand_square_card.dart';
+import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
+import 'package:active_ecommerce_flutter/ui_elements/shop_square_card.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -30,20 +30,23 @@ class WhichFilter {
   static List<WhichFilter> getWhichFilterList() {
     return <WhichFilter>[
       WhichFilter(
-          'product', AppLocalizations.of(OneContext().context!)!.product_ucf),
+        'product',
+        AppLocalizations.of(OneContext().context!)!.product_ucf,
+      ),
       WhichFilter(
-          'sellers', AppLocalizations.of(OneContext().context!)!.sellers_ucf),
+        'sellers',
+        AppLocalizations.of(OneContext().context!)!.sellers_ucf,
+      ),
       WhichFilter(
-          'brands', AppLocalizations.of(OneContext().context!)!.brands_ucf),
+        'brands',
+        AppLocalizations.of(OneContext().context!)!.brands_ucf,
+      ),
     ];
   }
 }
 
 class Filter extends StatefulWidget {
-  const Filter({
-    super.key,
-    this.selected_filter = "product",
-  });
+  const Filter({super.key, this.selected_filter = "product"});
 
   final String selected_filter;
 
@@ -53,7 +56,8 @@ class Filter extends StatefulWidget {
 
 class _FilterState extends State<Filter> {
   final _amountValidator = RegExInputFormatter.withRegex(
-      '^\$|^(0|([1-9][0-9]{0,}))(\\.[0-9]{0,})?\$');
+    '^\$|^(0|([1-9][0-9]{0,}))(\\.[0-9]{0,})?\$',
+  );
 
   final ScrollController _productScrollController = ScrollController();
   final ScrollController _brandScrollController = ScrollController();
@@ -139,8 +143,9 @@ class _FilterState extends State<Filter> {
   init() {
     _givenSelectedFilterOptionKey = widget.selected_filter;
 
-    _dropdownWhichFilterItems =
-        buildDropdownWhichFilterItems(_which_filter_list);
+    _dropdownWhichFilterItems = buildDropdownWhichFilterItems(
+      _which_filter_list,
+    );
     _selectedFilter = _dropdownWhichFilterItems![0].value;
 
     for (int x = 0; x < _dropdownWhichFilterItems!.length; x++) {
@@ -199,13 +204,14 @@ class _FilterState extends State<Filter> {
 
   fetchProductData() async {
     var productResponse = await ProductRepository().getFilteredProducts(
-        page: _productPage,
-        name: _searchKey,
-        sort_key: _selectedSort,
-        brands: _selectedBrands.join(",").toString(),
-        categories: _selectedCategories.join(",").toString(),
-        max: _maxPriceController.text.toString(),
-        min: _minPriceController.text.toString());
+      page: _productPage,
+      name: _searchKey,
+      sort_key: _selectedSort,
+      brands: _selectedBrands.join(",").toString(),
+      categories: _selectedCategories.join(",").toString(),
+      max: _maxPriceController.text.toString(),
+      min: _minPriceController.text.toString(),
+    );
 
     _productList.addAll(productResponse.products!);
     _isProductInitial = false;
@@ -224,8 +230,10 @@ class _FilterState extends State<Filter> {
   }
 
   fetchBrandData() async {
-    var brandResponse =
-        await BrandRepository().getBrands(page: _brandPage, name: _searchKey);
+    var brandResponse = await BrandRepository().getBrands(
+      page: _brandPage,
+      name: _searchKey,
+    );
     _brandList.addAll(brandResponse.brands!);
     _isBrandInitial = false;
     _totalBrandData = brandResponse.meta!.total;
@@ -243,8 +251,10 @@ class _FilterState extends State<Filter> {
   }
 
   fetchShopData() async {
-    var shopResponse =
-        await ShopRepository().getShops(page: _shopPage, name: _searchKey);
+    var shopResponse = await ShopRepository().getShops(
+      page: _shopPage,
+      name: _searchKey,
+    );
     _shopList.addAll(shopResponse.shops);
     _isShopInitial = false;
     _totalShopData = shopResponse.meta.total;
@@ -326,7 +336,8 @@ class _FilterState extends State<Filter> {
   }
 
   List<DropdownMenuItem<WhichFilter>> buildDropdownWhichFilterItems(
-      List whichFilterList) {
+    List whichFilterList,
+  ) {
     List<DropdownMenuItem<WhichFilter>> items = [];
     for (WhichFilter which_filter_item
         in whichFilterList as Iterable<WhichFilter>) {
@@ -346,9 +357,11 @@ class _FilterState extends State<Filter> {
       width: double.infinity,
       color: Colors.white,
       child: Center(
-        child: Text(_totalProductData == _productList.length
-            ? AppLocalizations.of(context)!.no_more_products_ucf
-            : AppLocalizations.of(context)!.loading_more_products_ucf),
+        child: Text(
+          _totalProductData == _productList.length
+              ? AppLocalizations.of(context)!.no_more_products_ucf
+              : AppLocalizations.of(context)!.loading_more_products_ucf,
+        ),
       ),
     );
   }
@@ -359,9 +372,11 @@ class _FilterState extends State<Filter> {
       width: double.infinity,
       color: Colors.white,
       child: Center(
-        child: Text(_totalBrandData == _brandList.length
-            ? AppLocalizations.of(context)!.no_more_brands_ucf
-            : AppLocalizations.of(context)!.loading_more_brands_ucf),
+        child: Text(
+          _totalBrandData == _brandList.length
+              ? AppLocalizations.of(context)!.no_more_brands_ucf
+              : AppLocalizations.of(context)!.loading_more_brands_ucf,
+        ),
       ),
     );
   }
@@ -372,9 +387,11 @@ class _FilterState extends State<Filter> {
       width: double.infinity,
       color: Colors.white,
       child: Center(
-        child: Text(_totalShopData == _shopList.length
-            ? AppLocalizations.of(context)!.no_more_shops_ucf
-            : AppLocalizations.of(context)!.loading_more_shops_ucf),
+        child: Text(
+          _totalShopData == _shopList.length
+              ? AppLocalizations.of(context)!.no_more_shops_ucf
+              : AppLocalizations.of(context)!.loading_more_shops_ucf,
+        ),
       ),
     );
   }
@@ -390,45 +407,49 @@ class _FilterState extends State<Filter> {
         endDrawer: buildFilterDrawer(),
         key: _scaffoldKey,
         backgroundColor: MyTheme.mainColor,
-        body: Stack(fit: StackFit.loose, children: [
-          _selectedFilter!.option_key == 'product'
-              ? buildProductList()
-              : (_selectedFilter!.option_key == 'brands'
-                  ? buildBrandList()
-                  : buildShopList()),
-          Positioned(
-            top: 10.0,
-            left: 0.0,
-            right: 0.0,
-            child: buildAppBar(context),
-          ),
-          Align(
+        body: Stack(
+          fit: StackFit.loose,
+          children: [
+            _selectedFilter!.option_key == 'product'
+                ? buildProductList()
+                : (_selectedFilter!.option_key == 'brands'
+                    ? buildBrandList()
+                    : buildShopList()),
+            Positioned(
+              top: 10.0,
+              left: 0.0,
+              right: 0.0,
+              child: buildAppBar(context),
+            ),
+            Align(
               alignment: Alignment.bottomCenter,
-              child: _selectedFilter!.option_key == 'product'
-                  ? buildProductLoadingContainer()
-                  : (_selectedFilter!.option_key == 'brands'
-                      ? buildBrandLoadingContainer()
-                      : buildShopLoadingContainer()))
-        ]),
+              child:
+                  _selectedFilter!.option_key == 'product'
+                      ? buildProductLoadingContainer()
+                      : (_selectedFilter!.option_key == 'brands'
+                          ? buildBrandLoadingContainer()
+                          : buildShopLoadingContainer()),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-        backgroundColor: MyTheme.mainColor.withOpacity(0.95),
-        automaticallyImplyLeading: false,
-        scrolledUnderElevation: 0.0,
-        actions: [
-          Container(),
-        ],
-        centerTitle: false,
-        flexibleSpace: Padding(
-          padding: const EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 0.0),
-          child: Column(
-            children: [buildTopAppbar(context), buildBottomAppBar(context)],
-          ),
-        ));
+      backgroundColor: MyTheme.mainColor.withOpacity(0.95),
+      automaticallyImplyLeading: false,
+      scrolledUnderElevation: 0.0,
+      actions: [Container()],
+      centerTitle: false,
+      flexibleSpace: Padding(
+        padding: const EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 0.0),
+        child: Column(
+          children: [buildTopAppbar(context), buildBottomAppBar(context)],
+        ),
+      ),
+    );
   }
 
   Row buildBottomAppBar(BuildContext context) {
@@ -437,10 +458,12 @@ class _FilterState extends State<Filter> {
       children: [
         Container(
           decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.symmetric(
-                  vertical: BorderSide(color: MyTheme.light_grey, width: .5),
-                  horizontal: BorderSide(color: MyTheme.light_grey, width: 1))),
+            color: Colors.white,
+            border: Border.symmetric(
+              vertical: BorderSide(color: MyTheme.light_grey, width: .5),
+              horizontal: BorderSide(color: MyTheme.light_grey, width: 1),
+            ),
+          ),
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           height: 36,
           width: MediaQuery.of(context).size.width * .33,
@@ -448,17 +471,15 @@ class _FilterState extends State<Filter> {
             dropdownColor: Colors.white,
             borderRadius: BorderRadius.circular(5),
             icon: Padding(
-              padding: app_language_rtl.$!
-                  ? const EdgeInsets.only(right: 18.0)
-                  : const EdgeInsets.only(left: 18.0),
+              padding:
+                  app_language_rtl.$!
+                      ? const EdgeInsets.only(right: 18.0)
+                      : const EdgeInsets.only(left: 18.0),
               child: Icon(Icons.expand_more, color: Colors.black54),
             ),
             hint: Text(
               AppLocalizations.of(context)!.products_ucf,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 13,
-              ),
+              style: TextStyle(color: Colors.black, fontSize: 13),
             ),
             style: TextStyle(color: Colors.black, fontSize: 13),
             iconSize: 13,
@@ -480,66 +501,75 @@ class _FilterState extends State<Filter> {
             _selectedFilter!.option_key == "product"
                 ? _scaffoldKey.currentState!.openEndDrawer()
                 : ToastComponent.showDialog(
-                    AppLocalizations.of(context)!
-                        .you_can_use_filters_while_searching_for_products,
-                  );
+                  AppLocalizations.of(
+                    context,
+                  )!.you_can_use_filters_while_searching_for_products,
+                );
           },
           child: Container(
             decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.symmetric(
-                    vertical: BorderSide(color: MyTheme.light_grey, width: .5),
-                    horizontal:
-                        BorderSide(color: MyTheme.light_grey, width: 1))),
+              color: Colors.white,
+              border: Border.symmetric(
+                vertical: BorderSide(color: MyTheme.light_grey, width: .5),
+                horizontal: BorderSide(color: MyTheme.light_grey, width: 1),
+              ),
+            ),
             height: 36,
             width: MediaQuery.of(context).size.width * .33,
             child: Center(
-                child: SizedBox(
-              width: 50,
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.filter_alt_outlined,
-                    size: 13,
-                  ),
-                  SizedBox(width: 2),
-                  Text(
-                    AppLocalizations.of(context)!.filter_ucf,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13,
+              child: SizedBox(
+                width: 50,
+                child: Row(
+                  children: [
+                    Icon(Icons.filter_alt_outlined, size: 13),
+                    SizedBox(width: 2),
+                    Text(
+                      AppLocalizations.of(context)!.filter_ucf,
+                      style: TextStyle(color: Colors.black, fontSize: 13),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            )),
+            ),
           ),
         ),
         GestureDetector(
           onTap: () {
             _selectedFilter!.option_key == "product"
                 ? showDialog(
-                    context: context,
-                    builder: (_) => Directionality(
-                          textDirection: app_language_rtl.$!
-                              ? TextDirection.rtl
-                              : TextDirection.ltr,
-                          child: AlertDialog(
-                            contentPadding: EdgeInsets.only(
-                                top: 16.0, left: 2.0, right: 2.0, bottom: 2.0),
-                            content: StatefulBuilder(builder:
-                                (BuildContext context, StateSetter setState) {
+                  context: context,
+                  builder:
+                      (_) => Directionality(
+                        textDirection:
+                            app_language_rtl.$!
+                                ? TextDirection.rtl
+                                : TextDirection.ltr,
+                        child: AlertDialog(
+                          contentPadding: EdgeInsets.only(
+                            top: 16.0,
+                            left: 2.0,
+                            right: 2.0,
+                            bottom: 2.0,
+                          ),
+                          content: StatefulBuilder(
+                            builder: (
+                              BuildContext context,
+                              StateSetter setState,
+                            ) {
                               return Column(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 24.0),
-                                      child: Text(
-                                        AppLocalizations.of(context)!
-                                            .sort_products_by_ucf,
-                                      )),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 24.0,
+                                    ),
+                                    child: Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.sort_products_by_ucf,
+                                    ),
+                                  ),
                                   RadioListTile(
                                     dense: true,
                                     value: "",
@@ -547,8 +577,9 @@ class _FilterState extends State<Filter> {
                                     activeColor: MyTheme.font_grey,
                                     controlAffinity:
                                         ListTileControlAffinity.leading,
-                                    title: Text(AppLocalizations.of(context)!
-                                        .default_ucf),
+                                    title: Text(
+                                      AppLocalizations.of(context)!.default_ucf,
+                                    ),
                                     onChanged: (dynamic value) {
                                       setState(() {
                                         _selectedSort = value;
@@ -564,8 +595,11 @@ class _FilterState extends State<Filter> {
                                     activeColor: MyTheme.font_grey,
                                     controlAffinity:
                                         ListTileControlAffinity.leading,
-                                    title: Text(AppLocalizations.of(context)!
-                                        .price_high_to_low),
+                                    title: Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.price_high_to_low,
+                                    ),
                                     onChanged: (dynamic value) {
                                       setState(() {
                                         _selectedSort = value;
@@ -581,8 +615,11 @@ class _FilterState extends State<Filter> {
                                     activeColor: MyTheme.font_grey,
                                     controlAffinity:
                                         ListTileControlAffinity.leading,
-                                    title: Text(AppLocalizations.of(context)!
-                                        .price_low_to_high),
+                                    title: Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.price_low_to_high,
+                                    ),
                                     onChanged: (dynamic value) {
                                       setState(() {
                                         _selectedSort = value;
@@ -598,8 +635,11 @@ class _FilterState extends State<Filter> {
                                     activeColor: MyTheme.font_grey,
                                     controlAffinity:
                                         ListTileControlAffinity.leading,
-                                    title: Text(AppLocalizations.of(context)!
-                                        .new_arrival_ucf),
+                                    title: Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.new_arrival_ucf,
+                                    ),
                                     onChanged: (dynamic value) {
                                       setState(() {
                                         _selectedSort = value;
@@ -615,8 +655,11 @@ class _FilterState extends State<Filter> {
                                     activeColor: MyTheme.font_grey,
                                     controlAffinity:
                                         ListTileControlAffinity.leading,
-                                    title: Text(AppLocalizations.of(context)!
-                                        .popularity_ucf),
+                                    title: Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.popularity_ucf,
+                                    ),
                                     onChanged: (dynamic value) {
                                       setState(() {
                                         _selectedSort = value;
@@ -632,8 +675,11 @@ class _FilterState extends State<Filter> {
                                     activeColor: MyTheme.font_grey,
                                     controlAffinity:
                                         ListTileControlAffinity.leading,
-                                    title: Text(AppLocalizations.of(context)!
-                                        .top_rated_ucf),
+                                    title: Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.top_rated_ucf,
+                                    ),
                                     onChanged: (dynamic value) {
                                       setState(() {
                                         _selectedSort = value;
@@ -644,182 +690,206 @@ class _FilterState extends State<Filter> {
                                   ),
                                 ],
                               );
-                            }),
-                            actions: [
-                              Btn.basic(
-                                child: Text(
-                                  AppLocalizations.of(context)!
-                                      .close_all_capital,
-                                  style: TextStyle(color: MyTheme.medium_grey),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context, rootNavigator: true)
-                                      .pop();
-                                },
-                              ),
-                            ],
+                            },
                           ),
-                        ))
+                          actions: [
+                            Btn.basic(
+                              child: Text(
+                                AppLocalizations.of(context)!.close_all_capital,
+                                style: TextStyle(color: MyTheme.medium_grey),
+                              ),
+                              onPressed: () {
+                                Navigator.of(
+                                  context,
+                                  rootNavigator: true,
+                                ).pop();
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                )
                 : ToastComponent.showDialog(
-                    AppLocalizations.of(context)!
-                        .you_can_use_sorting_while_searching_for_products,
-                  );
+                  AppLocalizations.of(
+                    context,
+                  )!.you_can_use_sorting_while_searching_for_products,
+                );
           },
           child: Container(
             decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.symmetric(
-                    vertical: BorderSide(color: MyTheme.light_grey, width: .5),
-                    horizontal:
-                        BorderSide(color: MyTheme.light_grey, width: 1))),
+              color: Colors.white,
+              border: Border.symmetric(
+                vertical: BorderSide(color: MyTheme.light_grey, width: .5),
+                horizontal: BorderSide(color: MyTheme.light_grey, width: 1),
+              ),
+            ),
             height: 36,
             width: MediaQuery.of(context).size.width * .33,
             child: Center(
-                child: SizedBox(
-              width: 50,
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.swap_vert,
-                    size: 13,
-                  ),
-                  SizedBox(width: 2),
-                  Text(
-                    AppLocalizations.of(context)!.sort_ucf,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13,
+              child: SizedBox(
+                width: 50,
+                child: Row(
+                  children: [
+                    Icon(Icons.swap_vert, size: 13),
+                    SizedBox(width: 2),
+                    Text(
+                      AppLocalizations.of(context)!.sort_ucf,
+                      style: TextStyle(color: Colors.black, fontSize: 13),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            )),
+            ),
           ),
-        )
+        ),
       ],
     );
   }
 
   Row buildTopAppbar(BuildContext context) {
     return Row(
-        //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          IconButton(
-            padding: EdgeInsets.zero,
-            icon: UsefulElements.backButton(context),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * .85,
-              height: 70,
-              child: Container(
-                child: Padding(
-                    padding: MediaQuery.of(context).viewPadding.top >
+      //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        IconButton(
+          padding: EdgeInsets.zero,
+          icon: UsefulElements.backButton(context),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * .85,
+            height: 70,
+            child: Container(
+              child: Padding(
+                padding:
+                    MediaQuery.of(context).viewPadding.top >
                             30 //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
                         ? const EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 0.0)
+                          vertical: 15.0,
+                          horizontal: 0.0,
+                        )
                         : const EdgeInsets.symmetric(
-                            vertical: 5.0, horizontal: 0.0),
-                    child: TypeAheadField(
-                      suggestionsCallback: (pattern) async {
-                        //return await BackendService.getSuggestions(pattern);
-                        var suggestions = await SearchRepository()
-                            .getSearchSuggestionListResponse(
-                                query_key: pattern,
-                                type: _selectedFilter!.option_key);
-                        //print(suggestions.toString());
-                        return suggestions;
-                      },
-                      loadingBuilder: (context) {
-                        return Container(
-                          height: 40,
-                          color: Colors.white,
-                          child: Center(
-                              child: Text(
-                                  AppLocalizations.of(context)!
-                                      .loading_suggestions,
-                                  style:
-                                      TextStyle(color: MyTheme.medium_grey))),
+                          vertical: 5.0,
+                          horizontal: 0.0,
+                        ),
+                child: TypeAheadField(
+                  suggestionsCallback: (pattern) async {
+                    //return await BackendService.getSuggestions(pattern);
+                    var suggestions = await SearchRepository()
+                        .getSearchSuggestionListResponse(
+                          query_key: pattern,
+                          type: _selectedFilter!.option_key,
                         );
-                      },
-                      itemBuilder: (context, dynamic suggestion) {
-                        //print(suggestion.toString());
-                        var subtitle =
-                            "${AppLocalizations.of(context)!.searched_for_all_lower} ${suggestion.count} ${AppLocalizations.of(context)!.times_all_lower}";
-                        if (suggestion.type != "search") {
-                          subtitle =
-                              "${suggestion.type_string} ${AppLocalizations.of(context)!.found_all_lower}";
-                        }
-                        return ListTile(
-                          tileColor: Colors.white,
-                          dense: true,
-                          title: Text(
-                            suggestion.query,
-                            style: TextStyle(
-                                color: suggestion.type != "search"
-                                    ? MyTheme.accent_color
-                                    : MyTheme.font_grey),
+                    //print(suggestions.toString());
+                    return suggestions;
+                  },
+                  loadingBuilder: (context) {
+                    return Container(
+                      height: 40,
+                      color: Colors.white,
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.loading_suggestions,
+                          style: TextStyle(color: MyTheme.medium_grey),
+                        ),
+                      ),
+                    );
+                  },
+                  itemBuilder: (context, dynamic suggestion) {
+                    //print(suggestion.toString());
+                    var subtitle =
+                        "${AppLocalizations.of(context)!.searched_for_all_lower} ${suggestion.count} ${AppLocalizations.of(context)!.times_all_lower}";
+                    if (suggestion.type != "search") {
+                      subtitle =
+                          "${suggestion.type_string} ${AppLocalizations.of(context)!.found_all_lower}";
+                    }
+                    return ListTile(
+                      tileColor: Colors.white,
+                      dense: true,
+                      title: Text(
+                        suggestion.query,
+                        style: TextStyle(
+                          color:
+                              suggestion.type != "search"
+                                  ? MyTheme.accent_color
+                                  : MyTheme.font_grey,
+                        ),
+                      ),
+                      subtitle: Text(
+                        subtitle,
+                        style: TextStyle(
+                          color:
+                              suggestion.type != "search"
+                                  ? MyTheme.font_grey
+                                  : MyTheme.medium_grey,
+                        ),
+                      ),
+                    );
+                  },
+                  onSelected: (dynamic suggestion) {
+                    _searchController.text = suggestion.query;
+                    _searchKey = suggestion.query;
+                    setState(() {});
+                    _onSearchSubmit();
+                  },
+                  builder: (context, controller, focusNode) {
+                    return TextField(
+                      controller: controller,
+                      focusNode: focusNode,
+                      obscureText: false,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: MyTheme.white,
+                        suffixIcon: Icon(
+                          Icons.search,
+                          color: MyTheme.medium_grey,
+                        ),
+                        hintText: AppLocalizations.of(context)!.search_here_ucf,
+                        hintStyle: TextStyle(
+                          fontSize: 12.0,
+                          color: MyTheme.textfield_grey,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: MyTheme.noColor,
+                            width: 0.5,
                           ),
-                          subtitle: Text(subtitle,
-                              style: TextStyle(
-                                  color: suggestion.type != "search"
-                                      ? MyTheme.font_grey
-                                      : MyTheme.medium_grey)),
-                        );
-                      },
-                      onSelected: (dynamic suggestion) {
-                        _searchController.text = suggestion.query;
-                        _searchKey = suggestion.query;
-                        setState(() {});
-                        _onSearchSubmit();
-                      },
-                      builder: (context, controller, focusNode) {
-                        return TextField(
-                          controller: controller,
-                          focusNode: focusNode,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                              filled: true,
-                              fillColor: MyTheme.white,
-                              suffixIcon: Icon(Icons.search,
-                                  color: MyTheme.medium_grey),
-                              hintText:
-                                  AppLocalizations.of(context)!.search_here_ucf,
-                              hintStyle: TextStyle(
-                                  fontSize: 12.0,
-                                  color: MyTheme.textfield_grey),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: MyTheme.noColor, width: 0.5),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(8.0),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: MyTheme.noColor, width: 1.0),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(8.0),
-                                ),
-                              ),
-                              contentPadding: EdgeInsets.only(
-                                  left: 8.0, top: 5.0, bottom: 5.0)),
-                        );
-                      },
-                    )),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(8.0),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: MyTheme.noColor,
+                            width: 1.0,
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(8.0),
+                          ),
+                        ),
+                        contentPadding: EdgeInsets.only(
+                          left: 8.0,
+                          top: 5.0,
+                          bottom: 5.0,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ),
-          // IconButton(
-          //     icon: Icon(Icons.search, color: MyTheme.dark_grey),
-          //     onPressed: () {
-          //       _searchKey = _searchController.text.toString();
-          //       setState(() {});
-          //       _onSearchSubmit();
-          //     }),
-        ]);
+        ),
+        // IconButton(
+        //     icon: Icon(Icons.search, color: MyTheme.dark_grey),
+        //     onPressed: () {
+        //       _searchKey = _searchController.text.toString();
+        //       setState(() {});
+        //       _onSearchSubmit();
+        //     }),
+      ],
+    );
   }
 
   buildFilterDrawer() {
@@ -844,7 +914,9 @@ class _FilterState extends State<Filter> {
                         child: Text(
                           AppLocalizations.of(context)!.price_range_ucf,
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       Row(
@@ -860,28 +932,32 @@ class _FilterState extends State<Filter> {
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [_amountValidator],
                                 decoration: InputDecoration(
-                                    hintText: AppLocalizations.of(context)!
-                                        .minimum_ucf,
-                                    hintStyle: TextStyle(
-                                        fontSize: 12.0,
-                                        color: MyTheme.textfield_grey),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: MyTheme.textfield_grey,
-                                          width: 1.0),
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(4.0),
-                                      ),
+                                  hintText:
+                                      AppLocalizations.of(context)!.minimum_ucf,
+                                  hintStyle: TextStyle(
+                                    fontSize: 12.0,
+                                    color: MyTheme.textfield_grey,
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: MyTheme.textfield_grey,
+                                      width: 1.0,
                                     ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: MyTheme.textfield_grey,
-                                          width: 2.0),
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(4.0),
-                                      ),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(4.0),
                                     ),
-                                    contentPadding: EdgeInsets.all(4.0)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: MyTheme.textfield_grey,
+                                      width: 2.0,
+                                    ),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(4.0),
+                                    ),
+                                  ),
+                                  contentPadding: EdgeInsets.all(4.0),
+                                ),
                               ),
                             ),
                           ),
@@ -896,28 +972,32 @@ class _FilterState extends State<Filter> {
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [_amountValidator],
                                 decoration: InputDecoration(
-                                    hintText: AppLocalizations.of(context)!
-                                        .maximum_ucf,
-                                    hintStyle: TextStyle(
-                                        fontSize: 12.0,
-                                        color: MyTheme.textfield_grey),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: MyTheme.textfield_grey,
-                                          width: 1.0),
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(4.0),
-                                      ),
+                                  hintText:
+                                      AppLocalizations.of(context)!.maximum_ucf,
+                                  hintStyle: TextStyle(
+                                    fontSize: 12.0,
+                                    color: MyTheme.textfield_grey,
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: MyTheme.textfield_grey,
+                                      width: 1.0,
                                     ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: MyTheme.textfield_grey,
-                                          width: 2.0),
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(4.0),
-                                      ),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(4.0),
                                     ),
-                                    contentPadding: EdgeInsets.all(4.0)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: MyTheme.textfield_grey,
+                                      width: 2.0,
+                                    ),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(4.0),
+                                    ),
+                                  ),
+                                  contentPadding: EdgeInsets.all(4.0),
+                                ),
                               ),
                             ),
                           ),
@@ -928,56 +1008,64 @@ class _FilterState extends State<Filter> {
                 ),
               ),
               Expanded(
-                child: CustomScrollView(slivers: [
-                  SliverList(
-                    delegate: SliverChildListDelegate([
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(
-                          AppLocalizations.of(context)!.categories_ucf,
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
+                child: CustomScrollView(
+                  slivers: [
+                    SliverList(
+                      delegate: SliverChildListDelegate([
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
+                            AppLocalizations.of(context)!.categories_ucf,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
-                      _filterCategoryList.isEmpty
-                          ? SizedBox(
+                        _filterCategoryList.isEmpty
+                            ? SizedBox(
                               height: 100,
                               child: Center(
                                 child: Text(
-                                  AppLocalizations.of(context)!
-                                      .no_category_is_available,
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.no_category_is_available,
                                   style: TextStyle(color: MyTheme.font_grey),
                                 ),
                               ),
                             )
-                          : SingleChildScrollView(
+                            : SingleChildScrollView(
                               child: buildFilterCategoryList(),
                             ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
-                        child: Text(
-                          AppLocalizations.of(context)!.brands_ucf,
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16.0),
+                          child: Text(
+                            AppLocalizations.of(context)!.brands_ucf,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
-                      _filterBrandList.isEmpty
-                          ? SizedBox(
+                        _filterBrandList.isEmpty
+                            ? SizedBox(
                               height: 100,
                               child: Center(
                                 child: Text(
-                                  AppLocalizations.of(context)!
-                                      .no_brand_is_available,
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.no_brand_is_available,
                                   style: TextStyle(color: MyTheme.font_grey),
                                 ),
                               ),
                             )
-                          : SingleChildScrollView(
+                            : SingleChildScrollView(
                               child: buildFilterBrandsList(),
                             ),
-                    ]),
-                  )
-                ]),
+                      ]),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(
                 height: 70,
@@ -985,8 +1073,9 @@ class _FilterState extends State<Filter> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                      style:
-                          ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                      ),
                       onPressed: () {
                         _minPriceController.clear();
                         _maxPriceController.clear();
@@ -1002,7 +1091,8 @@ class _FilterState extends State<Filter> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green),
+                        backgroundColor: Colors.green,
+                      ),
                       onPressed: () {
                         var min = _minPriceController.text.toString();
                         var max = _maxPriceController.text.toString();
@@ -1010,8 +1100,9 @@ class _FilterState extends State<Filter> {
                         if (min != "" && max != "") {
                           if (max.compareTo(min) < 0) {
                             ToastComponent.showDialog(
-                              AppLocalizations.of(context)!
-                                  .filter_screen_min_max_warning,
+                              AppLocalizations.of(
+                                context,
+                              )!.filter_screen_min_max_warning,
                             );
                             apply = false;
                           }
@@ -1042,27 +1133,25 @@ class _FilterState extends State<Filter> {
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: <Widget>[
-        ..._filterBrandList
-            .map(
-              (brand) => CheckboxListTile(
-                controlAffinity: ListTileControlAffinity.leading,
-                dense: true,
-                title: Text(brand.name),
-                value: _selectedBrands.contains(brand.id),
-                onChanged: (bool? value) {
-                  if (value!) {
-                    setState(() {
-                      _selectedBrands.add(brand.id);
-                    });
-                  } else {
-                    setState(() {
-                      _selectedBrands.remove(brand.id);
-                    });
-                  }
-                },
-              ),
-            )
-            
+        ..._filterBrandList.map(
+          (brand) => CheckboxListTile(
+            controlAffinity: ListTileControlAffinity.leading,
+            dense: true,
+            title: Text(brand.name),
+            value: _selectedBrands.contains(brand.id),
+            onChanged: (bool? value) {
+              if (value!) {
+                setState(() {
+                  _selectedBrands.add(brand.id);
+                });
+              } else {
+                setState(() {
+                  _selectedBrands.remove(brand.id);
+                });
+              }
+            },
+          ),
+        ),
       ],
     );
   }
@@ -1073,49 +1162,43 @@ class _FilterState extends State<Filter> {
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: <Widget>[
-        ..._filterCategoryList
-            .map(
-              (category) => CheckboxListTile(
-                controlAffinity: ListTileControlAffinity.leading,
-                dense: true,
-                title: Text(category.name),
-                value: _selectedCategories.contains(category.id),
-                onChanged: (bool? value) {
-                  if (value!) {
-                    setState(() {
-                      _selectedCategories.clear();
-                      _selectedCategories.add(category.id);
-                    });
-                  } else {
-                    setState(() {
-                      _selectedCategories.remove(category.id);
-                    });
-                  }
-                },
-              ),
-            )
-            
+        ..._filterCategoryList.map(
+          (category) => CheckboxListTile(
+            controlAffinity: ListTileControlAffinity.leading,
+            dense: true,
+            title: Text(category.name),
+            value: _selectedCategories.contains(category.id),
+            onChanged: (bool? value) {
+              if (value!) {
+                setState(() {
+                  _selectedCategories.clear();
+                  _selectedCategories.add(category.id);
+                });
+              } else {
+                setState(() {
+                  _selectedCategories.remove(category.id);
+                });
+              }
+            },
+          ),
+        ),
       ],
     );
   }
 
   Container buildProductList() {
     return Container(
-      child: Column(
-        children: [
-          Expanded(
-            child: buildProductScrollableList(),
-          )
-        ],
-      ),
+      child: Column(children: [Expanded(child: buildProductScrollableList())]),
     );
   }
 
   buildProductScrollableList() {
     if (_isProductInitial && _productList.isEmpty) {
       return SingleChildScrollView(
-          child: ShimmerHelper()
-              .buildProductGridShimmer(scontroller: _scrollController));
+        child: ShimmerHelper().buildProductGridShimmer(
+          scontroller: _scrollController,
+        ),
+      );
     } else if (_productList.isNotEmpty) {
       return RefreshIndicator(
         color: Colors.white,
@@ -1124,14 +1207,14 @@ class _FilterState extends State<Filter> {
         child: SingleChildScrollView(
           controller: _productScrollController,
           physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics()),
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
           child: Column(
             children: [
               SizedBox(
-                  height:
-                      MediaQuery.of(context).viewPadding.top > 40 ? 150 : 135
-                  //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
-                  ),
+                height: MediaQuery.of(context).viewPadding.top > 40 ? 150 : 135,
+                //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
+              ),
               MasonryGridView.count(
                 // 2
                 //addAutomaticKeepAlives: true,
@@ -1140,8 +1223,12 @@ class _FilterState extends State<Filter> {
                 crossAxisCount: 2,
                 mainAxisSpacing: 14,
                 crossAxisSpacing: 14,
-                padding:
-                    EdgeInsets.only(top: 10, bottom: 10, left: 18, right: 18),
+                padding: EdgeInsets.only(
+                  top: 10,
+                  bottom: 10,
+                  left: 18,
+                  right: 18,
+                ),
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
@@ -1158,14 +1245,15 @@ class _FilterState extends State<Filter> {
                     is_wholesale: _productList[index].isWholesale,
                   );
                 },
-              )
+              ),
             ],
           ),
         ),
       );
     } else if (_totalProductData == 0) {
       return Center(
-          child: Text(AppLocalizations.of(context)!.no_product_is_available));
+        child: Text(AppLocalizations.of(context)!.no_product_is_available),
+      );
     } else {
       return Container(); // should never be happening
     }
@@ -1173,21 +1261,17 @@ class _FilterState extends State<Filter> {
 
   Container buildBrandList() {
     return Container(
-      child: Column(
-        children: [
-          Expanded(
-            child: buildBrandScrollableList(),
-          )
-        ],
-      ),
+      child: Column(children: [Expanded(child: buildBrandScrollableList())]),
     );
   }
 
   buildBrandScrollableList() {
     if (_isBrandInitial && _brandList.isEmpty) {
       return SingleChildScrollView(
-          child: ShimmerHelper()
-              .buildSquareGridShimmer(scontroller: _scrollController));
+        child: ShimmerHelper().buildSquareGridShimmer(
+          scontroller: _scrollController,
+        ),
+      );
     } else if (_brandList.isNotEmpty) {
       return RefreshIndicator(
         color: Colors.white,
@@ -1196,26 +1280,31 @@ class _FilterState extends State<Filter> {
         child: SingleChildScrollView(
           controller: _brandScrollController,
           physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics()),
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
           child: Column(
             children: [
               SizedBox(
-                  height:
-                      MediaQuery.of(context).viewPadding.top > 40 ? 140 : 135
-                  //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
-                  ),
+                height: MediaQuery.of(context).viewPadding.top > 40 ? 140 : 135,
+                //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
+              ),
               GridView.builder(
                 // 2
                 //addAutomaticKeepAlives: true,
                 itemCount: _brandList.length,
                 controller: _scrollController,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 14,
-                    mainAxisSpacing: 14,
-                    childAspectRatio: 1),
-                padding:
-                    EdgeInsets.only(top: 20, bottom: 10, left: 18, right: 18),
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 14,
+                  mainAxisSpacing: 14,
+                  childAspectRatio: 1,
+                ),
+                padding: EdgeInsets.only(
+                  top: 20,
+                  bottom: 10,
+                  left: 18,
+                  right: 18,
+                ),
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
@@ -1227,14 +1316,15 @@ class _FilterState extends State<Filter> {
                     name: _brandList[index].name,
                   );
                 },
-              )
+              ),
             ],
           ),
         ),
       );
     } else if (_totalBrandData == 0) {
       return Center(
-          child: Text(AppLocalizations.of(context)!.no_brand_is_available));
+        child: Text(AppLocalizations.of(context)!.no_brand_is_available),
+      );
     } else {
       return Container(); // should never be happening
     }
@@ -1242,22 +1332,18 @@ class _FilterState extends State<Filter> {
 
   Container buildShopList() {
     return Container(
-      child: Column(
-        children: [
-          Expanded(
-            child: buildShopScrollableList(),
-          )
-        ],
-      ),
+      child: Column(children: [Expanded(child: buildShopScrollableList())]),
     );
   }
 
   buildShopScrollableList() {
     if (_isShopInitial && _shopList.isEmpty) {
       return SingleChildScrollView(
-          controller: _scrollController,
-          child: ShimmerHelper()
-              .buildSquareGridShimmer(scontroller: _scrollController));
+        controller: _scrollController,
+        child: ShimmerHelper().buildSquareGridShimmer(
+          scontroller: _scrollController,
+        ),
+      );
     } else if (_shopList.isNotEmpty) {
       return RefreshIndicator(
         color: Colors.white,
@@ -1266,26 +1352,31 @@ class _FilterState extends State<Filter> {
         child: SingleChildScrollView(
           controller: _shopScrollController,
           physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics()),
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
           child: Column(
             children: [
               SizedBox(
-                  height:
-                      MediaQuery.of(context).viewPadding.top > 40 ? 140 : 135
-                  //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
-                  ),
+                height: MediaQuery.of(context).viewPadding.top > 40 ? 140 : 135,
+                //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
+              ),
               GridView.builder(
                 // 2
                 //addAutomaticKeepAlives: true,
                 itemCount: _shopList.length,
                 controller: _scrollController,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 14,
-                    mainAxisSpacing: 14,
-                    childAspectRatio: 0.7),
-                padding:
-                    EdgeInsets.only(top: 20, bottom: 10, left: 18, right: 18),
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 14,
+                  mainAxisSpacing: 14,
+                  childAspectRatio: 0.7,
+                ),
+                padding: EdgeInsets.only(
+                  top: 20,
+                  bottom: 10,
+                  left: 18,
+                  right: 18,
+                ),
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
@@ -1298,14 +1389,15 @@ class _FilterState extends State<Filter> {
                     stars: double.parse(_shopList[index].rating.toString()),
                   );
                 },
-              )
+              ),
             ],
           ),
         ),
       );
     } else if (_totalShopData == 0) {
       return Center(
-          child: Text(AppLocalizations.of(context)!.no_shop_is_available));
+        child: Text(AppLocalizations.of(context)!.no_shop_is_available),
+      );
     } else {
       return Container(); // should never be happening
     }

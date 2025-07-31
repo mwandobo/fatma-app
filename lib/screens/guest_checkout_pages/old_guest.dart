@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:active_ecommerce_cms_demo_app/custom/lang_text.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/guest_checkout_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/auth/login.dart';
+import 'package:active_ecommerce_flutter/custom/lang_text.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/repositories/guest_checkout_repository.dart';
+import 'package:active_ecommerce_flutter/screens/auth/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -113,21 +113,17 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
     await setValues();
 
     Map postValue = {};
-    postValue.addAll({
-      "email": email,
-      "phone": phone,
-    });
+    postValue.addAll({"email": email, "phone": phone});
     var postBody = jsonEncode(postValue);
-    var response =
-    await GuestCheckoutRepository().guestCustomerInfoCheck(postBody);
+    var response = await GuestCheckoutRepository().guestCustomerInfoCheck(
+      postBody,
+    );
 
     Loading.close();
 
     // if email and phone matched return to page with massage
     if (response.result!) {
-      ToastComponent.showDialog(
-        LangText(context).local.already_have_account,
-      );
+      ToastComponent.showDialog(LangText(context).local.already_have_account);
     } else if (!response.result!) {
       postValue.addAll({
         "name": name,
@@ -140,7 +136,7 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
         "phone": phone,
         "longitude": null,
         "latitude": null,
-        "temp_user_id": temp_user_id.$
+        "temp_user_id": temp_user_id.$,
       });
       var postBody = jsonEncode(postValue);
 
@@ -158,23 +154,17 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
 
   bool requiredFieldVerification() {
     emailValid = RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(_emailController.text.trim());
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+    ).hasMatch(_emailController.text.trim());
 
     if (_nameController.text.trim().toString().isEmpty) {
-      ToastComponent.showDialog(
-        LangText(context).local.name_required,
-      );
+      ToastComponent.showDialog(LangText(context).local.name_required);
       return false;
     } else if (_emailController.text.trim().toString().isEmpty) {
-      ToastComponent.showDialog(
-        LangText(context).local.email_required,
-      );
+      ToastComponent.showDialog(LangText(context).local.email_required);
       return false;
     } else if (!emailValid!) {
-      ToastComponent.showDialog(
-        LangText(context).local.enter_correct_email,
-      );
+      ToastComponent.showDialog(LangText(context).local.enter_correct_email);
       return false;
     } else if (_addressController.text.trim().toString().isEmpty) {
       ToastComponent.showDialog(
@@ -182,29 +172,19 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
       );
       return false;
     } else if (_selected_country == null) {
-      ToastComponent.showDialog(
-        LangText(context).local.country_required,
-      );
+      ToastComponent.showDialog(LangText(context).local.country_required);
       return false;
     } else if (_selected_state == null) {
-      ToastComponent.showDialog(
-        LangText(context).local.state_required,
-      );
+      ToastComponent.showDialog(LangText(context).local.state_required);
       return false;
     } else if (_selected_city == null) {
-      ToastComponent.showDialog(
-        LangText(context).local.city_required,
-      );
+      ToastComponent.showDialog(LangText(context).local.city_required);
       return false;
     } else if (_postalCodeController.text.trim().toString().isEmpty) {
-      ToastComponent.showDialog(
-        LangText(context).local.postal_code_required,
-      );
+      ToastComponent.showDialog(LangText(context).local.postal_code_required);
       return false;
     } else if (_phoneController.text.trim().toString().isEmpty) {
-      ToastComponent.showDialog(
-        LangText(context).local.phone_number_required,
-      );
+      ToastComponent.showDialog(LangText(context).local.phone_number_required);
       return false;
     }
     return true;
@@ -229,9 +209,10 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
             child: Text(
               AppLocalizations.of(context)!.continue_to_delivery_info_ucf,
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600),
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             onPressed: () {
               continueToDeliveryInfo();
@@ -249,8 +230,10 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
               // name
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: Text(AppLocalizations.of(context)!.name_ucf,
-                    style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                child: Text(
+                  AppLocalizations.of(context)!.name_ucf,
+                  style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
@@ -260,7 +243,9 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
                     controller: _nameController,
                     autofocus: false,
                     decoration: buildAddressInputDecoration(
-                        context, AppLocalizations.of(context)!.enter_your_name),
+                      context,
+                      AppLocalizations.of(context)!.enter_your_name,
+                    ),
                   ),
                 ),
               ),
@@ -268,8 +253,10 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
               // email
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: Text(AppLocalizations.of(context)!.email_ucf,
-                    style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                child: Text(
+                  AppLocalizations.of(context)!.email_ucf,
+                  style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
@@ -279,16 +266,19 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
                     controller: _emailController,
                     autofocus: false,
                     decoration: buildAddressInputDecoration(
-                        context, AppLocalizations.of(context)!.enter_email),
+                      context,
+                      AppLocalizations.of(context)!.enter_email,
+                    ),
                   ),
                 ),
               ),
               // address
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: Text("${AppLocalizations.of(context)!.address_ucf} *",
-                    style:
-                    TextStyle(color: MyTheme.dark_font_grey, fontSize: 12)),
+                child: Text(
+                  "${AppLocalizations.of(context)!.address_ucf} *",
+                  style: TextStyle(color: MyTheme.dark_font_grey, fontSize: 12),
+                ),
               ),
 
               Padding(
@@ -300,8 +290,10 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
                     autofocus: false,
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
-                    decoration: buildAddressInputDecoration(context,
-                        AppLocalizations.of(context)!.enter_address_ucf),
+                    decoration: buildAddressInputDecoration(
+                      context,
+                      AppLocalizations.of(context)!.enter_address_ucf,
+                    ),
                   ),
                 ),
               ),
@@ -309,8 +301,10 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
               // country
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: Text("${AppLocalizations.of(context)!.country_ucf} *",
-                    style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                child: Text(
+                  "${AppLocalizations.of(context)!.country_ucf} *",
+                  style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
@@ -318,18 +312,19 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
                   height: 40,
                   child: TypeAheadField(
                     suggestionsCallback: (name) async {
-                      var countryResponse =
-                      await AddressRepository().getCountryList(name: name);
+                      var countryResponse = await AddressRepository()
+                          .getCountryList(name: name);
                       return countryResponse.countries;
                     },
                     loadingBuilder: (context) {
                       return SizedBox(
                         height: 50,
                         child: Center(
-                            child: Text(
-                                AppLocalizations.of(context)!
-                                    .loading_countries_ucf,
-                                style: TextStyle(color: MyTheme.medium_grey))),
+                          child: Text(
+                            AppLocalizations.of(context)!.loading_countries_ucf,
+                            style: TextStyle(color: MyTheme.medium_grey),
+                          ),
+                        ),
                       );
                     },
                     itemBuilder: (context, dynamic country) {
@@ -346,8 +341,10 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
                         controller: controller,
                         focusNode: focusNode,
                         obscureText: true,
-                        decoration: buildAddressInputDecoration(context,
-                            AppLocalizations.of(context)!.enter_country_ucf),
+                        decoration: buildAddressInputDecoration(
+                          context,
+                          AppLocalizations.of(context)!.enter_country_ucf,
+                        ),
                       );
                     },
                     onSelected: (value) {
@@ -359,8 +356,10 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
               // state
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: Text("${AppLocalizations.of(context)!.state_ucf} *",
-                    style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                child: Text(
+                  "${AppLocalizations.of(context)!.state_ucf} *",
+                  style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
@@ -369,23 +368,27 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
                   child: TypeAheadField(
                     suggestionsCallback: (name) async {
                       if (_selected_country == null) {
-                        var stateResponse = await AddressRepository()
-                            .getStateListByCountry(); // blank response
+                        var stateResponse =
+                            await AddressRepository()
+                                .getStateListByCountry(); // blank response
                         return stateResponse.states;
                       }
                       var stateResponse = await AddressRepository()
                           .getStateListByCountry(
-                          country_id: _selected_country!.id, name: name);
+                            country_id: _selected_country!.id,
+                            name: name,
+                          );
                       return stateResponse.states;
                     },
                     loadingBuilder: (context) {
                       return SizedBox(
                         height: 50,
                         child: Center(
-                            child: Text(
-                                AppLocalizations.of(context)!
-                                    .loading_states_ucf,
-                                style: TextStyle(color: MyTheme.medium_grey))),
+                          child: Text(
+                            AppLocalizations.of(context)!.loading_states_ucf,
+                            style: TextStyle(color: MyTheme.medium_grey),
+                          ),
+                        ),
                       );
                     },
                     itemBuilder: (context, dynamic state) {
@@ -403,8 +406,10 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
                         controller: controller,
                         focusNode: focusNode,
                         obscureText: true,
-                        decoration: buildAddressInputDecoration(context,
-                            AppLocalizations.of(context)!.enter_state_ucf),
+                        decoration: buildAddressInputDecoration(
+                          context,
+                          AppLocalizations.of(context)!.enter_state_ucf,
+                        ),
                       );
                     },
                     onSelected: (dynamic state) {
@@ -416,8 +421,10 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
               // city
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: Text("${AppLocalizations.of(context)!.city_ucf} *",
-                    style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                child: Text(
+                  "${AppLocalizations.of(context)!.city_ucf} *",
+                  style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
@@ -429,29 +436,35 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
                         controller: controller,
                         focusNode: focusNode,
                         obscureText: true,
-                        decoration: buildAddressInputDecoration(context,
-                            AppLocalizations.of(context)!.enter_city_ucf),
+                        decoration: buildAddressInputDecoration(
+                          context,
+                          AppLocalizations.of(context)!.enter_city_ucf,
+                        ),
                       );
                     },
                     suggestionsCallback: (name) async {
                       if (_selected_state == null) {
-                        var cityResponse = await AddressRepository()
-                            .getCityListByState(); // blank response
+                        var cityResponse =
+                            await AddressRepository()
+                                .getCityListByState(); // blank response
                         return cityResponse.cities;
                       }
                       var cityResponse = await AddressRepository()
                           .getCityListByState(
-                          state_id: _selected_state!.id, name: name);
+                            state_id: _selected_state!.id,
+                            name: name,
+                          );
                       return cityResponse.cities;
                     },
                     loadingBuilder: (context) {
                       return SizedBox(
                         height: 50,
                         child: Center(
-                            child: Text(
-                                AppLocalizations.of(context)!
-                                    .loading_cities_ucf,
-                                style: TextStyle(color: MyTheme.medium_grey))),
+                          child: Text(
+                            AppLocalizations.of(context)!.loading_cities_ucf,
+                            style: TextStyle(color: MyTheme.medium_grey),
+                          ),
+                        ),
                       );
                     },
                     itemBuilder: (context, dynamic city) {
@@ -473,8 +486,10 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
               // postal code
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: Text(AppLocalizations.of(context)!.postal_code,
-                    style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                child: Text(
+                  AppLocalizations.of(context)!.postal_code,
+                  style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
@@ -483,16 +498,20 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
                   child: TextField(
                     controller: _postalCodeController,
                     autofocus: false,
-                    decoration: buildAddressInputDecoration(context,
-                        AppLocalizations.of(context)!.enter_postal_code_ucf),
+                    decoration: buildAddressInputDecoration(
+                      context,
+                      AppLocalizations.of(context)!.enter_postal_code_ucf,
+                    ),
                   ),
                 ),
               ),
               // phone
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: Text(AppLocalizations.of(context)!.phone_ucf,
-                    style: TextStyle(color: MyTheme.font_grey, fontSize: 12)),
+                child: Text(
+                  AppLocalizations.of(context)!.phone_ucf,
+                  style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
@@ -501,15 +520,15 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
                   child: TextField(
                     controller: _phoneController,
                     autofocus: false,
-                    decoration: buildAddressInputDecoration(context,
-                        AppLocalizations.of(context)!.enter_phone_number),
+                    decoration: buildAddressInputDecoration(
+                      context,
+                      AppLocalizations.of(context)!.enter_phone_number,
+                    ),
                   ),
                 ),
               ),
 
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
 
               RichText(
                 overflow: TextOverflow.ellipsis,
@@ -520,10 +539,11 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
                   style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
                   children: <TextSpan>[
                     TextSpan(
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          AIZRoute.push(context, Login());
-                        },
+                      recognizer:
+                          TapGestureRecognizer()
+                            ..onTap = () {
+                              AIZRoute.push(context, Login());
+                            },
                       text: LangText(context).local.login_ucf,
                       style: TextStyle(
                         color: MyTheme.accent_color,
@@ -534,7 +554,7 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
                     TextSpan(text: LangText(context).local.first_to_continue),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -545,23 +565,20 @@ class _GuestCheckoutAddressState extends State<GuestCheckoutAddress> {
 
 InputDecoration buildAddressInputDecoration(BuildContext context, hintText) {
   return InputDecoration(
-      filled: true,
-      fillColor: MyTheme.white,
-      hintText: hintText,
-      hintStyle: TextStyle(fontSize: 12.0, color: MyTheme.textfield_grey),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: MyTheme.noColor, width: 0.5),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(8.0),
-        ),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: MyTheme.noColor, width: 1.0),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(8.0),
-        ),
-      ),
-      contentPadding: EdgeInsets.only(left: 8.0, top: 5.0, bottom: 5.0));
+    filled: true,
+    fillColor: MyTheme.white,
+    hintText: hintText,
+    hintStyle: TextStyle(fontSize: 12.0, color: MyTheme.textfield_grey),
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: MyTheme.noColor, width: 0.5),
+      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: MyTheme.noColor, width: 1.0),
+      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+    ),
+    contentPadding: EdgeInsets.only(left: 8.0, top: 5.0, bottom: 5.0),
+  );
 }
 
 AppBar buildAppBar(BuildContext context) {
@@ -569,10 +586,14 @@ AppBar buildAppBar(BuildContext context) {
     backgroundColor: Colors.white,
     centerTitle: false,
     leading: Builder(
-      builder: (context) => IconButton(
-        icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_font_grey),
-        onPressed: () => Navigator.of(context).pop(),
-      ),
+      builder:
+          (context) => IconButton(
+            icon: Icon(
+              CupertinoIcons.arrow_left,
+              color: MyTheme.dark_font_grey,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
     ),
     title: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -580,9 +601,10 @@ AppBar buildAppBar(BuildContext context) {
         Text(
           AppLocalizations.of(context)!.shipping_info,
           style: TextStyle(
-              fontSize: 16,
-              color: MyTheme.dark_font_grey,
-              fontWeight: FontWeight.bold),
+            fontSize: 16,
+            color: MyTheme.dark_font_grey,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ],
     ),
@@ -590,4 +612,3 @@ AppBar buildAppBar(BuildContext context) {
     titleSpacing: 0,
   );
 }
-

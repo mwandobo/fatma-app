@@ -1,7 +1,7 @@
-import 'package:active_ecommerce_cms_demo_app/custom/box_decorations.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/system_config.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/classified_ads/classified_product_details.dart';
+import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
+import 'package:active_ecommerce_flutter/helpers/system_config.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/screens/classified_ads/classified_product_details.dart';
 import 'package:flutter/material.dart';
 
 class ClassifiedMiniProductCard extends StatefulWidget {
@@ -12,14 +12,15 @@ class ClassifiedMiniProductCard extends StatefulWidget {
   String? unit_price;
   var condition;
 
-  ClassifiedMiniProductCard(
-      {super.key,
-      this.id,
-      required this.slug,
-      this.image,
-      this.name,
-      this.unit_price,
-      this.condition});
+  ClassifiedMiniProductCard({
+    super.key,
+    this.id,
+    required this.slug,
+    this.image,
+    this.name,
+    this.unit_price,
+    this.condition,
+  });
 
   @override
   _MiniProductCardState createState() => _MiniProductCardState();
@@ -30,9 +31,14 @@ class _MiniProductCardState extends State<ClassifiedMiniProductCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ClassifiedAdsDetails(slug: widget.slug);
-        }));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return ClassifiedAdsDetails(slug: widget.slug);
+            },
+          ),
+        );
       },
       child: Container(
         width: 135,
@@ -40,63 +46,70 @@ class _MiniProductCardState extends State<ClassifiedMiniProductCard> {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            Column(children: <Widget>[
-              AspectRatio(
-                aspectRatio: 1.2,
-                child: SizedBox(
+            Column(
+              children: <Widget>[
+                AspectRatio(
+                  aspectRatio: 1.2,
+                  child: SizedBox(
                     width: double.infinity,
                     child: ClipRRect(
-                        clipBehavior: Clip.hardEdge,
-                        borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(6), bottom: Radius.zero),
-                        child: FadeInImage.assetNetwork(
-                          placeholder: 'assets/placeholder.png',
-                          image: widget.image!,
-                          fit: BoxFit.cover,
-                        ))),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
-                      child: Text(
-                        widget.name!,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: TextStyle(
+                      clipBehavior: Clip.hardEdge,
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(6),
+                        bottom: Radius.zero,
+                      ),
+                      child: FadeInImage.assetNetwork(
+                        placeholder: 'assets/placeholder.png',
+                        image: widget.image!,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
+                        child: Text(
+                          widget.name!,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          style: TextStyle(
                             color: MyTheme.font_grey,
                             fontSize: 14,
                             height: 1.2,
-                            fontWeight: FontWeight.w400),
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
-                      child: Text(
-                        SystemConfig.systemCurrency!.code != null
-                            ? widget.unit_price!.replaceAll(
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                        child: Text(
+                          SystemConfig.systemCurrency!.code != null
+                              ? widget.unit_price!.replaceAll(
                                 SystemConfig.systemCurrency!.code!,
-                                SystemConfig.systemCurrency!.symbol!)
-                            : widget.unit_price!,
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
+                                SystemConfig.systemCurrency!.symbol!,
+                              )
+                              : widget.unit_price!,
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
                             color: MyTheme.accent_color,
                             fontSize: 16,
-                            fontWeight: FontWeight.w700),
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ]),
+              ],
+            ),
             Visibility(
               visible: true,
               child: Positioned.fill(
@@ -127,8 +140,9 @@ class _MiniProductCardState extends State<ClassifiedMiniProductCard> {
                         fontWeight: FontWeight.w700,
                         height: 1.8,
                       ),
-                      textHeightBehavior:
-                          TextHeightBehavior(applyHeightToFirstAscent: false),
+                      textHeightBehavior: TextHeightBehavior(
+                        applyHeightToFirstAscent: false,
+                      ),
                       softWrap: false,
                     ),
                   ),

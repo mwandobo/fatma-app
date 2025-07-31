@@ -1,6 +1,6 @@
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/system_config.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/system_config.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -13,25 +13,28 @@ String capitalize(String text) {
 }
 
 Map<String, String> get commonHeader => {
-      "Content-Type": "application/json",
-      "App-Language": app_language.$!,
-      "Accept": "application/json",
-      "System-Key": AppConfig.system_key
-    };
-Map<String, String> get authHeader =>
-    {"Authorization": "Bearer ${access_token.$}"};
+  "Content-Type": "application/json",
+  "App-Language": app_language.$!,
+  "Accept": "application/json",
+  "System-Key": AppConfig.system_key,
+};
+Map<String, String> get authHeader => {
+  "Authorization": "Bearer ${access_token.$}",
+};
 Map<String, String> get currencyHeader =>
     SystemConfig.systemCurrency?.code != null
         ? {
-            "Currency-Code": SystemConfig.systemCurrency!.code!,
-            "Currency-Exchange-Rate":
-                SystemConfig.systemCurrency!.exchangeRate.toString(),
-          }
+          "Currency-Code": SystemConfig.systemCurrency!.code!,
+          "Currency-Exchange-Rate":
+              SystemConfig.systemCurrency!.exchangeRate.toString(),
+        }
         : {};
 
 String convertPrice(String amount) {
   return amount.replaceAll(
-      SystemConfig.systemCurrency!.code!, SystemConfig.systemCurrency!.symbol!);
+    SystemConfig.systemCurrency!.code!,
+    SystemConfig.systemCurrency!.symbol!,
+  );
 }
 
 String getParameter(GoRouterState state, String key) =>

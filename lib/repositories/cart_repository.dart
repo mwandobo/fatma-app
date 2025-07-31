@@ -1,21 +1,19 @@
 import 'dart:convert';
 
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/cart_add_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/cart_count_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/cart_delete_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/cart_process_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/cart_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/cart_summary_response.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/middlewares/banned_user.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/api-request.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/data_model/cart_add_response.dart';
+import 'package:active_ecommerce_flutter/data_model/cart_count_response.dart';
+import 'package:active_ecommerce_flutter/data_model/cart_delete_response.dart';
+import 'package:active_ecommerce_flutter/data_model/cart_process_response.dart';
+import 'package:active_ecommerce_flutter/data_model/cart_response.dart';
+import 'package:active_ecommerce_flutter/data_model/cart_summary_response.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/middlewares/banned_user.dart';
+import 'package:active_ecommerce_flutter/repositories/api-request.dart';
 
 class CartRepository {
   // get cart list
-  Future<dynamic> getCartResponseList(
-    int? uid,
-  ) async {
+  Future<dynamic> getCartResponseList(int? uid) async {
     String url = ("${AppConfig.BASE_URL}/carts");
     String postBody;
 
@@ -26,13 +24,14 @@ class CartRepository {
     }
 
     final response = await ApiRequest.post(
-        url: url,
-        headers: {
-          "Content-Type": "application/json",
-          "App-Language": app_language.$!,
-        },
-        body: postBody,
-        middleware: BannedUser());
+      url: url,
+      headers: {
+        "Content-Type": "application/json",
+        "App-Language": app_language.$!,
+      },
+      body: postBody,
+      middleware: BannedUser(),
+    );
 
     return cartResponseFromJson(response.body);
   }
@@ -85,26 +84,35 @@ class CartRepository {
 
   // cart process
   Future<dynamic> getCartProcessResponse(
-      String cartIds, String cartQuantities) async {
-    var postBody = jsonEncode(
-        {"cart_ids": cartIds, "cart_quantities": cartQuantities});
+    String cartIds,
+    String cartQuantities,
+  ) async {
+    var postBody = jsonEncode({
+      "cart_ids": cartIds,
+      "cart_quantities": cartQuantities,
+    });
 
     String url = ("${AppConfig.BASE_URL}/carts/process");
     final response = await ApiRequest.post(
-        url: url,
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${access_token.$}",
-          "App-Language": app_language.$!
-        },
-        body: postBody,
-        middleware: BannedUser());
+      url: url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${access_token.$}",
+        "App-Language": app_language.$!,
+      },
+      body: postBody,
+      middleware: BannedUser(),
+    );
     return cartProcessResponseFromJson(response.body);
   }
 
   // cart add
   Future<dynamic> getCartAddResponse(
-      int? id, String? variant, int? userId, int? quantity) async {
+    int? id,
+    String? variant,
+    int? userId,
+    int? quantity,
+  ) async {
     String postBody;
 
     if (guest_checkout_status.$ && !is_logged_in.$) {
@@ -113,7 +121,7 @@ class CartRepository {
         "variant": variant,
         "quantity": "$quantity",
         "cost_matrix": AppConfig.purchase_code,
-        "temp_user_id": temp_user_id.$
+        "temp_user_id": temp_user_id.$,
       });
     } else {
       postBody = jsonEncode({
@@ -131,7 +139,7 @@ class CartRepository {
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer ${access_token.$}",
-        "App-Language": app_language.$!
+        "App-Language": app_language.$!,
       },
       body: postBody,
       middleware: BannedUser(),
@@ -151,14 +159,15 @@ class CartRepository {
 
     String url = ("${AppConfig.BASE_URL}/cart-summary");
     final response = await ApiRequest.post(
-        url: url,
-        body: postBody,
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${access_token.$}",
-          "App-Language": app_language.$!,
-        },
-        middleware: BannedUser());
+      url: url,
+      body: postBody,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${access_token.$}",
+        "App-Language": app_language.$!,
+      },
+      middleware: BannedUser(),
+    );
 
     return cartSummaryResponseFromJson(response.body);
   }

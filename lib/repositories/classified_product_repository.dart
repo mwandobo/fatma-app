@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:active_ecommerce_cms_demo_app/screens/classified_ads/classified_model.dart';
+import 'package:active_ecommerce_flutter/screens/classified_ads/classified_model.dart';
 
 import '../app_config.dart';
 import '../data_model/classified_ads_details_response.dart';
@@ -10,28 +10,28 @@ import '../helpers/shared_value_helper.dart';
 import 'api-request.dart';
 
 class ClassifiedProductRepository {
-  Future<ClassifiedAdsResponse> getClassifiedProducts({
-    page = 1,
-  }) async {
+  Future<ClassifiedAdsResponse> getClassifiedProducts({page = 1}) async {
     String url = ("${AppConfig.BASE_URL}/classified/all?page=$page");
 
-    final response = await ApiRequest.get(url: url, headers: {
-      "App-Language": app_language.$!,
-    });
+    final response = await ApiRequest.get(
+      url: url,
+      headers: {"App-Language": app_language.$!},
+    );
 
     return classifiedAdsResponseFromJson(response.body);
   }
 
-
-
   Future<MyclassifiedProductModel> getMyClassifiedProducts(int page) async {
     final url = '${AppConfig.BASE_URL}/classified/own-products?page=$page';
-    final response = await ApiRequest.get(url: url, headers: {
-      "App-Language": app_language.$!,
-      "Content-Type": "application/json",
-      "Authorization": "Bearer ${access_token.$}",
-      "System-Key": AppConfig.system_key,
-    });
+    final response = await ApiRequest.get(
+      url: url,
+      headers: {
+        "App-Language": app_language.$!,
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${access_token.$}",
+        "System-Key": AppConfig.system_key,
+      },
+    );
 
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
@@ -41,38 +41,40 @@ class ClassifiedProductRepository {
     }
   }
 
-  Future<ClassifiedAdsResponse> getOwnClassifiedProducts({
-    page = 1,
-  }) async {
+  Future<ClassifiedAdsResponse> getOwnClassifiedProducts({page = 1}) async {
     String url = ("${AppConfig.BASE_URL}/classified/own-products?page=$page");
-    final response = await ApiRequest.get(url: url, headers: {
-      "App-Language": app_language.$!,
-      "Content-Type": "application/json",
-      "Authorization": "Bearer ${access_token.$}",
-    });
+    final response = await ApiRequest.get(
+      url: url,
+      headers: {
+        "App-Language": app_language.$!,
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${access_token.$}",
+      },
+    );
 
     return classifiedAdsResponseFromJson(response.body);
   }
 
-  Future<ClassifiedAdsResponse> getClassifiedOtherAds({
-    required slug,
-  }) async {
+  Future<ClassifiedAdsResponse> getClassifiedOtherAds({required slug}) async {
     String url = ("${AppConfig.BASE_URL}/classified/related-products/$slug");
 
-    final response = await ApiRequest.get(url: url, headers: {
-      "App-Language": app_language.$!,
-    });
+    final response = await ApiRequest.get(
+      url: url,
+      headers: {"App-Language": app_language.$!},
+    );
 
     return classifiedAdsResponseFromJson(response.body);
   }
 
   Future<ClassifiedProductDetailsResponse> getClassifiedProductsDetails(
-      slug) async {
+    slug,
+  ) async {
     String url = ("${AppConfig.BASE_URL}/classified/product-details/$slug");
 
-    final response = await ApiRequest.get(url: url, headers: {
-      "App-Language": app_language.$!,
-    });
+    final response = await ApiRequest.get(
+      url: url,
+      headers: {"App-Language": app_language.$!},
+    );
 
     return classifiedProductDetailsResponseFromJson(response.body);
   }
@@ -80,17 +82,22 @@ class ClassifiedProductRepository {
   Future<CommonResponse> getDeleteClassifiedProductResponse(id) async {
     String url = ("${AppConfig.BASE_URL}/classified/delete/$id");
 
-    final response = await ApiRequest.delete(url: url, headers: {
-      "App-Language": app_language.$!,
-      "Content-Type": "application/json",
-      "Authorization": "Bearer ${access_token.$}",
-    });
+    final response = await ApiRequest.delete(
+      url: url,
+      headers: {
+        "App-Language": app_language.$!,
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${access_token.$}",
+      },
+    );
 
     return commonResponseFromJson(response.body);
   }
 
   Future<CommonResponse> getStatusChangeClassifiedProductResponse(
-      id, status) async {
+    id,
+    status,
+  ) async {
     String url = ("${AppConfig.BASE_URL}/classified/change-status/$id");
 
     var postBody = jsonEncode({"status": status});
@@ -124,7 +131,10 @@ class ClassifiedProductRepository {
   }
 
   Future<CommonResponse> updateCustomerProductResponse(
-      postBody, id, lang) async {
+    postBody,
+    id,
+    lang,
+  ) async {
     String url = ("${AppConfig.BASE_URL}/classified/update/$id?lang=$lang");
 
     final response = await ApiRequest.post(

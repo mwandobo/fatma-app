@@ -1,6 +1,6 @@
-import 'package:active_ecommerce_cms_demo_app/data_model/business_setting_response.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/business_setting_repository.dart';
+import 'package:active_ecommerce_flutter/data_model/business_setting_response.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/repositories/business_setting_repository.dart';
 
 class BusinessSettingHelper {
   setBusinessSettingData() async {

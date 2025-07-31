@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.active_ecommerce_cms_demo_app"
+    namespace = "com.example.active_ecommerce_flutter"
     compileSdk = 35
     ndkVersion = "28.0.13004108"
 
@@ -26,7 +26,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.activeitzone.activeecommercecmsdemoapp"
+        applicationId = "com.fatmassntInvestment.fatmassnt"
         minSdk = 23
         targetSdk = 34
         versionCode = flutter.versionCode

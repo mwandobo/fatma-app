@@ -1,10 +1,10 @@
-import 'package:active_ecommerce_cms_demo_app/custom/lang_text.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/useful_elements.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/string_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/ui_elements/classified_product_card.dart';
+import 'package:active_ecommerce_flutter/custom/lang_text.dart';
+import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/string_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/ui_elements/classified_product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -509,15 +509,13 @@ import '../../repositories/classified_product_repository.dart';
 //     );
 //   }}
 
+class ClassifiedAds extends StatefulWidget {
+  const ClassifiedAds({super.key});
 
- class ClassifiedAds extends StatefulWidget {
-   const ClassifiedAds({
-     super.key,
-   });
+  @override
+  _ClassifiedAdsState createState() => _ClassifiedAdsState();
+}
 
-   @override
-   _ClassifiedAdsState createState() => _ClassifiedAdsState();
- }
 class _ClassifiedAdsState extends State<ClassifiedAds> {
   final ScrollController _mainScrollController = ScrollController();
 
@@ -535,7 +533,8 @@ class _ClassifiedAdsState extends State<ClassifiedAds> {
 
     // Listen for scroll events
     _mainScrollController.addListener(() {
-      if (_mainScrollController.position.pixels == _mainScrollController.position.maxScrollExtent) {
+      if (_mainScrollController.position.pixels ==
+          _mainScrollController.position.maxScrollExtent) {
         // If we reached the bottom, load more data
         if (!_loadingMore) {
           loadMoreProducts();
@@ -557,7 +556,8 @@ class _ClassifiedAdsState extends State<ClassifiedAds> {
   }
 
   fetchData() async {
-    var classifiedProductRes = await ClassifiedProductRepository().getClassifiedProducts(page: page);
+    var classifiedProductRes = await ClassifiedProductRepository()
+        .getClassifiedProducts(page: page);
     _classifiedProducts.addAll(classifiedProductRes.data);
     _dataFetch = true;
     setState(() {});
@@ -570,7 +570,8 @@ class _ClassifiedAdsState extends State<ClassifiedAds> {
     });
 
     page++;
-    var classifiedProductRes = await ClassifiedProductRepository().getClassifiedProducts(page: page);
+    var classifiedProductRes = await ClassifiedProductRepository()
+        .getClassifiedProducts(page: page);
     if (classifiedProductRes.data!.isNotEmpty) {
       _classifiedProducts.addAll(classifiedProductRes.data);
       setState(() {});
@@ -606,7 +607,9 @@ class _ClassifiedAdsState extends State<ClassifiedAds> {
       return _classifiedProducts;
     } else {
       return _classifiedProducts.where((product) {
-        return product.name.toString().toLowerCase().contains(_searchQuery.toLowerCase());
+        return product.name.toString().toLowerCase().contains(
+          _searchQuery.toLowerCase(),
+        );
       }).toList();
     }
   }
@@ -614,7 +617,8 @@ class _ClassifiedAdsState extends State<ClassifiedAds> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+      textDirection:
+          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
         backgroundColor: MyTheme.mainColor,
         appBar: buildAppBar(context),
@@ -629,33 +633,45 @@ class _ClassifiedAdsState extends State<ClassifiedAds> {
       scrolledUnderElevation: 0.0,
       centerTitle: false,
       leading: UsefulElements.backButton(context),
-      title: _showSearchBar
-          ? Material(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        child: TextField(
-          autofocus: true,
-          autocorrect: false,
-          enableSuggestions: false,
-          textCapitalization: TextCapitalization.none,
-          decoration: InputDecoration(
-            hintText: 'Search...',
-            hintStyle: TextStyle(color: Colors.black),
-            filled: true,
-            fillColor: Colors.transparent,
-            border: InputBorder.none,
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
-            focusedBorder: OutlineInputBorder(borderSide: BorderSide.none),
-            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-          ),
-          style: TextStyle(color: Colors.green),
-          onChanged: _onSearchTextChanged,
-        ),
-      )
-          : Text(
-        AppLocalizations.of(context)!.classified_ads_ucf,
-        style: TextStyle(fontSize: 16, color: MyTheme.dark_font_grey, fontWeight: FontWeight.bold),
-      ),
+      title:
+          _showSearchBar
+              ? Material(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                child: TextField(
+                  autofocus: true,
+                  autocorrect: false,
+                  enableSuggestions: false,
+                  textCapitalization: TextCapitalization.none,
+                  decoration: InputDecoration(
+                    hintText: 'Search...',
+                    hintStyle: TextStyle(color: Colors.black),
+                    filled: true,
+                    fillColor: Colors.transparent,
+                    border: InputBorder.none,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 12,
+                    ),
+                  ),
+                  style: TextStyle(color: Colors.green),
+                  onChanged: _onSearchTextChanged,
+                ),
+              )
+              : Text(
+                AppLocalizations.of(context)!.classified_ads_ucf,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: MyTheme.dark_font_grey,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
       elevation: 0.0,
       titleSpacing: 0,
       actions: [
@@ -669,7 +685,9 @@ class _ClassifiedAdsState extends State<ClassifiedAds> {
 
   Widget body() {
     if (!_dataFetch) {
-      return ShimmerHelper().buildProductGridShimmer(scontroller: _mainScrollController);
+      return ShimmerHelper().buildProductGridShimmer(
+        scontroller: _mainScrollController,
+      );
     }
 
     if (_classifiedProducts.length == 0) {
@@ -691,7 +709,12 @@ class _ClassifiedAdsState extends State<ClassifiedAds> {
               crossAxisSpacing: 14,
               itemCount: filteredProducts.length,
               shrinkWrap: true,
-              padding: EdgeInsets.only(top: 10.0, bottom: 10, left: 18, right: 18),
+              padding: EdgeInsets.only(
+                top: 10.0,
+                bottom: 10,
+                left: 18,
+                right: 18,
+              ),
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return ClassifiedAdsCard(

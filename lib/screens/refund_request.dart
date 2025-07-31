@@ -1,11 +1,11 @@
-import 'package:active_ecommerce_cms_demo_app/custom/box_decorations.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/device_info.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/useful_elements.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/main_helpers.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/refund_request_repository.dart';
+import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
+import 'package:active_ecommerce_flutter/custom/device_info.dart';
+import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
+import 'package:active_ecommerce_flutter/helpers/main_helpers.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/refund_request_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -96,7 +96,8 @@ class _RefundRequestState extends State<RefundRequest> {
               child: CustomScrollView(
                 controller: _xcrollController,
                 physics: const BouncingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics()),
+                  parent: AlwaysScrollableScrollPhysics(),
+                ),
                 slivers: [
                   SliverList(
                     delegate: SliverChildListDelegate([
@@ -105,13 +106,14 @@ class _RefundRequestState extends State<RefundRequest> {
                         child: buildList(),
                       ),
                     ]),
-                  )
+                  ),
                 ],
               ),
             ),
             Align(
-                alignment: Alignment.bottomCenter,
-                child: buildLoadingContainer())
+              alignment: Alignment.bottomCenter,
+              child: buildLoadingContainer(),
+            ),
           ],
         ),
       ),
@@ -124,9 +126,11 @@ class _RefundRequestState extends State<RefundRequest> {
       width: double.infinity,
       color: Colors.white,
       child: Center(
-        child: Text(_totalData == _list.length
-            ? AppLocalizations.of(context)!.no_more_items_ucf
-            : AppLocalizations.of(context)!.loading_more_items_ucf),
+        child: Text(
+          _totalData == _list.length
+              ? AppLocalizations.of(context)!.no_more_items_ucf
+              : AppLocalizations.of(context)!.loading_more_items_ucf,
+        ),
       ),
     );
   }
@@ -137,17 +141,19 @@ class _RefundRequestState extends State<RefundRequest> {
       scrolledUnderElevation: 0.0,
       centerTitle: false,
       leading: Builder(
-        builder: (context) => IconButton(
-          icon: UsefulElements.backButton(context),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        builder:
+            (context) => IconButton(
+              icon: UsefulElements.backButton(context),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
       ),
       title: Text(
         AppLocalizations.of(context)!.refund_status_ucf,
         style: TextStyle(
-            fontSize: 16,
-            color: MyTheme.dark_font_grey,
-            fontWeight: FontWeight.bold),
+          fontSize: 16,
+          color: MyTheme.dark_font_grey,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -157,15 +163,16 @@ class _RefundRequestState extends State<RefundRequest> {
   buildList() {
     if (_isInitial && _list.isEmpty) {
       return SingleChildScrollView(
-          child: ShimmerHelper()
-              .buildListShimmer(item_count: 10, item_height: 100.0));
+        child: ShimmerHelper().buildListShimmer(
+          item_count: 10,
+          item_height: 100.0,
+        ),
+      );
     } else if (_list.isNotEmpty) {
       return SingleChildScrollView(
         child: ListView.separated(
           separatorBuilder: (context, index) {
-            return SizedBox(
-              height: 14,
-            );
+            return SizedBox(height: 14);
           },
           itemCount: _list.length,
           scrollDirection: Axis.vertical,
@@ -179,7 +186,8 @@ class _RefundRequestState extends State<RefundRequest> {
       );
     } else if (_totalData == 0) {
       return Center(
-          child: Text(AppLocalizations.of(context)!.no_data_is_available));
+        child: Text(AppLocalizations.of(context)!.no_data_is_available),
+      );
     } else {
       return Container(); // should never be happening
     }
@@ -194,68 +202,70 @@ class _RefundRequestState extends State<RefundRequest> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-                width: DeviceInfo(context).width! / 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Text(
-                        _list[index].product_name,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          color: MyTheme.dark_font_grey,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Text(
-                        _list[index].order_code,
-                        style: TextStyle(
-                            color: MyTheme.accent_color,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    Text(
-                      "Date: " + _list[index].date,
+              width: DeviceInfo(context).width! / 2,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Text(
+                      _list[index].product_name,
+                      textAlign: TextAlign.start,
                       style: TextStyle(
                         color: MyTheme.dark_font_grey,
+                        fontSize: 12,
                       ),
                     ),
-                    SizedBox(
-                      height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Text(
+                      _list[index].order_code,
+                      style: TextStyle(
+                        color: MyTheme.accent_color,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ],
-                )),
+                  ),
+                  Text(
+                    "Date: " + _list[index].date,
+                    style: TextStyle(color: MyTheme.dark_font_grey),
+                  ),
+                  SizedBox(height: 10),
+                ],
+              ),
+            ),
             Spacer(),
             SizedBox(
-                width: 120,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Text(
-                        convertPrice(_list[index].product_price),
-                        style: TextStyle(
-                            color: MyTheme.accent_color,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
+              width: 120,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Text(
+                      convertPrice(_list[index].product_price),
+                      style: TextStyle(
+                        color: MyTheme.accent_color,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
-                      _list[index].refund_label,
-                      style: TextStyle(
-                          color: _list[index].refund_status == 1
+                  ),
+                  Text(
+                    _list[index].refund_label,
+                    style: TextStyle(
+                      color:
+                          _list[index].refund_status == 1
                               ? Colors.green
                               : Colors.blue,
-                          fontWeight: FontWeight.bold),
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
-                ))
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

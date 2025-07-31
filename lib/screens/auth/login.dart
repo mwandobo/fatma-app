@@ -2,22 +2,22 @@ import 'dart:convert';
 import 'dart:io' show Platform;
 import 'dart:math';
 
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/btn.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/input_decorations.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/intl_phone_input.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/auth_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/other_config.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/auth_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/profile_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/auth/password_forget.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/auth/registration.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/main.dart';
-import 'package:active_ecommerce_cms_demo_app/social_config.dart';
-import 'package:active_ecommerce_cms_demo_app/ui_elements/auth_ui.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/custom/btn.dart';
+import 'package:active_ecommerce_flutter/custom/input_decorations.dart';
+import 'package:active_ecommerce_flutter/custom/intl_phone_input.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/helpers/auth_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/other_config.dart';
+import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
+import 'package:active_ecommerce_flutter/screens/auth/password_forget.dart';
+import 'package:active_ecommerce_flutter/screens/auth/registration.dart';
+import 'package:active_ecommerce_flutter/screens/main.dart';
+import 'package:active_ecommerce_flutter/social_config.dart';
+import 'package:active_ecommerce_flutter/ui_elements/auth_ui.dart';
 import 'package:crypto/crypto.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -58,8 +58,10 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     //on Splash Screen hide statusbar
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom],
+    );
     super.initState();
     fetch_country();
   }
@@ -72,8 +74,10 @@ class _LoginState extends State<Login> {
   @override
   void dispose() {
     //before going to other screen show statusbar
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
+    );
     super.dispose();
   }
 
@@ -85,9 +89,7 @@ class _LoginState extends State<Login> {
     var password = _passwordController.text.toString();
 
     if (_login_by == 'email' && email == "") {
-      ToastComponent.showDialog(
-        AppLocalizations.of(context)!.enter_email,
-      );
+      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_email);
       return;
     } else if (_login_by == 'phone' && _phone == "") {
       ToastComponent.showDialog(
@@ -95,14 +97,15 @@ class _LoginState extends State<Login> {
       );
       return;
     } else if (password == "") {
-      ToastComponent.showDialog(
-        AppLocalizations.of(context)!.enter_password,
-      );
+      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_password);
       return;
     }
 
     var loginResponse = await AuthRepository().getLoginResponse(
-        _login_by == 'email' ? email : _phone, password, _login_by);
+      _login_by == 'email' ? email : _phone,
+      password,
+      _login_by,
+    );
     Loading.close();
 
     // empty temp user id after logged in
@@ -111,20 +114,14 @@ class _LoginState extends State<Login> {
 
     if (loginResponse.result == false) {
       if (loginResponse.message.runtimeType == List) {
-        ToastComponent.showDialog(
-          loginResponse.message!.join("\n"),
-        );
+        ToastComponent.showDialog(loginResponse.message!.join("\n"));
         return;
       }
-      ToastComponent.showDialog(
-        loginResponse.message!.toString(),
-      );
+      ToastComponent.showDialog(loginResponse.message!.toString());
     } else {
       print("in the success block ");
 
-      ToastComponent.showDialog(
-        loginResponse.message!,
-      );
+      ToastComponent.showDialog(loginResponse.message!);
 
       AuthHelper().setUserData(loginResponse);
 
@@ -153,8 +150,8 @@ class _LoginState extends State<Login> {
         // print("token: $fcmToken");
         // update device token
         if (fcmToken != null && is_logged_in.$) {
-          var deviceTokenUpdateResponse =
-              await ProfileRepository().getDeviceTokenUpdateResponse(fcmToken);
+          var deviceTokenUpdateResponse = await ProfileRepository()
+              .getDeviceTokenUpdateResponse(fcmToken);
         }
       }
 
@@ -164,12 +161,17 @@ class _LoginState extends State<Login> {
       } else {
         if ((mail_verification_status.$ && _login_by == "email") ||
             (mail_verification_status.$ && _login_by == "phone")) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Otp(
-                // verify_by: _register_by,
-                // user_id: signupResponse.user_id,
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return Otp(
+                  // verify_by: _register_by,
+                  // user_id: signupResponse.user_id,
                 );
-          }));
+              },
+            ),
+          );
         } else {
           context.push("/");
         }
@@ -179,33 +181,36 @@ class _LoginState extends State<Login> {
 
   onPressedFacebookLogin() async {
     try {
-      final facebookLogin = await FacebookAuth.instance
-          .login(loginBehavior: LoginBehavior.webOnly);
+      final facebookLogin = await FacebookAuth.instance.login(
+        loginBehavior: LoginBehavior.webOnly,
+      );
 
       if (facebookLogin.status == LoginStatus.success) {
         // get the user data
         // by default we get the userId, email,name and picture
         final userData = await FacebookAuth.instance.getUserData();
         var loginResponse = await AuthRepository().getSocialLoginResponse(
-            "facebook",
-            userData['name'].toString(),
-            userData['email'].toString(),
-            userData['id'].toString(),
-            access_token: facebookLogin.accessToken!.tokenString);
+          "facebook",
+          userData['name'].toString(),
+          userData['email'].toString(),
+          userData['id'].toString(),
+          access_token: facebookLogin.accessToken!.tokenString,
+        );
         // print("..........................${loginResponse.toString()}");
         if (loginResponse.result == false) {
-          ToastComponent.showDialog(
-            loginResponse.message!,
-          );
+          ToastComponent.showDialog(loginResponse.message!);
         } else {
-          ToastComponent.showDialog(
-            loginResponse.message!,
-          );
+          ToastComponent.showDialog(loginResponse.message!);
 
           AuthHelper().setUserData(loginResponse);
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Main();
-          }));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return Main();
+              },
+            ),
+          );
           FacebookAuth.instance.logOut();
         }
         // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
@@ -235,21 +240,26 @@ class _LoginState extends State<Login> {
       // print("googleUser.id ${googleUser.id}");
 
       var loginResponse = await AuthRepository().getSocialLoginResponse(
-          "google", googleUser.displayName, googleUser.email, googleUser.id,
-          access_token: accessToken);
+        "google",
+        googleUser.displayName,
+        googleUser.email,
+        googleUser.id,
+        access_token: accessToken,
+      );
 
       if (loginResponse.result == false) {
-        ToastComponent.showDialog(
-          loginResponse.message!,
-        );
+        ToastComponent.showDialog(loginResponse.message!);
       } else {
-        ToastComponent.showDialog(
-          loginResponse.message!,
-        );
+        ToastComponent.showDialog(loginResponse.message!);
         AuthHelper().setUserData(loginResponse);
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Main();
-        }));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return Main();
+            },
+          ),
+        );
       }
       GoogleSignIn().disconnect();
     } on Exception catch (e) {
@@ -303,8 +313,10 @@ class _LoginState extends State<Login> {
     final charset =
         '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
     final random = Random.secure();
-    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
-        .join();
+    return List.generate(
+      length,
+      (_) => charset[random.nextInt(charset.length)],
+    ).join();
   }
 
   /// Returns the sha256 hash of [input] in hex notation.
@@ -333,24 +345,26 @@ class _LoginState extends State<Login> {
       );
 
       var loginResponse = await AuthRepository().getSocialLoginResponse(
-          "apple",
-          appleCredential.givenName,
-          appleCredential.email,
-          appleCredential.userIdentifier,
-          access_token: appleCredential.identityToken);
+        "apple",
+        appleCredential.givenName,
+        appleCredential.email,
+        appleCredential.userIdentifier,
+        access_token: appleCredential.identityToken,
+      );
 
       if (loginResponse.result == false) {
-        ToastComponent.showDialog(
-          loginResponse.message!,
-        );
+        ToastComponent.showDialog(loginResponse.message!);
       } else {
-        ToastComponent.showDialog(
-          loginResponse.message!,
-        );
+        ToastComponent.showDialog(loginResponse.message!);
         AuthHelper().setUserData(loginResponse);
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Main();
-        }));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return Main();
+            },
+          ),
+        );
       }
     } on Exception catch (e) {
       print(e);
@@ -374,9 +388,10 @@ class _LoginState extends State<Login> {
     final screen_height = MediaQuery.of(context).size.height;
     final screen_width = MediaQuery.of(context).size.width;
     return AuthScreen.buildScreen(
-        context,
-        "${AppLocalizations.of(context)!.login_to} ${AppConfig.app_name}",
-        buildBody(context, screen_width));
+      context,
+      "${AppLocalizations.of(context)!.login_to} ${AppConfig.app_name}",
+      buildBody(context, screen_width),
+    );
   }
 
   Widget buildBody(BuildContext context, double screen_width) {
@@ -395,7 +410,9 @@ class _LoginState extends State<Login> {
                       ? AppLocalizations.of(context)!.email_ucf
                       : AppLocalizations.of(context)!.login_screen_phone,
                   style: TextStyle(
-                      color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                    color: MyTheme.accent_color,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               if (_login_by == "email")
@@ -410,26 +427,29 @@ class _LoginState extends State<Login> {
                           controller: _emailController,
                           autofocus: false,
                           decoration: InputDecorations.buildInputDecoration_1(
-                              hint_text: "johndoe@example.com"),
+                            hint_text: "johndoe@example.com",
+                          ),
                         ),
                       ),
                       otp_addon_installed.$
                           ? GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _login_by = "phone";
-                                });
-                              },
-                              child: Text(
-                                AppLocalizations.of(context)!
-                                    .or_login_with_a_phone,
-                                style: TextStyle(
-                                    color: MyTheme.accent_color,
-                                    fontStyle: FontStyle.italic,
-                                    decoration: TextDecoration.underline),
+                            onTap: () {
+                              setState(() {
+                                _login_by = "phone";
+                              });
+                            },
+                            child: Text(
+                              AppLocalizations.of(
+                                context,
+                              )!.or_login_with_a_phone,
+                              style: TextStyle(
+                                color: MyTheme.accent_color,
+                                fontStyle: FontStyle.italic,
+                                decoration: TextDecoration.underline,
                               ),
-                            )
-                          : Container()
+                            ),
+                          )
+                          : Container(),
                     ],
                   ),
                 )
@@ -457,18 +477,22 @@ class _LoginState extends State<Login> {
                           ),
                           ignoreBlank: false,
                           autoValidateMode: AutovalidateMode.disabled,
-                          selectorTextStyle:
-                              TextStyle(color: MyTheme.font_grey),
+                          selectorTextStyle: TextStyle(
+                            color: MyTheme.font_grey,
+                          ),
                           textStyle: TextStyle(color: MyTheme.font_grey),
                           // initialValue: PhoneNumber(
                           //     isoCode: countries_code[0].toString()),
                           textFieldController: _phoneNumberController,
                           formatInput: true,
                           keyboardType: TextInputType.numberWithOptions(
-                              signed: true, decimal: true),
+                            signed: true,
+                            decimal: true,
+                          ),
                           inputDecoration:
                               InputDecorations.buildInputDecoration_phone(
-                                  hint_text: "01XXX XXX XXX"),
+                                hint_text: "01XXX XXX XXX",
+                              ),
                           onSaved: (PhoneNumber number) {
                             print('On Saved: $number');
                           },
@@ -483,11 +507,12 @@ class _LoginState extends State<Login> {
                         child: Text(
                           AppLocalizations.of(context)!.or_login_with_an_email,
                           style: TextStyle(
-                              color: MyTheme.accent_color,
-                              fontStyle: FontStyle.italic,
-                              decoration: TextDecoration.underline),
+                            color: MyTheme.accent_color,
+                            fontStyle: FontStyle.italic,
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -496,7 +521,9 @@ class _LoginState extends State<Login> {
                 child: Text(
                   AppLocalizations.of(context)!.password_ucf,
                   style: TextStyle(
-                      color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                    color: MyTheme.accent_color,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               Padding(
@@ -513,25 +540,32 @@ class _LoginState extends State<Login> {
                         enableSuggestions: false,
                         autocorrect: false,
                         decoration: InputDecorations.buildInputDecoration_1(
-                            hint_text: "• • • • • • • •"),
+                          hint_text: "• • • • • • • •",
+                        ),
                       ),
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return PasswordForget();
-                        }));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return PasswordForget();
+                            },
+                          ),
+                        );
                       },
                       child: Text(
-                        AppLocalizations.of(context)!
-                            .login_screen_forgot_password,
+                        AppLocalizations.of(
+                          context,
+                        )!.login_screen_forgot_password,
                         style: TextStyle(
-                            color: MyTheme.accent_color,
-                            fontStyle: FontStyle.italic,
-                            decoration: TextDecoration.underline),
+                          color: MyTheme.accent_color,
+                          fontStyle: FontStyle.italic,
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -540,23 +574,25 @@ class _LoginState extends State<Login> {
                 child: Container(
                   height: 45,
                   decoration: BoxDecoration(
-                      border:
-                          Border.all(color: MyTheme.textfield_grey, width: 1),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(12.0))),
+                    border: Border.all(color: MyTheme.textfield_grey, width: 1),
+                    borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                  ),
                   child: Btn.minWidthFixHeight(
                     minWidth: MediaQuery.of(context).size.width,
                     height: 50,
                     color: MyTheme.accent_color,
                     shape: RoundedRectangleBorder(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(6.0))),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(6.0),
+                      ),
+                    ),
                     child: Text(
                       AppLocalizations.of(context)!.login_screen_log_in,
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600),
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     onPressed: () {
                       onPressedLogin(context);
@@ -567,11 +603,13 @@ class _LoginState extends State<Login> {
               Padding(
                 padding: const EdgeInsets.only(top: 15.0, bottom: 15),
                 child: Center(
-                    child: Text(
-                  AppLocalizations.of(context)!
-                      .login_screen_or_create_new_account,
-                  style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
-                )),
+                  child: Text(
+                    AppLocalizations.of(
+                      context,
+                    )!.login_screen_or_create_new_account,
+                    style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
+                  ),
+                ),
               ),
               SizedBox(
                 height: 45,
@@ -580,20 +618,25 @@ class _LoginState extends State<Login> {
                   height: 50,
                   color: MyTheme.amber,
                   shape: RoundedRectangleBorder(
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(6.0))),
+                    borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+                  ),
                   child: Text(
                     AppLocalizations.of(context)!.login_screen_sign_up,
                     style: TextStyle(
-                        color: MyTheme.accent_color,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600),
+                      color: MyTheme.accent_color,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return Registration();
-                    }));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return Registration();
+                        },
+                      ),
+                    );
                   },
                 ),
               ),
@@ -611,10 +654,11 @@ class _LoginState extends State<Login> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20.0),
                   child: Center(
-                      child: Text(
-                    AppLocalizations.of(context)!.login_screen_login_with,
-                    style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
-                  )),
+                    child: Text(
+                      AppLocalizations.of(context)!.login_screen_login_with,
+                      style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
+                    ),
+                  ),
                 ),
               ),
               Padding(
@@ -656,7 +700,7 @@ class _LoginState extends State<Login> {
                             padding: const EdgeInsets.only(left: 15.0),
                             child: InkWell(
                               onTap: () {
-                               // onPressedTwitterLogin();
+                                // onPressedTwitterLogin();
                               },
                               child: SizedBox(
                                 width: 28,
@@ -685,7 +729,7 @@ class _LoginState extends State<Login> {
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

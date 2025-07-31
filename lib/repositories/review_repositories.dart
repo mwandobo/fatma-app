@@ -1,11 +1,11 @@
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
 import 'dart:convert';
 
-import 'package:active_ecommerce_cms_demo_app/data_model/review_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/review_submit_response.dart';
+import 'package:active_ecommerce_flutter/data_model/review_response.dart';
+import 'package:active_ecommerce_flutter/data_model/review_submit_response.dart';
 
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/api-request.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/repositories/api-request.dart';
 
 class ReviewRepository {
   Future<dynamic> getReviewResponse(int? productId, {page = 1}) async {
@@ -32,18 +32,19 @@ class ReviewRepository {
       "product_id": "$productId",
       "user_id": "${user_id.$}",
       "rating": "$rating",
-      "comment": comment
+      "comment": comment,
     });
 
     String url = ("${AppConfig.BASE_URL}/reviews/submit");
     final response = await ApiRequest.post(
-        url: url,
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${access_token.$}",
-          "App-Language": app_language.$!,
-        },
-        body: postBody);
+      url: url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${access_token.$}",
+        "App-Language": app_language.$!,
+      },
+      body: postBody,
+    );
 
     return reviewSubmitResponseFromJson(response.body);
   }

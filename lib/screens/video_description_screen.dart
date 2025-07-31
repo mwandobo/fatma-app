@@ -1,5 +1,5 @@
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,8 +21,10 @@ class _VideoDescriptionState extends State<VideoDescription> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
 
     webView();
   }
@@ -45,18 +47,17 @@ class _VideoDescriptionState extends State<VideoDescription> {
     return WillPopScope(
       onWillPop: () {
         if (MediaQuery.of(context).orientation == Orientation.landscape) {
-          SystemChrome.setPreferredOrientations(
-              [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+          SystemChrome.setPreferredOrientations([
+            DeviceOrientation.portraitUp,
+            DeviceOrientation.portraitDown,
+          ]);
         }
         return Future.value(true);
       },
       child: Directionality(
         textDirection:
             app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          body: buildBody(),
-        ),
+        child: Scaffold(backgroundColor: Colors.white, body: buildBody()),
       ),
     );
   }
@@ -66,13 +67,12 @@ class _VideoDescriptionState extends State<VideoDescription> {
       child: Container(
         child: Stack(
           children: [
-            WebViewWidget(
-              controller: _webViewController,
-            ),
+            WebViewWidget(controller: _webViewController),
             Align(
-              alignment: app_language_rtl.$!
-                  ? Alignment.centerRight
-                  : Alignment.centerLeft,
+              alignment:
+                  app_language_rtl.$!
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
               child: Container(
                 decoration: ShapeDecoration(
                   color: MyTheme.medium_grey_50,
@@ -92,7 +92,7 @@ class _VideoDescriptionState extends State<VideoDescription> {
                         Orientation.landscape) {
                       SystemChrome.setPreferredOrientations([
                         DeviceOrientation.portraitUp,
-                        DeviceOrientation.portraitDown
+                        DeviceOrientation.portraitDown,
                       ]);
                     }
                     return Navigator.of(context).pop();

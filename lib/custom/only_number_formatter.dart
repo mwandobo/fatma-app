@@ -1,4 +1,4 @@
-import 'package:active_ecommerce_cms_demo_app/helpers/main_helpers.dart';
+import 'package:active_ecommerce_flutter/helpers/main_helpers.dart';
 import 'package:flutter/services.dart';
 
 class OnlyNumberFormatter extends TextInputFormatter {
@@ -8,12 +8,15 @@ class OnlyNumberFormatter extends TextInputFormatter {
 
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     String value = newValue.text;
     if (value.isEmpty) {
       newValue = TextEditingValue(
-          text: minValue,
-          selection: TextSelection.fromPosition(TextPosition(offset: 1)));
+        text: minValue,
+        selection: TextSelection.fromPosition(TextPosition(offset: 1)),
+      );
       return newValue;
     }
     if (isNumber(value) && !(int.parse(value).isNegative)) {

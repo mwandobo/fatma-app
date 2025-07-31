@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:active_ecommerce_cms_demo_app/data_model/common_response.dart';
+import 'package:active_ecommerce_flutter/data_model/common_response.dart';
 
 import '../app_config.dart';
 import '../helpers/main_helpers.dart';
@@ -15,7 +15,10 @@ class NotificationRepository {
     Map<String, String> header = commonHeader;
     header.addAll(authHeader);
     final response = await ApiRequest.get(
-        url: url, headers: header, middleware: BannedUser());
+      url: url,
+      headers: header,
+      middleware: BannedUser(),
+    );
 
     return allNotificationListResponseFromJson(response.body);
   }
@@ -25,7 +28,10 @@ class NotificationRepository {
     Map<String, String> header = commonHeader;
     header.addAll(authHeader);
     final response = await ApiRequest.get(
-        url: url, headers: header, middleware: BannedUser());
+      url: url,
+      headers: header,
+      middleware: BannedUser(),
+    );
 
     // print('response body for notification');
     // print(response.body);
@@ -41,7 +47,11 @@ class NotificationRepository {
     Map<String, String> header = commonHeader;
     header.addAll(authHeader);
     final response = await ApiRequest.post(
-        url: url, headers: header, middleware: BannedUser(), body: postBody);
+      url: url,
+      headers: header,
+      middleware: BannedUser(),
+      body: postBody,
+    );
 
     // print('response body for notification');
     // print(response.body);

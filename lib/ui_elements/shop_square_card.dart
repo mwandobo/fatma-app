@@ -1,5 +1,5 @@
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/seller_details.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/screens/seller_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -43,33 +43,27 @@ class _ShopSquareCardState extends State<ShopSquareCard> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Container(
-                height: 165,
-                width: 170,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
-                padding: EdgeInsets.all(35),
-                child: _buildImage()),
+              height: 165,
+              width: 170,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: EdgeInsets.all(35),
+              child: _buildImage(),
+            ),
             Column(
               // mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                SizedBox(
-                  height: 5,
-                ),
+                SizedBox(height: 5),
                 _buildName(),
-                SizedBox(
-                  height: 5,
-                ),
+                SizedBox(height: 5),
                 _buildRating(),
-                SizedBox(
-                  height: 8,
-                ),
+                SizedBox(height: 8),
                 _buildVisitStoreButton(),
-                SizedBox(
-                  height: 2,
-                )
+                SizedBox(height: 2),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -121,8 +115,10 @@ class _ShopSquareCardState extends State<ShopSquareCard> {
         ratingWidget: RatingWidget(
           full: const Icon(Icons.star, color: Colors.amber),
           half: const Icon(Icons.star_half),
-          empty:
-              const Icon(Icons.star, color: Color.fromRGBO(224, 224, 225, 1)),
+          empty: const Icon(
+            Icons.star,
+            color: Color.fromRGBO(224, 224, 225, 1),
+          ),
         ),
         onRatingUpdate: (newValue) {},
       ),

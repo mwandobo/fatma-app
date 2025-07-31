@@ -1,9 +1,9 @@
-import 'package:active_ecommerce_cms_demo_app/custom/device_info.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/useful_elements.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/providers/blog_provider.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/blog_detail_screen.dart';
+import 'package:active_ecommerce_flutter/custom/device_info.dart';
+import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/providers/blog_provider.dart';
+import 'package:active_ecommerce_flutter/screens/blog_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -34,12 +34,12 @@ class _BlogListScreenState extends State<BlogListScreen> {
       scrolledUnderElevation: 0.0,
       backgroundColor: MyTheme.mainColor,
       bottom: PreferredSize(
-          preferredSize: Size.fromHeight(0.0),
-          child: AnimatedContainer(
-            //color: MyTheme.textfield_grey,
-
-            duration: Duration(milliseconds: 500),
-          )),
+        preferredSize: Size.fromHeight(0.0),
+        child: AnimatedContainer(
+          //color: MyTheme.textfield_grey,
+          duration: Duration(milliseconds: 500),
+        ),
+      ),
       title: buildAppBarTitle(context),
       elevation: 0.0,
       titleSpacing: 0,
@@ -48,14 +48,14 @@ class _BlogListScreenState extends State<BlogListScreen> {
 
   Widget buildAppBarTitle(BuildContext context) {
     return AnimatedCrossFade(
-        firstChild: buildAppBarTitleOption(context),
-        secondChild: buildAppBarSearchOption(context),
-        firstCurve: Curves.fastOutSlowIn,
-        secondCurve: Curves.fastOutSlowIn,
-        crossFadeState: _showSearchBar
-            ? CrossFadeState.showSecond
-            : CrossFadeState.showFirst,
-        duration: Duration(milliseconds: 500));
+      firstChild: buildAppBarTitleOption(context),
+      secondChild: buildAppBarSearchOption(context),
+      firstCurve: Curves.fastOutSlowIn,
+      secondCurve: Curves.fastOutSlowIn,
+      crossFadeState:
+          _showSearchBar ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+      duration: Duration(milliseconds: 500),
+    );
   }
 
   Container buildAppBarTitleOption(BuildContext context) {
@@ -79,13 +79,15 @@ class _BlogListScreenState extends State<BlogListScreen> {
           ),
           Spacer(),
           SizedBox(
-              width: 20,
-              child: GestureDetector(
-                  onTap: () {
-                    _showSearchBar = true;
-                    setState(() {});
-                  },
-                  child: Image.asset('assets/search.png')))
+            width: 20,
+            child: GestureDetector(
+              onTap: () {
+                _showSearchBar = true;
+                setState(() {});
+              },
+              child: Image.asset('assets/search.png'),
+            ),
+          ),
         ],
       ),
     );
@@ -108,22 +110,20 @@ class _BlogListScreenState extends State<BlogListScreen> {
               _showSearchBar = false;
               setState(() {});
             },
-            icon: Icon(
-              Icons.clear,
-              color: MyTheme.grey_153,
-            ),
+            icon: Icon(Icons.clear, color: MyTheme.grey_153),
           ),
           filled: true,
           fillColor: MyTheme.white.withOpacity(0.6),
-          hintText: "Search in Blogs..." //widget.category_name!
-          ,
+          hintText: "Search in Blogs...", //widget.category_name!
           hintStyle: TextStyle(fontSize: 14.0, color: MyTheme.font_grey),
           enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: MyTheme.noColor, width: 0.0),
-              borderRadius: BorderRadius.circular(6)),
+            borderSide: BorderSide(color: MyTheme.noColor, width: 0.0),
+            borderRadius: BorderRadius.circular(6),
+          ),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: MyTheme.noColor, width: 0.0),
-              borderRadius: BorderRadius.circular(6)),
+            borderSide: BorderSide(color: MyTheme.noColor, width: 0.0),
+            borderRadius: BorderRadius.circular(6),
+          ),
           contentPadding: EdgeInsets.all(8.0),
         ),
       ),
@@ -132,14 +132,16 @@ class _BlogListScreenState extends State<BlogListScreen> {
 
   buildBlogList(context) {
     return FutureBuilder(
-        future: Provider.of<BlogProvider>(context, listen: false).fetchBlogs(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return ShimmerHelper()
-                .buildListShimmer(item_count: 10, item_height: 100.0);
-          } else {
-            return Consumer<BlogProvider>(
-                builder: (context, blogProvider, child) {
+      future: Provider.of<BlogProvider>(context, listen: false).fetchBlogs(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return ShimmerHelper().buildListShimmer(
+            item_count: 10,
+            item_height: 100.0,
+          );
+        } else {
+          return Consumer<BlogProvider>(
+            builder: (context, blogProvider, child) {
               return MasonryGridView.count(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 crossAxisCount: 2,
@@ -150,25 +152,29 @@ class _BlogListScreenState extends State<BlogListScreen> {
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BlogDetailsScreen(
-                              blog: blogProvider.blogs[index],
-                            ),
-                          ));
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => BlogDetailsScreen(
+                                blog: blogProvider.blogs[index],
+                              ),
+                        ),
+                      );
                     },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16.0),
                         image: DecorationImage(
-                          image: NetworkImage(blogProvider.blogs[index]
-                              .banner), // Replace with your image asset
+                          image: NetworkImage(
+                            blogProvider.blogs[index].banner,
+                          ), // Replace with your image asset
                           fit: BoxFit.cover,
                         ),
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(
-                            16.0), // Ensure the gradient follows the border radius
+                          16.0,
+                        ), // Ensure the gradient follows the border radius
                         child: Stack(
                           children: [
                             // Gradient overlay
@@ -180,7 +186,7 @@ class _BlogListScreenState extends State<BlogListScreen> {
                                     end: Alignment.bottomCenter,
                                     colors: [
                                       Colors.white.withOpacity(0.5),
-                                      Colors.black.withOpacity(0.5)
+                                      Colors.black.withOpacity(0.5),
                                     ],
                                   ),
                                 ),
@@ -189,8 +195,12 @@ class _BlogListScreenState extends State<BlogListScreen> {
                             // Centering the text content
                             Container(
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 113, 10, 18),
+                                padding: const EdgeInsets.fromLTRB(
+                                  10,
+                                  113,
+                                  10,
+                                  18,
+                                ),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,7 +224,8 @@ class _BlogListScreenState extends State<BlogListScreen> {
                                     ),
                                     Text(
                                       blogProvider
-                                          .blogs[index].shortDescription,
+                                          .blogs[index]
+                                          .shortDescription,
                                       style: const TextStyle(
                                         fontSize: 10,
                                         color: Colors.white,
@@ -232,8 +243,10 @@ class _BlogListScreenState extends State<BlogListScreen> {
                   );
                 },
               );
-            });
-          }
-        });
+            },
+          );
+        }
+      },
+    );
   }
 }

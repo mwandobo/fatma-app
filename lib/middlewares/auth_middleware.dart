@@ -1,6 +1,6 @@
-import 'package:active_ecommerce_cms_demo_app/helpers/main_helpers.dart';
-import 'package:active_ecommerce_cms_demo_app/middlewares/route_middleware.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/auth/login.dart';
+import 'package:active_ecommerce_flutter/helpers/main_helpers.dart';
+import 'package:active_ecommerce_flutter/middlewares/route_middleware.dart';
+import 'package:active_ecommerce_flutter/screens/auth/login.dart';
 import 'package:flutter/cupertino.dart';
 
 class AuthMiddleware extends RouteMiddleware {

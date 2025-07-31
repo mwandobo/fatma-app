@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:active_ecommerce_cms_demo_app/data_model/category.dart';
+import 'package:active_ecommerce_flutter/data_model/category.dart';
 import 'package:flutter/material.dart';
 import '../../custom/aiz_summer_note.dart';
 import '../../custom/device_info.dart';
@@ -81,7 +81,9 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
     videoType.addAll([
       CommonDropDownItem("youtube", AppLocalizations.of(context)!.youtube_ucf),
       CommonDropDownItem(
-          "dailymotion", AppLocalizations.of(context)!.dailymotion_ucf),
+        "dailymotion",
+        AppLocalizations.of(context)!.dailymotion_ucf,
+      ),
       CommonDropDownItem("vimeo", AppLocalizations.of(context)!.vimeo_ucf),
     ]);
     selectedVideoType = videoType.first;
@@ -129,23 +131,28 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
   bool requiredFieldVerification() {
     if (productNameEditTextController.text.trim().isEmpty) {
       ToastComponent.showDialog(
-          AppLocalizations.of(context)!.product_name_required);
+        AppLocalizations.of(context)!.product_name_required,
+      );
       return false;
     } else if (unitEditTextController.text.trim().isEmpty) {
       ToastComponent.showDialog(
-          AppLocalizations.of(context)!.product_unit_required);
+        AppLocalizations.of(context)!.product_unit_required,
+      );
       return false;
     } else if (locationTextController.text.trim().isEmpty) {
       ToastComponent.showDialog(
-          AppLocalizations.of(context)!.location_required);
+        AppLocalizations.of(context)!.location_required,
+      );
       return false;
     } else if (tags.isEmpty) {
       ToastComponent.showDialog(
-          AppLocalizations.of(context)!.product_tag_required);
+        AppLocalizations.of(context)!.product_tag_required,
+      );
       return false;
     } else if (description == "") {
       ToastComponent.showDialog(
-          AppLocalizations.of(context)!.product_description_required);
+        AppLocalizations.of(context)!.product_description_required,
+      );
       return false;
     }
     return true;
@@ -240,8 +247,9 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
     };
 
     var postBody = jsonEncode(postValue);
-    var response =
-        await ClassifiedProductRepository().addProductResponse(postBody);
+    var response = await ClassifiedProductRepository().addProductResponse(
+      postBody,
+    );
 
     Loading.close();
     if (response.result) {
@@ -317,10 +325,10 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
             color: const Color.fromRGBO(255, 255, 255, 0),
             borderRadius: BorderRadius.circular(6),
             border: Border.all(
-                color: const Color.fromRGBO(255, 255, 255, 0), width: 0.0),
-            boxShadow: [
-              BoxShadow(color: MyTheme.white),
-            ],
+              color: const Color.fromRGBO(255, 255, 255, 0),
+              width: 0.0,
+            ),
+            boxShadow: [BoxShadow(color: MyTheme.white)],
           ),
           padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
           alignment: Alignment.topCenter,
@@ -398,24 +406,30 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
                         child: Container(
                           height: 36,
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 18, vertical: 10),
+                            horizontal: 18,
+                            vertical: 10,
+                          ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(6),
                             color: MyTheme.white,
                             border: Border.all(
-                                color: _hasFocus
-                                    ? MyTheme.textfield_grey
-                                    : MyTheme.accent_color,
-                                style: BorderStyle.solid,
-                                width: _hasFocus ? 0.5 : 0.2),
+                              color:
+                                  _hasFocus
+                                      ? MyTheme.textfield_grey
+                                      : MyTheme.accent_color,
+                              style: BorderStyle.solid,
+                              width: _hasFocus ? 0.5 : 0.2,
+                            ),
                             boxShadow: [
                               BoxShadow(
                                 color: MyTheme.blue_grey.withOpacity(0.15),
                                 blurRadius: 20,
                                 spreadRadius: 0.0,
-                                offset: const Offset(0.0,
-                                    10.0), // shadow direction: bottom right
-                              )
+                                offset: const Offset(
+                                  0.0,
+                                  10.0,
+                                ), // shadow direction: bottom right
+                              ),
                             ],
                           ),
                           child: DropdownButton<String>(
@@ -430,38 +444,45 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
                             },
                             icon: const Icon(Icons.arrow_drop_down),
                             value: selectedCondition,
-                            items: itemList
-                                .map(
-                                  (value) => DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(
-                                      value,
-                                      style: TextStyle(
-                                          color: MyTheme.font_grey,
-                                          fontSize: 12),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
+                            items:
+                                itemList
+                                    .map(
+                                      (value) => DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: TextStyle(
+                                            color: MyTheme.font_grey,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
                           ),
                         ),
                       ),
                     ),
                     itemSpacer(),
                     buildEditTextField(
-                        AppLocalizations.of(context)!.location_ucf,
-                        AppLocalizations.of(context)!.location_ucf,
-                        locationTextController,
-                        isMandatory: true),
+                      AppLocalizations.of(context)!.location_ucf,
+                      AppLocalizations.of(context)!.location_ucf,
+                      locationTextController,
+                      isMandatory: true,
+                    ),
                     itemSpacer(),
-                    buildTagsEditTextField(LangText(context).local.tags_ucf,
-                        LangText(context).local.tags_ucf, tagEditTextController,
-                        isMandatory: true),
+                    buildTagsEditTextField(
+                      LangText(context).local.tags_ucf,
+                      LangText(context).local.tags_ucf,
+                      tagEditTextController,
+                      isMandatory: true,
+                    ),
                     itemSpacer(),
                     buildGroupItems(
                       AppLocalizations.of(context)!.descriptions_ucf,
                       summerNote(
-                          AppLocalizations.of(context)!.descriptions_ucf),
+                        AppLocalizations.of(context)!.descriptions_ucf,
+                      ),
                     ),
                     itemSpacer(),
                   ],
@@ -487,12 +508,10 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
             color: const Color.fromRGBO(255, 255, 255, 0),
             borderRadius: BorderRadius.circular(6),
             border: Border.all(
-                color: const Color.fromRGBO(255, 255, 255, 0), width: 0.0),
-            boxShadow: [
-              BoxShadow(
-                color: MyTheme.white,
-              ),
-            ],
+              color: const Color.fromRGBO(255, 255, 255, 0),
+              width: 0.0,
+            ),
+            boxShadow: [BoxShadow(color: MyTheme.white)],
           ),
           padding: EdgeInsets.only(top: 10, left: 5, right: 5),
           alignment: Alignment.topCenter,
@@ -506,9 +525,10 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
                   Text(
                     AppLocalizations.of(context)!.media_ucf,
                     style: TextStyle(
-                        fontSize: 13,
-                        color: MyTheme.dark_font_grey,
-                        fontWeight: FontWeight.bold),
+                      fontSize: 13,
+                      color: MyTheme.dark_font_grey,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Icon(
                     _mediaExpanded
@@ -516,12 +536,10 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
                         : Icons.navigate_next_rounded,
                     size: 20,
                     color: MyTheme.dark_font_grey,
-                  )
+                  ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               Visibility(
                 visible: _mediaExpanded,
                 child: SizedBox(
@@ -532,19 +550,25 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
                       chooseGalleryImageField(),
                       itemSpacer(),
                       chooseSingleImageField(
-                          AppLocalizations.of(context)!.thumbnail_image_ucf,
-                          (onChosenImage) {
-                        thumbnailImage = onChosenImage;
-                        setChange();
-                      }, thumbnailImage),
+                        AppLocalizations.of(context)!.thumbnail_image_ucf,
+                        (onChosenImage) {
+                          thumbnailImage = onChosenImage;
+                          setChange();
+                        },
+                        thumbnailImage,
+                      ),
                       buildGroupItems(
-                          AppLocalizations.of(context)!.video_form_ucf,
-                          _buildDropDownField(
-                              AppLocalizations.of(context)!.video_url_ucf,
-                              (newValue) {
+                        AppLocalizations.of(context)!.video_form_ucf,
+                        _buildDropDownField(
+                          AppLocalizations.of(context)!.video_url_ucf,
+                          (newValue) {
                             selectedVideoType = newValue;
                             setChange();
-                          }, selectedVideoType, videoType)),
+                          },
+                          selectedVideoType,
+                          videoType,
+                        ),
+                      ),
                       itemSpacer(),
                       buildEditTextField(
                         AppLocalizations.of(context)!.video_url_ucf,
@@ -552,21 +576,25 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
                         videoLinkController,
                       ),
                       itemSpacer(),
-                      chooseSingleImageField("Pdf Specification",
-                          (onChosenImage) {
+                      chooseSingleImageField("Pdf Specification", (
+                        onChosenImage,
+                      ) {
                         pdfSpecification = onChosenImage;
                         setChange();
                       }, pdfSpecification),
                       chooseSingleFileField(
-                          AppLocalizations.of(context)!.pdf_specification_ucf,
-                          "", (onChosenFile) {
-                        pdfSpecification = onChosenFile;
-                        setChange();
-                      }, pdfSpecification),
+                        AppLocalizations.of(context)!.pdf_specification_ucf,
+                        "",
+                        (onChosenFile) {
+                          pdfSpecification = onChosenFile;
+                          setChange();
+                        },
+                        pdfSpecification,
+                      ),
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -574,8 +602,12 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
     );
   }
 
-  Widget chooseSingleFileField(String title, String shortMessage,
-      dynamic onChosenFile, FileInfo? selectedFile) {
+  Widget chooseSingleFileField(
+    String title,
+    String shortMessage,
+    dynamic onChosenFile,
+    FileInfo? selectedFile,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -585,15 +617,17 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
             Text(
               title,
               style: TextStyle(
-                  fontSize: 12,
-                  color: MyTheme.font_grey,
-                  fontWeight: FontWeight.bold),
+                fontSize: 12,
+                color: MyTheme.font_grey,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            SizedBox(
-              height: 10,
+            SizedBox(height: 10),
+            fileField(
+              AppLocalizations.of(context)!.document,
+              onChosenFile,
+              selectedFile,
             ),
-            fileField(AppLocalizations.of(context)!.document, onChosenFile,
-                selectedFile)
           ],
         ),
       ],
@@ -601,7 +635,10 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
   }
 
   Widget fileField(
-      String fileType, dynamic onChosenFile, FileInfo? selectedFile) {
+    String fileType,
+    dynamic onChosenFile,
+    FileInfo? selectedFile,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -609,12 +646,13 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
           onPressed: () async {
             // XFile chooseFile = await pickSingleImage();
             List<FileInfo> chooseFile = await (Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => UploadFile(
-                          fileType: fileType,
-                          canSelect: true,
-                        ))));
+              context,
+              MaterialPageRoute(
+                builder:
+                    (context) =>
+                        UploadFile(fileType: fileType, canSelect: true),
+              ),
+            ));
             // print("chooseFile.url");
             // print(chooseFile.first.url);
             if (chooseFile.isNotEmpty) {
@@ -651,9 +689,7 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
             ),
           ),
         ),
-        SizedBox(
-          height: 10,
-        ),
+        SizedBox(height: 10),
         if (selectedFile != null)
           Stack(
             children: [
@@ -662,9 +698,7 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
                 height: 40,
                 alignment: Alignment.center,
                 width: 40,
-                decoration: BoxDecoration(
-                  color: MyTheme.grey_153,
-                ),
+                decoration: BoxDecoration(color: MyTheme.grey_153),
                 child: Text(
                   "${selectedFile.fileOriginalName!}.${selectedFile.extension!}",
                   style: TextStyle(fontSize: 9, color: MyTheme.white),
@@ -677,8 +711,9 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
                   height: 15,
                   width: 15,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: MyTheme.white),
+                    borderRadius: BorderRadius.circular(30),
+                    color: MyTheme.white,
+                  ),
                   // remove the selected file button
                   child: InkWell(
                     onTap: () {
@@ -699,7 +734,10 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
   }
 
   Widget chooseSingleImageField(
-      String title, dynamic onChosenImage, FileInfo? selectedFile) {
+    String title,
+    dynamic onChosenImage,
+    FileInfo? selectedFile,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -709,14 +747,13 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
             Text(
               title,
               style: TextStyle(
-                  fontSize: 12,
-                  color: MyTheme.font_grey,
-                  fontWeight: FontWeight.bold),
+                fontSize: 12,
+                color: MyTheme.font_grey,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            SizedBox(
-              height: 10,
-            ),
-            imageField(onChosenImage, selectedFile)
+            SizedBox(height: 10),
+            imageField(onChosenImage, selectedFile),
           ],
         ),
       ],
@@ -731,12 +768,13 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
           onPressed: () async {
             // XFile chooseFile = await pickSingleImage();
             List<FileInfo> chooseFile = await (Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const UploadFile(
-                          fileType: "image",
-                          canSelect: true,
-                        ))));
+              context,
+              MaterialPageRoute(
+                builder:
+                    (context) =>
+                        const UploadFile(fileType: "image", canSelect: true),
+              ),
+            ));
             // print("chooseFile.url");
             // print(chooseFile.first.url);
             if (chooseFile.isNotEmpty) {
@@ -779,16 +817,14 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
             clipBehavior: Clip.antiAlias,
             alignment: Alignment.bottomCenter,
             children: [
-              SizedBox(
-                height: 60,
-                width: 70,
-              ),
+              SizedBox(height: 60, width: 70),
               MyWidget.imageWithPlaceholder(
-                  border: Border.all(width: 0.5, color: MyTheme.light_grey),
-                  radius: BorderRadius.circular(5),
-                  height: 50.0,
-                  width: 50.0,
-                  url: selectedFile.url),
+                border: Border.all(width: 0.5, color: MyTheme.light_grey),
+                radius: BorderRadius.circular(5),
+                height: 50.0,
+                width: 50.0,
+                url: selectedFile.url,
+              ),
               Positioned(
                 top: 3,
                 right: 2,
@@ -796,17 +832,14 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
                   height: 15,
                   width: 15,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: MyTheme.light_grey),
+                    borderRadius: BorderRadius.circular(30),
+                    color: MyTheme.light_grey,
+                  ),
                   child: InkWell(
                     onTap: () {
                       onChosenImage(null);
                     },
-                    child: Icon(
-                      Icons.close,
-                      size: 12,
-                      color: MyTheme.cinnabar,
-                    ),
+                    child: Icon(Icons.close, size: 12, color: MyTheme.cinnabar),
                   ),
                 ),
               ),
@@ -829,12 +862,10 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
             color: const Color.fromRGBO(255, 255, 255, 0),
             borderRadius: BorderRadius.circular(6),
             border: Border.all(
-                color: const Color.fromRGBO(255, 255, 255, 0), width: 0.0),
-            boxShadow: [
-              BoxShadow(
-                color: MyTheme.white,
-              ),
-            ],
+              color: const Color.fromRGBO(255, 255, 255, 0),
+              width: 0.0,
+            ),
+            boxShadow: [BoxShadow(color: MyTheme.white)],
           ),
           padding: EdgeInsets.only(top: 10, left: 5, right: 5),
           alignment: Alignment.topCenter,
@@ -848,9 +879,10 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
                   Text(
                     AppLocalizations.of(context)!.auction_price_ucf,
                     style: TextStyle(
-                        fontSize: 13,
-                        color: MyTheme.dark_font_grey,
-                        fontWeight: FontWeight.bold),
+                      fontSize: 13,
+                      color: MyTheme.dark_font_grey,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Icon(
                     _priceExpanded
@@ -858,12 +890,10 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
                         : Icons.navigate_next_rounded,
                     size: 20,
                     color: MyTheme.dark_font_grey,
-                  )
+                  ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               Visibility(
                 visible: _priceExpanded,
                 child: SizedBox(
@@ -873,9 +903,9 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
                     children: [
                       buildEditTextField(
                         AppLocalizations.of(context)!.auction_price_ucf,
-                        LangText(context)
-                            .local
-                            .custom_unit_price_and_base_price,
+                        LangText(
+                          context,
+                        ).local.custom_unit_price_and_base_price,
                         unitPriceEditTextController,
                         isMandatory: true,
                       ),
@@ -899,17 +929,20 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(6),
                             border: Border.all(
-                                color: MyTheme.accent_color,
-                                style: BorderStyle.solid,
-                                width: 0.1),
+                              color: MyTheme.accent_color,
+                              style: BorderStyle.solid,
+                              width: 0.1,
+                            ),
                             boxShadow: [
                               BoxShadow(
                                 color: MyTheme.white.withOpacity(0.15),
                                 blurRadius: 20,
                                 spreadRadius: 0.0,
-                                offset: const Offset(0.0,
-                                    10.0), // shadow direction: bottom right
-                              )
+                                offset: const Offset(
+                                  0.0,
+                                  10.0,
+                                ), // shadow direction: bottom right
+                              ),
                             ],
                           ),
                           child: TextField(
@@ -920,46 +953,50 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
                             enabled: true,
                             style: TextStyle(fontSize: 12),
                             decoration: InputDecoration.collapsed(
-                                hintText: LangText(context)
-                                    .local
-                                    .meta_description_ucf),
+                              hintText:
+                                  LangText(context).local.meta_description_ucf,
+                            ),
                           ),
                         ),
                       ),
                       itemSpacer(),
                       chooseSingleImageField(
-                          AppLocalizations.of(context)!.meta_image_ucf,
-                          (onChosenImage) {
-                        metaImage = onChosenImage;
-                        setChange();
-                      }, metaImage),
+                        AppLocalizations.of(context)!.meta_image_ucf,
+                        (onChosenImage) {
+                          metaImage = onChosenImage;
+                          setChange();
+                        },
+                        metaImage,
+                      ),
 
                       // submit button
                       itemSpacer(),
                       Align(
                         alignment: Alignment.bottomRight,
                         child: TextButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  WidgetStateProperty.all(MyTheme.accent_color),
-                              shape: WidgetStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6.0),
-                                  side: BorderSide(color: Colors.red),
-                                ),
-                              ),
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStateProperty.all(
+                              MyTheme.accent_color,
                             ),
-                            onPressed: submit,
-                            child: Text(
-                              AppLocalizations.of(context)!.save_product_ucf,
-                              style: TextStyle(color: Colors.white),
-                            )),
-                      )
+                            shape:
+                                WidgetStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6.0),
+                                    side: BorderSide(color: Colors.red),
+                                  ),
+                                ),
+                          ),
+                          onPressed: submit,
+                          child: Text(
+                            AppLocalizations.of(context)!.save_product_ucf,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -968,8 +1005,11 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
   }
 
   Widget buildEditTextField(
-      String title, String hint, TextEditingController textEditingController,
-      {isMandatory = false}) {
+    String title,
+    String hint,
+    TextEditingController textEditingController, {
+    isMandatory = false,
+  }) {
     return Container(
       child: buildCommonSingleField(
         title,
@@ -983,26 +1023,26 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
           child: TextField(
             controller: textEditingController,
             decoration: InputDecoration(
-                hintText: hint,
-                filled: true,
-                fillColor: MyTheme.white,
-                hintStyle:
-                    TextStyle(fontSize: 12.0, color: MyTheme.textfield_grey),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: MyTheme.accent_color, width: 0.2),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(6.0),
-                  ),
+              hintText: hint,
+              filled: true,
+              fillColor: MyTheme.white,
+              hintStyle: TextStyle(
+                fontSize: 12.0,
+                color: MyTheme.textfield_grey,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyTheme.accent_color, width: 0.2),
+                borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: MyTheme.textfield_grey,
+                  width: 0.5,
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: MyTheme.textfield_grey, width: 0.5),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(6.0),
-                  ),
-                ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 16.0)),
+                borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+            ),
           ),
         ),
         isMandatory: isMandatory,
@@ -1020,15 +1060,14 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
               Text(
                 " *",
                 style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red),
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
+                ),
               ),
           ],
         ),
-        const SizedBox(
-          height: 10,
-        ),
+        const SizedBox(height: 10),
         child,
       ],
     );
@@ -1038,14 +1077,15 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
     return Text(
       title,
       style: const TextStyle(
-          fontSize: 12, fontWeight: FontWeight.bold, color: MyTheme.font_grey),
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+        color: MyTheme.font_grey,
+      ),
     );
   }
 
   Widget itemSpacer({double height = 10}) {
-    return SizedBox(
-      height: height,
-    );
+    return SizedBox(height: height);
   }
 
   Widget _buildDropDownField(
@@ -1057,8 +1097,10 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
     double? width,
   }) {
     return buildCommonSingleField(
-        title, _buildDropDown(onchange, selectedValue, itemList, width: width),
-        isMandatory: isMandatory);
+      title,
+      _buildDropDown(onchange, selectedValue, itemList, width: width),
+      isMandatory: isMandatory,
+    );
   }
 
   Widget _buildDropDownFieldWithChildren(
@@ -1070,10 +1112,15 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
     double? width,
   }) {
     return buildCommonSingleField(
-        title,
-        _buildDropDownWithChildren(onchange, selectedValue, itemList,
-            width: width),
-        isMandatory: isMandatory);
+      title,
+      _buildDropDownWithChildren(
+        onchange,
+        selectedValue,
+        itemList,
+        width: width,
+      ),
+      isMandatory: isMandatory,
+    );
   }
 
   Widget _buildDropDown(
@@ -1091,9 +1138,10 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(6),
           border: Border.all(
-              color: MyTheme.accent_color,
-              style: BorderStyle.solid,
-              width: 0.2),
+            color: MyTheme.accent_color,
+            style: BorderStyle.solid,
+            width: 0.2,
+          ),
           boxShadow: [],
         ),
         child: DropdownButton<CommonDropDownItem>(
@@ -1106,24 +1154,20 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
           onChanged: (CommonDropDownItem? value) {
             onchange(value);
           },
-          icon: const Icon(
-            Icons.arrow_drop_down,
-            size: 22,
-          ),
+          icon: const Icon(Icons.arrow_drop_down, size: 22),
           value: selectedValue,
-          items: itemList
-              .map(
-                (value) => DropdownMenuItem<CommonDropDownItem>(
-                  value: value,
-                  child: Text(
-                    value.value!,
-                    style: TextStyle(
-                      fontSize: 12.0,
+          items:
+              itemList
+                  .map(
+                    (value) => DropdownMenuItem<CommonDropDownItem>(
+                      value: value,
+                      child: Text(
+                        value.value!,
+                        style: TextStyle(fontSize: 12.0),
+                      ),
                     ),
-                  ),
-                ),
-              )
-              .toList(),
+                  )
+                  .toList(),
         ),
       ),
     );
@@ -1143,16 +1187,17 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
           border: Border.all(
-              color: MyTheme.accent_color,
-              style: BorderStyle.solid,
-              width: 0.2),
+            color: MyTheme.accent_color,
+            style: BorderStyle.solid,
+            width: 0.2,
+          ),
           boxShadow: [
             BoxShadow(
               color: MyTheme.white.withOpacity(0.15),
               blurRadius: 20,
               spreadRadius: 0.0,
               offset: const Offset(0.0, 10.0), // shadow direction: bottom right
-            )
+            ),
           ],
         ),
         child: DropdownButton<CommonDropDownItemWithChild>(
@@ -1165,17 +1210,21 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
           },
           icon: const Icon(Icons.arrow_drop_down),
           value: selectedValue,
-          items: itemList
-              .map(
-                (value) => DropdownMenuItem<CommonDropDownItemWithChild>(
-                  value: value,
-                  child: Text(
-                    value.value!,
-                    style: TextStyle(color: MyTheme.font_grey, fontSize: 12.0),
-                  ),
-                ),
-              )
-              .toList(),
+          items:
+              itemList
+                  .map(
+                    (value) => DropdownMenuItem<CommonDropDownItemWithChild>(
+                      value: value,
+                      child: Text(
+                        value.value!,
+                        style: TextStyle(
+                          color: MyTheme.font_grey,
+                          fontSize: 12.0,
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
         ),
       ),
     );
@@ -1186,8 +1235,11 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
   }
 
   Widget buildTagsEditTextField(
-      String title, String hint, TextEditingController textEditingController,
-      {isMandatory = false}) {
+    String title,
+    String hint,
+    TextEditingController textEditingController, {
+    isMandatory = false,
+  }) {
     return buildCommonSingleField(
       title,
       Container(
@@ -1198,16 +1250,17 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
           borderRadius: BorderRadius.circular(6),
           // color: MyTheme.light_grey,
           border: Border.all(
-              color: MyTheme.accent_color,
-              style: BorderStyle.solid,
-              width: 0.2),
+            color: MyTheme.accent_color,
+            style: BorderStyle.solid,
+            width: 0.2,
+          ),
           boxShadow: [
             BoxShadow(
               color: MyTheme.white.withOpacity(0.15),
               blurRadius: 20,
               spreadRadius: 0.0,
               offset: const Offset(0.0, 10.0), // shadow direction: bottom right
-            )
+            ),
           ],
         ),
         child: Wrap(
@@ -1219,10 +1272,11 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
             if (index == tags.length) {
               return TextField(
                 onSubmitted: (string) {
-                  var tag = textEditingController.text
-                      .trim()
-                      .replaceAll(",", "")
-                      .toString();
+                  var tag =
+                      textEditingController.text
+                          .trim()
+                          .replaceAll(",", "")
+                          .toString();
                   if (tag.isNotEmpty) addTag(tag);
                 },
                 onChanged: (string) {
@@ -1239,46 +1293,56 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
                   hintText:
                       AppLocalizations.of(context)!.type_and_hit_submit_ucf,
                   hintStyle: TextStyle(fontSize: 12),
-                ).copyWith(
-                  constraints: BoxConstraints(maxWidth: 150),
-                ),
+                ).copyWith(constraints: BoxConstraints(maxWidth: 150)),
               );
             }
             return Container(
-                decoration: BoxDecoration(
-                    color: MyTheme.white,
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(width: 2, color: MyTheme.grey_153)),
-                constraints: BoxConstraints(
-                    maxWidth: (DeviceInfo(context).width! - 50) / 4),
-                margin: const EdgeInsets.only(right: 5, bottom: 5),
-                child: Stack(
-                  fit: StackFit.loose,
-                  children: [
-                    Container(
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 20, top: 5, bottom: 5),
-                        constraints: BoxConstraints(
-                            maxWidth: (DeviceInfo(context).width! - 50) / 4),
-                        child: Text(
-                          tags[index].toString(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 12),
-                        )),
-                    Positioned(
-                      right: 2,
-                      child: InkWell(
-                        onTap: () {
-                          tags.removeAt(index);
-                          setChange();
-                        },
-                        child: Icon(Icons.highlight_remove,
-                            size: 15, color: MyTheme.cinnabar),
+              decoration: BoxDecoration(
+                color: MyTheme.white,
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(width: 2, color: MyTheme.grey_153),
+              ),
+              constraints: BoxConstraints(
+                maxWidth: (DeviceInfo(context).width! - 50) / 4,
+              ),
+              margin: const EdgeInsets.only(right: 5, bottom: 5),
+              child: Stack(
+                fit: StackFit.loose,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(
+                      left: 10,
+                      right: 20,
+                      top: 5,
+                      bottom: 5,
+                    ),
+                    constraints: BoxConstraints(
+                      maxWidth: (DeviceInfo(context).width! - 50) / 4,
+                    ),
+                    child: Text(
+                      tags[index].toString(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ),
+                  Positioned(
+                    right: 2,
+                    child: InkWell(
+                      onTap: () {
+                        tags.removeAt(index);
+                        setChange();
+                      },
+                      child: Icon(
+                        Icons.highlight_remove,
+                        size: 15,
+                        color: MyTheme.cinnabar,
                       ),
-                    )
-                  ],
-                ));
+                    ),
+                  ),
+                ],
+              ),
+            );
           }),
         ),
       ),
@@ -1309,7 +1373,10 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
     return Text(
       title,
       style: const TextStyle(
-          fontSize: 14, fontWeight: FontWeight.bold, color: MyTheme.font_grey),
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+        color: MyTheme.font_grey,
+      ),
     );
   }
 
@@ -1329,20 +1396,20 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
         Text(
           title,
           style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: MyTheme.font_grey),
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            color: MyTheme.font_grey,
+          ),
         ),
-        const SizedBox(
-          height: 10,
-        ),
+        const SizedBox(height: 10),
         SizedBox(
           height: 220,
           width: double.infinity,
           child: FlutterSummernote(
-              showBottomToolbar: false,
-              value: description,
-              key: productDescriptionKey),
+            showBottomToolbar: false,
+            value: description,
+            key: productDescriptionKey,
+          ),
         ),
       ],
     );
@@ -1351,14 +1418,17 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
   pickGalleryImages() async {
     var tmp = productGalleryImages;
     List<FileInfo>? images = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => UploadFile(
-                  fileType: "image",
-                  canSelect: true,
-                  canMultiSelect: true,
-                  prevData: tmp,
-                )));
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) => UploadFile(
+              fileType: "image",
+              canSelect: true,
+              canMultiSelect: true,
+              prevData: tmp,
+            ),
+      ),
+    );
     // print(images != null);
     //  productGalleryImages = images;
     setChange();
@@ -1374,13 +1444,12 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
             Text(
               AppLocalizations.of(context)!.gallery_images,
               style: TextStyle(
-                  fontSize: 12,
-                  color: MyTheme.font_grey,
-                  fontWeight: FontWeight.bold),
+                fontSize: 12,
+                color: MyTheme.font_grey,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 10),
             TextButton(
               // padding: EdgeInsets.zero,
               onPressed: () {
@@ -1389,41 +1458,38 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
               // shape: RoundedRectangleBorder(
               //     borderRadius: BorderRadius.circular(6)),
               child: MyWidget().myContainer(
-                  width: DeviceInfo(context).width!,
-                  height: 36,
-                  borderRadius: 6.0,
-                  borderColor: MyTheme.accent_color,
-                  borderWith: 0.2,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          AppLocalizations.of(context)!.choose_file,
-                          style:
-                              TextStyle(fontSize: 12, color: MyTheme.grey_153),
-                        ),
+                width: DeviceInfo(context).width!,
+                height: 36,
+                borderRadius: 6.0,
+                borderColor: MyTheme.accent_color,
+                borderWith: 0.2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 14.0),
+                      child: Text(
+                        AppLocalizations.of(context)!.choose_file,
+                        style: TextStyle(fontSize: 12, color: MyTheme.grey_153),
                       ),
-                      Container(
-                        alignment: Alignment.center,
-                        height: 46,
-                        width: 80,
-                        color: MyTheme.light_grey,
-                        child: Text(
-                          AppLocalizations.of(context)!.browse,
-                          style:
-                              TextStyle(fontSize: 12, color: MyTheme.grey_153),
-                        ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      height: 46,
+                      width: 80,
+                      color: MyTheme.light_grey,
+                      child: Text(
+                        AppLocalizations.of(context)!.browse,
+                        style: TextStyle(fontSize: 12, color: MyTheme.grey_153),
                       ),
-                    ],
-                  )),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
-        SizedBox(
-          height: 10,
-        ),
+        SizedBox(height: 10),
         if (productGalleryImages.isNotEmpty)
           Wrap(
             children: List.generate(
@@ -1431,9 +1497,10 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
               (index) => Stack(
                 children: [
                   MyWidget.imageWithPlaceholder(
-                      height: 60.0,
-                      width: 60.0,
-                      url: productGalleryImages[index].url),
+                    height: 60.0,
+                    width: 60.0,
+                    url: productGalleryImages[index].url,
+                  ),
                   Positioned(
                     top: 0,
                     right: 5,
@@ -1441,8 +1508,9 @@ class _ClassifiedProductAddState extends State<ClassifiedProductAdd> {
                       height: 15,
                       width: 15,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: MyTheme.white),
+                        borderRadius: BorderRadius.circular(30),
+                        color: MyTheme.white,
+                      ),
                       child: InkWell(
                         onTap: () {
                           print(index);
@@ -1477,12 +1545,13 @@ class CommonDropDownItemWithChild {
   int? level;
   List<CommonDropDownItemWithChild> children;
 
-  CommonDropDownItemWithChild(
-      {this.key,
-      this.value,
-      this.levelText,
-      this.children = const [],
-      this.level});
+  CommonDropDownItemWithChild({
+    this.key,
+    this.value,
+    this.levelText,
+    this.children = const [],
+    this.level,
+  });
 
   setLevelText() {
     String tmpTxt = "";

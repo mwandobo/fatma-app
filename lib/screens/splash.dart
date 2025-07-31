@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/main.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -26,8 +26,10 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     //on Splash Screen hide statusbar
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom],
+    );
     super.initState();
     _initPackageInfo();
   }
@@ -35,8 +37,10 @@ class _SplashState extends State<Splash> {
   @override
   void dispose() {
     //before going to other screen show statusbar
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
+    );
     super.dispose();
   }
 
@@ -66,7 +70,10 @@ class _SplashState extends State<Splash> {
       title: Text(
         "V ${_packageInfo.version}",
         style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.white),
+          fontWeight: FontWeight.bold,
+          fontSize: 14.0,
+          color: Colors.white,
+        ),
       ),
       useLoader: false,
       loadingText: Text(
@@ -78,8 +85,9 @@ class _SplashState extends State<Splash> {
         ),
       ),
       image: Image.asset("assets/splash_screen_logo.png"),
-      backgroundImage:
-          Image.asset("assets/splash_login_registration_background_image.png"),
+      backgroundImage: Image.asset(
+        "assets/splash_login_registration_background_image.png",
+      ),
       backgroundColor: MyTheme.splash_screen_color,
       photoSize: 60.0,
       backgroundPhotoSize: 140.0,
@@ -142,7 +150,8 @@ class CustomSplashScreen extends StatefulWidget {
 
   /// Use one of the provided factory constructors instead of.
   @protected
-  const CustomSplashScreen({super.key, 
+  const CustomSplashScreen({
+    super.key,
     this.loaderColor,
     this.navigateAfterFuture,
     this.seconds,
@@ -154,7 +163,10 @@ class CustomSplashScreen extends StatefulWidget {
     this.title = const Text(''),
     this.backgroundColor = Colors.white,
     this.styleTextUnderTheLoader = const TextStyle(
-        fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.black),
+      fontSize: 18.0,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+    ),
     this.image,
     this.backgroundImage,
     this.loadingText = const Text(""),
@@ -164,75 +176,75 @@ class CustomSplashScreen extends StatefulWidget {
     this.routeName,
   });
 
-  factory CustomSplashScreen.timer(
-          {required int seconds,
-          Color? loaderColor,
-          Color? backgroundColor,
-          double? photoSize,
-          Text? loadingText,
-          Image? image,
-          Route? pageRoute,
-          dynamic onClick,
-          dynamic navigateAfterSeconds,
-          Text? title,
-          TextStyle? styleTextUnderTheLoader,
-          ImageProvider? imageBackground,
-          Gradient? gradientBackground,
-          bool? useLoader,
-          String? routeName}) =>
-      CustomSplashScreen(
-        loaderColor: loaderColor,
-        seconds: seconds,
-        photoSize: photoSize,
-        loadingText: loadingText,
-        backgroundColor: backgroundColor,
-        image: image,
-        pageRoute: pageRoute,
-        onClick: onClick,
-        navigateAfterSeconds: navigateAfterSeconds,
-        title: title,
-        styleTextUnderTheLoader: styleTextUnderTheLoader,
-        imageBackground: imageBackground,
-        gradientBackground: gradientBackground,
-        useLoader: useLoader,
-        routeName: routeName,
-      );
+  factory CustomSplashScreen.timer({
+    required int seconds,
+    Color? loaderColor,
+    Color? backgroundColor,
+    double? photoSize,
+    Text? loadingText,
+    Image? image,
+    Route? pageRoute,
+    dynamic onClick,
+    dynamic navigateAfterSeconds,
+    Text? title,
+    TextStyle? styleTextUnderTheLoader,
+    ImageProvider? imageBackground,
+    Gradient? gradientBackground,
+    bool? useLoader,
+    String? routeName,
+  }) => CustomSplashScreen(
+    loaderColor: loaderColor,
+    seconds: seconds,
+    photoSize: photoSize,
+    loadingText: loadingText,
+    backgroundColor: backgroundColor,
+    image: image,
+    pageRoute: pageRoute,
+    onClick: onClick,
+    navigateAfterSeconds: navigateAfterSeconds,
+    title: title,
+    styleTextUnderTheLoader: styleTextUnderTheLoader,
+    imageBackground: imageBackground,
+    gradientBackground: gradientBackground,
+    useLoader: useLoader,
+    routeName: routeName,
+  );
 
-  factory CustomSplashScreen.network(
-          {required Future<dynamic> navigateAfterFuture,
-          Color? loaderColor,
-          Color? backgroundColor,
-          double? photoSize,
-          double? backgroundPhotoSize,
-          Text? loadingText,
-          Image? image,
-          Route? pageRoute,
-          dynamic onClick,
-          dynamic navigateAfterSeconds,
-          Text? title,
-          TextStyle? styleTextUnderTheLoader,
-          ImageProvider? imageBackground,
-          Gradient? gradientBackground,
-          bool? useLoader,
-          String? routeName}) =>
-      CustomSplashScreen(
-        loaderColor: loaderColor,
-        navigateAfterFuture: navigateAfterFuture,
-        photoSize: photoSize,
-        backgroundPhotoSize: backgroundPhotoSize,
-        loadingText: loadingText,
-        backgroundColor: backgroundColor,
-        image: image,
-        pageRoute: pageRoute,
-        onClick: onClick,
-        navigateAfterSeconds: navigateAfterSeconds,
-        title: title,
-        styleTextUnderTheLoader: styleTextUnderTheLoader,
-        imageBackground: imageBackground,
-        gradientBackground: gradientBackground,
-        useLoader: useLoader,
-        routeName: routeName,
-      );
+  factory CustomSplashScreen.network({
+    required Future<dynamic> navigateAfterFuture,
+    Color? loaderColor,
+    Color? backgroundColor,
+    double? photoSize,
+    double? backgroundPhotoSize,
+    Text? loadingText,
+    Image? image,
+    Route? pageRoute,
+    dynamic onClick,
+    dynamic navigateAfterSeconds,
+    Text? title,
+    TextStyle? styleTextUnderTheLoader,
+    ImageProvider? imageBackground,
+    Gradient? gradientBackground,
+    bool? useLoader,
+    String? routeName,
+  }) => CustomSplashScreen(
+    loaderColor: loaderColor,
+    navigateAfterFuture: navigateAfterFuture,
+    photoSize: photoSize,
+    backgroundPhotoSize: backgroundPhotoSize,
+    loadingText: loadingText,
+    backgroundColor: backgroundColor,
+    image: image,
+    pageRoute: pageRoute,
+    onClick: onClick,
+    navigateAfterSeconds: navigateAfterSeconds,
+    title: title,
+    styleTextUnderTheLoader: styleTextUnderTheLoader,
+    imageBackground: imageBackground,
+    gradientBackground: gradientBackground,
+    useLoader: useLoader,
+    routeName: routeName,
+  );
 
   @override
   _CustomSplashScreenState createState() => _CustomSplashScreenState();
@@ -246,27 +258,34 @@ class _CustomSplashScreenState extends State<CustomSplashScreen> {
         widget.routeName is String &&
         widget.routeName![0] != "/") {
       throw ArgumentError(
-          "widget.routeName must be a String beginning with forward slash (/)");
+        "widget.routeName must be a String beginning with forward slash (/)",
+      );
     }
     if (widget.navigateAfterFuture == null) {
       Timer(Duration(seconds: widget.seconds!), () {
         if (widget.navigateAfterSeconds is String) {
           // It's fairly safe to assume this is using the in-built material
           // named route component
-          Navigator.of(context)
-              .pushReplacementNamed(widget.navigateAfterSeconds);
+          Navigator.of(
+            context,
+          ).pushReplacementNamed(widget.navigateAfterSeconds);
         } else if (widget.navigateAfterSeconds is Widget) {
-          Navigator.of(context).pushReplacement(widget.pageRoute != null
-              ? widget.pageRoute!
-              : MaterialPageRoute(
-                  settings: widget.routeName != null
-                      ? RouteSettings(name: "${widget.routeName}")
-                      : null,
-                  builder: (BuildContext context) =>
-                      widget.navigateAfterSeconds));
+          Navigator.of(context).pushReplacement(
+            widget.pageRoute != null
+                ? widget.pageRoute!
+                : MaterialPageRoute(
+                  settings:
+                      widget.routeName != null
+                          ? RouteSettings(name: "${widget.routeName}")
+                          : null,
+                  builder:
+                      (BuildContext context) => widget.navigateAfterSeconds,
+                ),
+          );
         } else {
           throw ArgumentError(
-              'widget.navigateAfterSeconds must either be a String or Widget');
+            'widget.navigateAfterSeconds must either be a String or Widget',
+          );
         }
       });
     } else {
@@ -276,16 +295,21 @@ class _CustomSplashScreenState extends State<CustomSplashScreen> {
           // named route component
           Navigator.of(context).pushReplacementNamed(navigateTo);
         } else if (navigateTo is Widget) {
-          Navigator.of(context).pushReplacement(widget.pageRoute != null
-              ? widget.pageRoute!
-              : MaterialPageRoute(
-                  settings: widget.routeName != null
-                      ? RouteSettings(name: "${widget.routeName}")
-                      : null,
-                  builder: (BuildContext context) => navigateTo));
+          Navigator.of(context).pushReplacement(
+            widget.pageRoute != null
+                ? widget.pageRoute!
+                : MaterialPageRoute(
+                  settings:
+                      widget.routeName != null
+                          ? RouteSettings(name: "${widget.routeName}")
+                          : null,
+                  builder: (BuildContext context) => navigateTo,
+                ),
+          );
         } else {
           throw ArgumentError(
-              'widget.navigateAfterFuture must either be a String or Widget');
+            'widget.navigateAfterFuture must either be a String or Widget',
+          );
         }
       });
     }
@@ -304,12 +328,13 @@ class _CustomSplashScreenState extends State<CustomSplashScreen> {
             children: <Widget>[
               Container(
                 decoration: BoxDecoration(
-                  image: widget.imageBackground == null
-                      ? null
-                      : DecorationImage(
-                          fit: BoxFit.cover,
-                          image: widget.imageBackground!,
-                        ),
+                  image:
+                      widget.imageBackground == null
+                          ? null
+                          : DecorationImage(
+                            fit: BoxFit.cover,
+                            image: widget.imageBackground!,
+                          ),
                   gradient: widget.gradientBackground,
                   color: widget.backgroundColor,
                 ),
@@ -329,29 +354,28 @@ class _CustomSplashScreenState extends State<CustomSplashScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 120.0),
                     child: SizedBox(
-                        width: double.infinity,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 60.0),
-                              child: CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                radius: widget.photoSize,
-                                child: Hero(
-                                  tag: "splashscreenImage",
-                                  child: Container(child: widget.image),
-                                ),
+                      width: double.infinity,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 60.0),
+                            child: CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              radius: widget.photoSize,
+                              child: Hero(
+                                tag: "splashscreenImage",
+                                child: Container(child: widget.image),
                               ),
                             ),
-                            widget.title!,
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
-                            ),
-                            widget.loadingText!
-                          ],
-                        )),
+                          ),
+                          widget.title!,
+                          Padding(padding: const EdgeInsets.only(top: 10.0)),
+                          widget.loadingText!,
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),

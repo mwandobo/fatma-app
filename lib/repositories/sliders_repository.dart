@@ -1,19 +1,17 @@
 import 'dart:convert';
 
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/flash_deal_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/slider_response.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/api-request.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/data_model/flash_deal_response.dart';
+import 'package:active_ecommerce_flutter/data_model/slider_response.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/repositories/api-request.dart';
 
 class SlidersRepository {
   Future<SliderResponse> getSliders() async {
     String url = ("${AppConfig.BASE_URL}/sliders");
     final response = await ApiRequest.get(
       url: url,
-      headers: {
-        "App-Language": app_language.$!,
-      },
+      headers: {"App-Language": app_language.$!},
     );
     return sliderResponseFromJson(response.body);
   }
@@ -22,9 +20,7 @@ class SlidersRepository {
     String url = ("${AppConfig.BASE_URL}/banners-one");
     final response = await ApiRequest.get(
       url: url,
-      headers: {
-        "App-Language": app_language.$!,
-      },
+      headers: {"App-Language": app_language.$!},
     );
     return sliderResponseFromJson(response.body);
   }
@@ -33,9 +29,7 @@ class SlidersRepository {
     String url = ("${AppConfig.BASE_URL}/flash-deals-banners");
     final response = await ApiRequest.get(
       url: url,
-      headers: {
-        "App-Language": app_language.$!,
-      },
+      headers: {"App-Language": app_language.$!},
     );
     return sliderResponseFromJson(response.body);
   }
@@ -45,9 +39,7 @@ class SlidersRepository {
 
     final response = await ApiRequest.get(
       url: url,
-      headers: {
-        "App-Language": app_language.$!,
-      },
+      headers: {"App-Language": app_language.$!},
     );
 
     return sliderResponseFromJson(response.body);
@@ -57,9 +49,7 @@ class SlidersRepository {
     String url = ("${AppConfig.BASE_URL}/banners-three");
     final response = await ApiRequest.get(
       url: url,
-      headers: {
-        "App-Language": app_language.$!,
-      },
+      headers: {"App-Language": app_language.$!},
     );
 
     return sliderResponseFromJson(response.body);
@@ -69,9 +59,7 @@ class SlidersRepository {
     String url = ("${AppConfig.BASE_URL}/flash-deals");
     final response = await ApiRequest.get(
       url: url,
-      headers: {
-        "App-Language": app_language.$!,
-      },
+      headers: {"App-Language": app_language.$!},
     );
 
     if (response.statusCode == 200) {

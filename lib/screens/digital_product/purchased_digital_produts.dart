@@ -1,19 +1,17 @@
-import 'package:active_ecommerce_cms_demo_app/custom/lang_text.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/useful_elements.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/string_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/order_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/ui_elements/purchased_digital_product_card.dart';
+import 'package:active_ecommerce_flutter/custom/lang_text.dart';
+import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/string_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/order_repository.dart';
+import 'package:active_ecommerce_flutter/ui_elements/purchased_digital_product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class PurchasedDigitalProducts extends StatefulWidget {
-  const PurchasedDigitalProducts({
-    super.key,
-  });
+  const PurchasedDigitalProducts({super.key});
 
   @override
   _PurchasedDigitalProductsState createState() =>
@@ -47,8 +45,9 @@ class _PurchasedDigitalProductsState extends State<PurchasedDigitalProducts> {
   }
 
   fetchData() async {
-    var digitalProductRes =
-        await OrderRepository().getPurchasedDigitalProducts(page: page);
+    var digitalProductRes = await OrderRepository().getPurchasedDigitalProducts(
+      page: page,
+    );
 
     _digitalProducts.addAll(digitalProductRes.data);
     _dataFetch = true;
@@ -95,17 +94,16 @@ class _PurchasedDigitalProductsState extends State<PurchasedDigitalProducts> {
             color: Color(0xff121423),
           ),
         ),
-        SizedBox(
-          width: 37,
-        )
+        SizedBox(width: 37),
       ],
       title: Text(
         AppLocalizations.of(context)!.digital_product_ucf,
         style: TextStyle(
-            fontSize: 16,
-            fontFamily: 'Public Sans',
-            color: MyTheme.dark_font_grey,
-            fontWeight: FontWeight.bold),
+          fontSize: 16,
+          fontFamily: 'Public Sans',
+          color: MyTheme.dark_font_grey,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -114,14 +112,13 @@ class _PurchasedDigitalProductsState extends State<PurchasedDigitalProducts> {
 
   Widget body() {
     if (!_dataFetch) {
-      return ShimmerHelper()
-          .buildProductGridShimmer(scontroller: _mainScrollController);
+      return ShimmerHelper().buildProductGridShimmer(
+        scontroller: _mainScrollController,
+      );
     }
 
     if (_digitalProducts.isEmpty) {
-      return Center(
-        child: Text(LangText(context).local.no_data_is_available),
-      );
+      return Center(child: Text(LangText(context).local.no_data_is_available));
     }
     return RefreshIndicator(
       onRefresh: _onPageRefresh,

@@ -1,4 +1,4 @@
-import 'package:active_ecommerce_cms_demo_app/data_model/product_mini_response.dart';
+import 'package:active_ecommerce_flutter/data_model/product_mini_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -131,9 +131,7 @@ class _CouponsState extends State<Coupons> {
     }
 
     if (_couponsList.isEmpty) {
-      return Center(
-        child: Text(LangText(context).local.no_data_is_available),
-      );
+      return Center(child: Text(LangText(context).local.no_data_is_available));
     }
     return RefreshIndicator(
       onRefresh: _onPageRefresh,
@@ -174,9 +172,7 @@ class _CouponsState extends State<Coupons> {
                 buildCouponHeader(index),
                 SizedBox(height: 12.5),
                 MySeparator(color: Colors.white),
-                SizedBox(
-                  height: 10.5,
-                ),
+                SizedBox(height: 10.5),
                 buildProductImageList(index),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -197,21 +193,17 @@ class _CouponsState extends State<Coupons> {
                       constraints: BoxConstraints(),
                       onPressed: () {
                         Clipboard.setData(
-                                ClipboardData(text: _couponsList[index].code!))
-                            .then((_) {
+                          ClipboardData(text: _couponsList[index].code!),
+                        ).then((_) {
                           ToastComponent.showDialog(
                             LangText(context).local.copied_ucf,
                           );
                         });
                       },
-                      icon: Icon(
-                        color: Colors.white,
-                        Icons.copy,
-                        size: 15.0,
-                      ),
-                    )
+                      icon: Icon(color: Colors.white, Icons.copy, size: 15.0),
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -256,8 +248,9 @@ class _CouponsState extends State<Coupons> {
 
   Widget buildProductImageList(int index) {
     return FutureBuilder(
-      future:
-          CouponRepository().getCouponProductList(id: _couponsList[index].id!),
+      future: CouponRepository().getCouponProductList(
+        id: _couponsList[index].id!,
+      ),
       builder: (context, AsyncSnapshot<ProductMiniResponse> snapshot) {
         if (snapshot.hasError) {
           return Center(child: Text("An error occurred"));
@@ -271,11 +264,17 @@ class _CouponsState extends State<Coupons> {
           }
           return GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return CouponProducts(
-                    code: _couponsList[index].code!,
-                    id: _couponsList[index].id!);
-              }));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return CouponProducts(
+                      code: _couponsList[index].code!,
+                      id: _couponsList[index].id!,
+                    );
+                  },
+                ),
+              );
             },
             child: SizedBox(
               height: 36,
@@ -284,26 +283,26 @@ class _CouponsState extends State<Coupons> {
                 itemCount: products.length.clamp(0, 3),
                 itemBuilder: (context, i) {
                   return Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child:
-                          // Image.network(
-                          //   products[i].thumbnail_image!,
-                          //   height: 40,
-                          //   width: 40,
-                          //   fit: BoxFit.cover,
-                          // ),
-                          Container(
-                              height: 34,
-                              width: 36,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                      products[i].thumbnail_image!),
-                                  fit: BoxFit.cover,
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
-                              )));
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child:
+                    // Image.network(
+                    //   products[i].thumbnail_image!,
+                    //   height: 40,
+                    //   width: 40,
+                    //   fit: BoxFit.cover,
+                    // ),
+                    Container(
+                      height: 34,
+                      width: 36,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(products[i].thumbnail_image!),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                    ),
+                  );
                 },
               ),
             ),
@@ -330,9 +329,7 @@ class _CouponsState extends State<Coupons> {
             ),
           ),
         ),
-        Expanded(
-          child: SizedBox(),
-        ),
+        Expanded(child: SizedBox()),
         Container(
           height: 40,
           width: 20,

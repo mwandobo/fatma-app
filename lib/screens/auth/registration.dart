@@ -1,21 +1,21 @@
 import 'dart:io';
 
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/btn.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/device_info.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/google_recaptcha.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/input_decorations.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/intl_phone_input.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/other_config.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/auth_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/profile_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/auth/login.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/common_webview_screen.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/home.dart';
-import 'package:active_ecommerce_cms_demo_app/ui_elements/auth_ui.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/custom/btn.dart';
+import 'package:active_ecommerce_flutter/custom/device_info.dart';
+import 'package:active_ecommerce_flutter/custom/google_recaptcha.dart';
+import 'package:active_ecommerce_flutter/custom/input_decorations.dart';
+import 'package:active_ecommerce_flutter/custom/intl_phone_input.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/other_config.dart';
+import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
+import 'package:active_ecommerce_flutter/screens/auth/login.dart';
+import 'package:active_ecommerce_flutter/screens/common_webview_screen.dart';
+import 'package:active_ecommerce_flutter/screens/home.dart';
+import 'package:active_ecommerce_flutter/ui_elements/auth_ui.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -52,13 +52,16 @@ class _RegistrationState extends State<Registration> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _passwordConfirmController = TextEditingController();
+  final TextEditingController _passwordConfirmController =
+      TextEditingController();
 
   @override
   void initState() {
     //on Splash Screen hide statusbar
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom],
+    );
     super.initState();
     fetch_country();
   }
@@ -71,8 +74,10 @@ class _RegistrationState extends State<Registration> {
   @override
   void dispose() {
     //before going to other screen show statusbar
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
+    );
     super.dispose();
   }
 
@@ -85,14 +90,10 @@ class _RegistrationState extends State<Registration> {
     var passwordConfirm = _passwordConfirmController.text.toString();
 
     if (name == "") {
-      ToastComponent.showDialog(
-        AppLocalizations.of(context)!.enter_your_name,
-      );
+      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_your_name);
       return;
     } else if (_register_by == 'email' && (email == "" || !isEmail(email))) {
-      ToastComponent.showDialog(
-        AppLocalizations.of(context)!.enter_email,
-      );
+      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_email);
       return;
     } else if (_register_by == 'phone' && _phone == "") {
       ToastComponent.showDialog(
@@ -100,9 +101,7 @@ class _RegistrationState extends State<Registration> {
       );
       return;
     } else if (password == "") {
-      ToastComponent.showDialog(
-        AppLocalizations.of(context)!.enter_password,
-      );
+      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_password);
       return;
     } else if (passwordConfirm == "") {
       ToastComponent.showDialog(
@@ -111,8 +110,9 @@ class _RegistrationState extends State<Registration> {
       return;
     } else if (password.length < 6) {
       ToastComponent.showDialog(
-        AppLocalizations.of(context)!
-            .password_must_contain_at_least_6_characters,
+        AppLocalizations.of(
+          context,
+        )!.password_must_contain_at_least_6_characters,
       );
       return;
     } else if (password != passwordConfirm) {
@@ -123,12 +123,13 @@ class _RegistrationState extends State<Registration> {
     }
 
     var signupResponse = await AuthRepository().getSignupResponse(
-        name,
-        _register_by == 'email' ? email : _phone,
-        password,
-        passwordConfirm,
-        _register_by,
-        googleRecaptchaKey);
+      name,
+      _register_by == 'email' ? email : _phone,
+      password,
+      passwordConfirm,
+      _register_by,
+      googleRecaptchaKey,
+    );
     Loading.close();
 
     if (signupResponse.result == false) {
@@ -137,13 +138,9 @@ class _RegistrationState extends State<Registration> {
         message += value + "\n";
       });
 
-      ToastComponent.showDialog(
-        message,
-      );
+      ToastComponent.showDialog(message);
     } else {
-      ToastComponent.showDialog(
-        signupResponse.message,
-      );
+      ToastComponent.showDialog(signupResponse.message);
       AuthHelper().setUserData(signupResponse);
 
       // redirect to main
@@ -172,8 +169,8 @@ class _RegistrationState extends State<Registration> {
         print(fcmToken);
         if (is_logged_in.$ == true) {
           // update device token
-          var deviceTokenUpdateResponse =
-              await ProfileRepository().getDeviceTokenUpdateResponse(fcmToken!);
+          var deviceTokenUpdateResponse = await ProfileRepository()
+              .getDeviceTokenUpdateResponse(fcmToken!);
         }
       }
 
@@ -181,16 +178,26 @@ class _RegistrationState extends State<Registration> {
 
       if ((mail_verification_status.$ && _register_by == "email") ||
           _register_by == "phone") {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Otp(
-              // verify_by: _register_by,
-              // user_id: signupResponse.user_id,
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return Otp(
+                // verify_by: _register_by,
+                // user_id: signupResponse.user_id,
               );
-        }));
+            },
+          ),
+        );
       } else {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Home();
-        }));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return Home();
+            },
+          ),
+        );
       }
     }
   }
@@ -200,9 +207,10 @@ class _RegistrationState extends State<Registration> {
     final screen_height = MediaQuery.of(context).size.height;
     final screen_width = MediaQuery.of(context).size.width;
     return AuthScreen.buildScreen(
-        context,
-        "${AppLocalizations.of(context)!.join_ucf} ${AppConfig.app_name}",
-        buildBody(context, screen_width));
+      context,
+      "${AppLocalizations.of(context)!.join_ucf} ${AppConfig.app_name}",
+      buildBody(context, screen_width),
+    );
   }
 
   Column buildBody(BuildContext context, double screen_width) {
@@ -219,7 +227,9 @@ class _RegistrationState extends State<Registration> {
                 child: Text(
                   AppLocalizations.of(context)!.name_ucf,
                   style: TextStyle(
-                      color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                    color: MyTheme.accent_color,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               Padding(
@@ -230,7 +240,8 @@ class _RegistrationState extends State<Registration> {
                     controller: _nameController,
                     autofocus: false,
                     decoration: InputDecorations.buildInputDecoration_1(
-                        hint_text: "John Doe"),
+                      hint_text: "John Doe",
+                    ),
                   ),
                 ),
               ),
@@ -241,7 +252,9 @@ class _RegistrationState extends State<Registration> {
                       ? AppLocalizations.of(context)!.email_ucf
                       : AppLocalizations.of(context)!.phone_ucf,
                   style: TextStyle(
-                      color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                    color: MyTheme.accent_color,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               if (_register_by == "email")
@@ -256,26 +269,29 @@ class _RegistrationState extends State<Registration> {
                           controller: _emailController,
                           autofocus: false,
                           decoration: InputDecorations.buildInputDecoration_1(
-                              hint_text: "johndoe@example.com"),
+                            hint_text: "johndoe@example.com",
+                          ),
                         ),
                       ),
                       otp_addon_installed.$
                           ? GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _register_by = "phone";
-                                });
-                              },
-                              child: Text(
-                                AppLocalizations.of(context)!
-                                    .or_register_with_a_phone,
-                                style: TextStyle(
-                                    color: MyTheme.accent_color,
-                                    fontStyle: FontStyle.italic,
-                                    decoration: TextDecoration.underline),
+                            onTap: () {
+                              setState(() {
+                                _register_by = "phone";
+                              });
+                            },
+                            child: Text(
+                              AppLocalizations.of(
+                                context,
+                              )!.or_register_with_a_phone,
+                              style: TextStyle(
+                                color: MyTheme.accent_color,
+                                fontStyle: FontStyle.italic,
+                                decoration: TextDecoration.underline,
                               ),
-                            )
-                          : Container()
+                            ),
+                          )
+                          : Container(),
                     ],
                   ),
                 )
@@ -303,17 +319,21 @@ class _RegistrationState extends State<Registration> {
                           ),
                           ignoreBlank: false,
                           autoValidateMode: AutovalidateMode.disabled,
-                          selectorTextStyle:
-                              TextStyle(color: MyTheme.font_grey),
+                          selectorTextStyle: TextStyle(
+                            color: MyTheme.font_grey,
+                          ),
                           // initialValue: PhoneNumber(
                           //     isoCode: countries_code[0].toString()),
                           textFieldController: _phoneNumberController,
                           formatInput: true,
                           keyboardType: TextInputType.numberWithOptions(
-                              signed: true, decimal: true),
+                            signed: true,
+                            decimal: true,
+                          ),
                           inputDecoration:
                               InputDecorations.buildInputDecoration_phone(
-                                  hint_text: "01XXX XXX XXX"),
+                                hint_text: "01XXX XXX XXX",
+                              ),
                           onSaved: (PhoneNumber number) {
                             //print('On Saved: $number');
                           },
@@ -326,14 +346,16 @@ class _RegistrationState extends State<Registration> {
                           });
                         },
                         child: Text(
-                          AppLocalizations.of(context)!
-                              .or_register_with_an_email,
+                          AppLocalizations.of(
+                            context,
+                          )!.or_register_with_an_email,
                           style: TextStyle(
-                              color: MyTheme.accent_color,
-                              fontStyle: FontStyle.italic,
-                              decoration: TextDecoration.underline),
+                            color: MyTheme.accent_color,
+                            fontStyle: FontStyle.italic,
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -342,7 +364,9 @@ class _RegistrationState extends State<Registration> {
                 child: Text(
                   AppLocalizations.of(context)!.password_ucf,
                   style: TextStyle(
-                      color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                    color: MyTheme.accent_color,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               Padding(
@@ -359,16 +383,19 @@ class _RegistrationState extends State<Registration> {
                         enableSuggestions: false,
                         autocorrect: false,
                         decoration: InputDecorations.buildInputDecoration_1(
-                            hint_text: "• • • • • • • •"),
+                          hint_text: "• • • • • • • •",
+                        ),
                       ),
                     ),
                     Text(
-                      AppLocalizations.of(context)!
-                          .password_must_contain_at_least_6_characters,
+                      AppLocalizations.of(
+                        context,
+                      )!.password_must_contain_at_least_6_characters,
                       style: TextStyle(
-                          color: MyTheme.textfield_grey,
-                          fontStyle: FontStyle.italic),
-                    )
+                        color: MyTheme.textfield_grey,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -377,7 +404,9 @@ class _RegistrationState extends State<Registration> {
                 child: Text(
                   AppLocalizations.of(context)!.retype_password_ucf,
                   style: TextStyle(
-                      color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                    color: MyTheme.accent_color,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               Padding(
@@ -391,7 +420,8 @@ class _RegistrationState extends State<Registration> {
                     enableSuggestions: false,
                     autocorrect: false,
                     decoration: InputDecorations.buildInputDecoration_1(
-                        hint_text: "• • • • • • • •"),
+                      hint_text: "• • • • • • • •",
+                    ),
                   ),
                 ),
               ),
@@ -422,69 +452,77 @@ class _RegistrationState extends State<Registration> {
                       height: 15,
                       width: 15,
                       child: Checkbox(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6)),
-                          value: _isAgree,
-                          onChanged: (newValue) {
-                            _isAgree = newValue;
-                            setState(() {});
-                          }),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        value: _isAgree,
+                        onChanged: (newValue) {
+                          _isAgree = newValue;
+                          setState(() {});
+                        },
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: SizedBox(
                         width: DeviceInfo(context).width! - 130,
                         child: RichText(
-                            maxLines: 2,
-                            text: TextSpan(
-                                style: TextStyle(
-                                    color: MyTheme.font_grey, fontSize: 12),
-                                children: [
-                                  TextSpan(
-                                    text: "I agree to the",
-                                  ),
-                                  TextSpan(
-                                    recognizer: TapGestureRecognizer()
+                          maxLines: 2,
+                          text: TextSpan(
+                            style: TextStyle(
+                              color: MyTheme.font_grey,
+                              fontSize: 12,
+                            ),
+                            children: [
+                              TextSpan(text: "I agree to the"),
+                              TextSpan(
+                                recognizer:
+                                    TapGestureRecognizer()
                                       ..onTap = () {
                                         Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CommonWebviewScreen(
-                                                      page_name:
-                                                          "Terms Conditions",
-                                                      url:
-                                                          "${AppConfig.RAW_BASE_URL}/mobile-page/terms",
-                                                    )));
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (
+                                                  context,
+                                                ) => CommonWebviewScreen(
+                                                  page_name: "Terms Conditions",
+                                                  url:
+                                                      "${AppConfig.RAW_BASE_URL}/mobile-page/terms",
+                                                ),
+                                          ),
+                                        );
                                       },
-                                    style:
-                                        TextStyle(color: MyTheme.accent_color),
-                                    text: " Terms Conditions",
-                                  ),
-                                  TextSpan(
-                                    text: " &",
-                                  ),
-                                  TextSpan(
-                                    recognizer: TapGestureRecognizer()
+                                style: TextStyle(color: MyTheme.accent_color),
+                                text: " Terms Conditions",
+                              ),
+                              TextSpan(text: " &"),
+                              TextSpan(
+                                recognizer:
+                                    TapGestureRecognizer()
                                       ..onTap = () {
                                         Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CommonWebviewScreen(
-                                                      page_name:
-                                                          "Privacy Policy",
-                                                      url:
-                                                          "${AppConfig.RAW_BASE_URL}/mobile-page/privacy-policy",
-                                                    )));
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (
+                                                  context,
+                                                ) => CommonWebviewScreen(
+                                                  page_name: "Privacy Policy",
+                                                  url:
+                                                      "${AppConfig.RAW_BASE_URL}/mobile-page/privacy-policy",
+                                                ),
+                                          ),
+                                        );
                                       },
-                                    text: " Privacy Policy",
-                                    style:
-                                        TextStyle(color: MyTheme.accent_color),
-                                  )
-                                ])),
+                                text: " Privacy Policy",
+                                style: TextStyle(color: MyTheme.accent_color),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -497,20 +535,24 @@ class _RegistrationState extends State<Registration> {
                     height: 50,
                     color: MyTheme.accent_color,
                     shape: RoundedRectangleBorder(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(6.0))),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(6.0),
+                      ),
+                    ),
                     child: Text(
                       AppLocalizations.of(context)!.sign_up_ucf,
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600),
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                    onPressed: _isAgree!
-                        ? () {
-                            onPressSignUp();
-                          }
-                        : null,
+                    onPressed:
+                        _isAgree!
+                            ? () {
+                              onPressSignUp();
+                            }
+                            : null,
                   ),
                 ),
               ),
@@ -520,26 +562,33 @@ class _RegistrationState extends State<Registration> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Center(
-                        child: Text(
-                      AppLocalizations.of(context)!.already_have_an_account,
-                      style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
-                    )),
-                    SizedBox(
-                      width: 10,
+                      child: Text(
+                        AppLocalizations.of(context)!.already_have_an_account,
+                        style: TextStyle(
+                          color: MyTheme.font_grey,
+                          fontSize: 12,
+                        ),
+                      ),
                     ),
+                    SizedBox(width: 10),
                     InkWell(
                       child: Text(
                         AppLocalizations.of(context)!.log_in,
                         style: TextStyle(
-                            color: MyTheme.accent_color,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600),
+                          color: MyTheme.accent_color,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return Login();
-                        }));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return Login();
+                            },
+                          ),
+                        );
                       },
                     ),
                   ],
@@ -547,7 +596,7 @@ class _RegistrationState extends State<Registration> {
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

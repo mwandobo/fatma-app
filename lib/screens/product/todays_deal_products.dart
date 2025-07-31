@@ -1,9 +1,9 @@
-import 'package:active_ecommerce_cms_demo_app/data_model/product_mini_response.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/product_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/ui_elements/product_card.dart';
+import 'package:active_ecommerce_flutter/data_model/product_mini_response.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
+import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -37,17 +37,19 @@ class _TodaysDealProductsState extends State<TodaysDealProducts> {
       backgroundColor: MyTheme.mainColor,
       scrolledUnderElevation: 0.0,
       leading: Builder(
-        builder: (context) => IconButton(
-          icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        builder:
+            (context) => IconButton(
+              icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
       ),
       title: Text(
         AppLocalizations.of(context)!.todays_deal_ucf,
         style: TextStyle(
-            fontSize: 16,
-            color: MyTheme.dark_font_grey,
-            fontWeight: FontWeight.bold),
+          fontSize: 16,
+          color: MyTheme.dark_font_grey,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -64,9 +66,8 @@ class _TodaysDealProductsState extends State<TodaysDealProducts> {
           } else if (snapshot.data!.products!.isEmpty) {
             return Container(
               child: Center(
-                  child: Text(
-                AppLocalizations.of(context)!.no_data_is_available,
-              )),
+                child: Text(AppLocalizations.of(context)!.no_data_is_available),
+              ),
             );
           } else if (snapshot.hasData) {
             var productResponse = snapshot.data;
@@ -77,8 +78,12 @@ class _TodaysDealProductsState extends State<TodaysDealProducts> {
                 crossAxisSpacing: 14,
                 itemCount: productResponse!.products!.length,
                 shrinkWrap: true,
-                padding:
-                    EdgeInsets.only(top: 20.0, bottom: 10, left: 18, right: 18),
+                padding: EdgeInsets.only(
+                  top: 20.0,
+                  bottom: 10,
+                  left: 18,
+                  right: 18,
+                ),
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return ProductCard(
@@ -100,8 +105,9 @@ class _TodaysDealProductsState extends State<TodaysDealProducts> {
           }
         }
 
-        return ShimmerHelper()
-            .buildProductGridShimmer(scontroller: _scrollController);
+        return ShimmerHelper().buildProductGridShimmer(
+          scontroller: _scrollController,
+        );
       },
     );
   }

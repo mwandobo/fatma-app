@@ -1,14 +1,15 @@
-import 'package:active_ecommerce_cms_demo_app/custom/box_decorations.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
+import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerHelper {
-  Widget buildBasicShimmer(
-      {double height = double.infinity,
-      double width = double.infinity,
-      double radius = 6}) {
+  Widget buildBasicShimmer({
+    double height = double.infinity,
+    double width = double.infinity,
+    double radius = 6,
+  }) {
     return Shimmer.fromColors(
       baseColor: MyTheme.shimmer_base,
       highlightColor: MyTheme.shimmer_highlighted,
@@ -20,22 +21,23 @@ class ShimmerHelper {
     );
   }
 
-  Widget buildCircleShimmer(
-      {double height = double.infinity,
-      double? width = double.infinity,
-      BorderRadius radius = BorderRadius.zero,
-      Color color = const Color.fromARGB(255, 224, 223, 223)}) {
+  Widget buildCircleShimmer({
+    double height = double.infinity,
+    double? width = double.infinity,
+    BorderRadius radius = BorderRadius.zero,
+    Color color = const Color.fromARGB(255, 224, 223, 223),
+  }) {
     return Shimmer.fromColors(
       baseColor: color,
       highlightColor: MyTheme.shimmer_highlighted,
       child:
-          // Container(
-          //   height: height,
-          //   width: width,
-          //   decoration:
-          //       BoxDecoration(borderRadius: radius, color: MyTheme.shimmer_base),
-          // ),
-          SizedBox(
+      // Container(
+      //   height: height,
+      //   width: width,
+      //   decoration:
+      //       BoxDecoration(borderRadius: radius, color: MyTheme.shimmer_base),
+      // ),
+      SizedBox(
         width: height,
         height: width,
         child: CircularProgressIndicator(
@@ -49,19 +51,22 @@ class ShimmerHelper {
     );
   }
 
-  Widget buildBasicShimmerCustomRadius(
-      {double height = double.infinity,
-      double? width = double.infinity,
-      BorderRadius radius = BorderRadius.zero,
-      Color color = Colors.grey}) {
+  Widget buildBasicShimmerCustomRadius({
+    double height = double.infinity,
+    double? width = double.infinity,
+    BorderRadius radius = BorderRadius.zero,
+    Color color = Colors.grey,
+  }) {
     return Shimmer.fromColors(
       baseColor: color,
       highlightColor: MyTheme.shimmer_highlighted,
       child: Container(
         height: height,
         width: width,
-        decoration:
-            BoxDecoration(borderRadius: radius, color: MyTheme.shimmer_base),
+        decoration: BoxDecoration(
+          borderRadius: radius,
+          color: MyTheme.shimmer_base,
+        ),
       ),
     );
   }
@@ -75,7 +80,11 @@ class ShimmerHelper {
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.only(
-              top: 0.0, left: 16.0, right: 16.0, bottom: 16.0),
+            top: 0.0,
+            left: 16.0,
+            right: 16.0,
+            bottom: 16.0,
+          ),
           child: ShimmerHelper().buildBasicShimmer(height: item_height),
         );
       },
@@ -84,24 +93,25 @@ class ShimmerHelper {
 
   buildProductGridShimmer({scontroller, item_count = 10}) {
     return MasonryGridView.count(
-        crossAxisCount: 2,
-        mainAxisSpacing: 14,
-        crossAxisSpacing: 14,
-        itemCount: item_count,
-        shrinkWrap: true,
-        padding: EdgeInsets.only(top: 20.0, bottom: 10, left: 18, right: 18),
-        physics: NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) {
-          return Shimmer.fromColors(
-            baseColor: MyTheme.shimmer_base,
-            highlightColor: MyTheme.shimmer_highlighted,
-            child: Container(
-              height: (index + 1) % 2 != 0 ? 250 : 300,
-              width: double.infinity,
-              decoration: BoxDecorations.buildBoxDecoration_1(),
-            ),
-          );
-        });
+      crossAxisCount: 2,
+      mainAxisSpacing: 14,
+      crossAxisSpacing: 14,
+      itemCount: item_count,
+      shrinkWrap: true,
+      padding: EdgeInsets.only(top: 20.0, bottom: 10, left: 18, right: 18),
+      physics: NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: MyTheme.shimmer_base,
+          highlightColor: MyTheme.shimmer_highlighted,
+          child: Container(
+            height: (index + 1) % 2 != 0 ? 250 : 300,
+            width: double.infinity,
+            decoration: BoxDecorations.buildBoxDecoration_1(),
+          ),
+        );
+      },
+    );
   }
 
   buildCategoryCardShimmer({is_base_category}) {
@@ -114,7 +124,10 @@ class ShimmerHelper {
       ),
       itemCount: 18,
       padding: EdgeInsets.only(
-          left: 18, right: 18, bottom: is_base_category ? 30 : 0),
+        left: 18,
+        right: 18,
+        bottom: is_base_category ? 30 : 0,
+      ),
       scrollDirection: Axis.vertical,
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -132,10 +145,11 @@ class ShimmerHelper {
       itemCount: item_count,
       controller: scontroller,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          childAspectRatio: 1),
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: 1,
+      ),
       padding: EdgeInsets.all(8),
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -156,49 +170,52 @@ class ShimmerHelper {
     );
   }
 
-  buildHorizontalGridShimmerWithAxisCount(
-      {item_count = 10,
-      int crossAxisCount = 2,
-      crossAxisSpacing = 10.0,
-      mainAxisSpacing = 10.0,
-      mainAxisExtent = 100.0,
-      controller}) {
+  buildHorizontalGridShimmerWithAxisCount({
+    item_count = 10,
+    int crossAxisCount = 2,
+    crossAxisSpacing = 10.0,
+    mainAxisSpacing = 10.0,
+    mainAxisExtent = 100.0,
+    controller,
+  }) {
     return GridView.builder(
-        padding: const EdgeInsets.all(16),
-        scrollDirection: Axis.horizontal,
-        controller: controller,
-        itemCount: item_count,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount,
-            crossAxisSpacing: crossAxisSpacing,
-            mainAxisSpacing: 10,
-            mainAxisExtent: mainAxisExtent),
-        itemBuilder: (context, index) {
-          return Shimmer.fromColors(
-            baseColor: MyTheme.shimmer_base,
-            highlightColor: MyTheme.shimmer_highlighted,
-            child: Container(
-              height: 120,
-              width: double.infinity,
-              decoration: BoxDecorations.buildBoxDecoration_1(),
-            ),
-          );
-        });
+      padding: const EdgeInsets.all(16),
+      scrollDirection: Axis.horizontal,
+      controller: controller,
+      itemCount: item_count,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
+        crossAxisSpacing: crossAxisSpacing,
+        mainAxisSpacing: 10,
+        mainAxisExtent: mainAxisExtent,
+      ),
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: MyTheme.shimmer_base,
+          highlightColor: MyTheme.shimmer_highlighted,
+          child: Container(
+            height: 120,
+            width: double.infinity,
+            decoration: BoxDecorations.buildBoxDecoration_1(),
+          ),
+        );
+      },
+    );
   }
 
-  buildSeparatedHorizontalListShimmer(
-      {double separationWidth = 16.0,
-      int itemCount = 10,
-      double itemHeight = 120}) {
+  buildSeparatedHorizontalListShimmer({
+    double separationWidth = 16.0,
+    int itemCount = 10,
+    double itemHeight = 120,
+  }) {
     return ListView.separated(
       padding: const EdgeInsets.all(16.0),
-      separatorBuilder: (context, index) => SizedBox(
-        width: separationWidth,
-      ),
+      separatorBuilder: (context, index) => SizedBox(width: separationWidth),
       itemCount: itemCount,
       scrollDirection: Axis.horizontal,
-      physics:
-          const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+      physics: const BouncingScrollPhysics(
+        parent: AlwaysScrollableScrollPhysics(),
+      ),
       itemBuilder: (context, index) {
         return Shimmer.fromColors(
           baseColor: MyTheme.shimmer_base,

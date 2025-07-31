@@ -1,20 +1,20 @@
 import 'dart:convert';
 
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/address_add_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/address_delete_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/address_make_default_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/address_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/address_update_in_cart_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/address_update_location_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/address_update_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/city_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/country_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/shipping_cost_response.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/state_response.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/middlewares/banned_user.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/api-request.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/data_model/address_add_response.dart';
+import 'package:active_ecommerce_flutter/data_model/address_delete_response.dart';
+import 'package:active_ecommerce_flutter/data_model/address_make_default_response.dart';
+import 'package:active_ecommerce_flutter/data_model/address_response.dart';
+import 'package:active_ecommerce_flutter/data_model/address_update_in_cart_response.dart';
+import 'package:active_ecommerce_flutter/data_model/address_update_location_response.dart';
+import 'package:active_ecommerce_flutter/data_model/address_update_response.dart';
+import 'package:active_ecommerce_flutter/data_model/city_response.dart';
+import 'package:active_ecommerce_flutter/data_model/country_response.dart';
+import 'package:active_ecommerce_flutter/data_model/shipping_cost_response.dart';
+import 'package:active_ecommerce_flutter/data_model/state_response.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/middlewares/banned_user.dart';
+import 'package:active_ecommerce_flutter/repositories/api-request.dart';
 
 class AddressRepository {
   Future<dynamic> getAddressList() async {
@@ -33,23 +33,25 @@ class AddressRepository {
   Future<dynamic> getHomeDeliveryAddress() async {
     String url = ("${AppConfig.BASE_URL}/get-home-delivery-address");
     final response = await ApiRequest.get(
-        url: url,
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${access_token.$}",
-          "App-Language": app_language.$!,
-        },
-        middleware: BannedUser());
+      url: url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${access_token.$}",
+        "App-Language": app_language.$!,
+      },
+      middleware: BannedUser(),
+    );
     return addressResponseFromJson(response.body);
   }
 
-  Future<dynamic> getAddressAddResponse(
-      {required String address,
-      required int? country_id,
-      required int? state_id,
-      required int? city_id,
-      required String postal_code,
-      required String phone}) async {
+  Future<dynamic> getAddressAddResponse({
+    required String address,
+    required int? country_id,
+    required int? state_id,
+    required int? city_id,
+    required String postal_code,
+    required String phone,
+  }) async {
     var postBody = jsonEncode({
       "user_id": "${user_id.$}",
       "address": address,
@@ -57,7 +59,7 @@ class AddressRepository {
       "state_id": "$state_id",
       "city_id": "$city_id",
       "postal_code": postal_code,
-      "phone": phone
+      "phone": phone,
     });
 
     String url = ("${AppConfig.BASE_URL}/user/shipping/create");
@@ -66,7 +68,7 @@ class AddressRepository {
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer ${access_token.$}",
-        "App-Language": app_language.$!
+        "App-Language": app_language.$!,
       },
       body: postBody,
       middleware: BannedUser(),
@@ -74,14 +76,15 @@ class AddressRepository {
     return addressAddResponseFromJson(response.body);
   }
 
-  Future<dynamic> getAddressUpdateResponse(
-      {required int? id,
-      required String address,
-      required int? country_id,
-      required int? state_id,
-      required int? city_id,
-      required String postal_code,
-      required String phone}) async {
+  Future<dynamic> getAddressUpdateResponse({
+    required int? id,
+    required String address,
+    required int? country_id,
+    required int? state_id,
+    required int? city_id,
+    required String postal_code,
+    required String phone,
+  }) async {
     var postBody = jsonEncode({
       "id": "$id",
       "user_id": "${user_id.$}",
@@ -90,19 +93,20 @@ class AddressRepository {
       "state_id": "$state_id",
       "city_id": "$city_id",
       "postal_code": postal_code,
-      "phone": phone
+      "phone": phone,
     });
 
     String url = ("${AppConfig.BASE_URL}/user/shipping/update");
     final response = await ApiRequest.post(
-        url: url,
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${access_token.$}",
-          "App-Language": app_language.$!
-        },
-        body: postBody,
-        middleware: BannedUser());
+      url: url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${access_token.$}",
+        "App-Language": app_language.$!,
+      },
+      body: postBody,
+      middleware: BannedUser(),
+    );
     return addressUpdateResponseFromJson(response.body);
   }
 
@@ -115,59 +119,55 @@ class AddressRepository {
       "id": "$id",
       "user_id": "${user_id.$}",
       "latitude": "$latitude",
-      "longitude": "$longitude"
+      "longitude": "$longitude",
     });
 
     String url = ("${AppConfig.BASE_URL}/user/shipping/update-location");
     final response = await ApiRequest.post(
-        url: url,
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${access_token.$}",
-          "App-Language": app_language.$!
-        },
-        body: postBody,
-        middleware: BannedUser());
+      url: url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${access_token.$}",
+        "App-Language": app_language.$!,
+      },
+      body: postBody,
+      middleware: BannedUser(),
+    );
     return addressUpdateLocationResponseFromJson(response.body);
   }
 
-  Future<dynamic> getAddressMakeDefaultResponse(
-    int? id,
-  ) async {
-    var postBody = jsonEncode({
-      "id": "$id",
-    });
+  Future<dynamic> getAddressMakeDefaultResponse(int? id) async {
+    var postBody = jsonEncode({"id": "$id"});
 
     String url = ("${AppConfig.BASE_URL}/user/shipping/make_default");
     final response = await ApiRequest.post(
-        url: url,
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${access_token.$}"
-        },
-        body: postBody,
-        middleware: BannedUser());
+      url: url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${access_token.$}",
+      },
+      body: postBody,
+      middleware: BannedUser(),
+    );
     return addressMakeDefaultResponseFromJson(response.body);
   }
 
-  Future<dynamic> getAddressDeleteResponse(
-    int? id,
-  ) async {
+  Future<dynamic> getAddressDeleteResponse(int? id) async {
     String url = ("${AppConfig.BASE_URL}/user/shipping/delete/$id");
     final response = await ApiRequest.get(
-        url: url,
-        headers: {
-          "Authorization": "Bearer ${access_token.$}",
-          "App-Language": app_language.$!
-        },
-        middleware: BannedUser());
+      url: url,
+      headers: {
+        "Authorization": "Bearer ${access_token.$}",
+        "App-Language": app_language.$!,
+      },
+      middleware: BannedUser(),
+    );
 
     return addressDeleteResponseFromJson(response.body);
   }
 
   Future<dynamic> getCityListByState({state_id = 0, name = ""}) async {
-    String url =
-        ("${AppConfig.BASE_URL}/cities-by-state/$state_id?name=$name");
+    String url = ("${AppConfig.BASE_URL}/cities-by-state/$state_id?name=$name");
     final response = await ApiRequest.get(url: url, middleware: BannedUser());
     return cityResponseFromJson(response.body);
   }
@@ -191,48 +191,58 @@ class AddressRepository {
 
     String url = ("${AppConfig.BASE_URL}/shipping_cost");
     if (guest_checkout_status.$ && !is_logged_in.$) {
-      postBody = jsonEncode(
-          {"temp_user_id": temp_user_id.$, "seller_list": shipping_type});
+      postBody = jsonEncode({
+        "temp_user_id": temp_user_id.$,
+        "seller_list": shipping_type,
+      });
     } else {
-      postBody =
-          jsonEncode({"user_id": user_id.$, "seller_list": shipping_type});
+      postBody = jsonEncode({
+        "user_id": user_id.$,
+        "seller_list": shipping_type,
+      });
     }
     final response = await ApiRequest.post(
-        url: url,
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${access_token.$}",
-          "App-Language": app_language.$!,
-        },
-        body: postBody,
-        middleware: BannedUser());
+      url: url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${access_token.$}",
+        "App-Language": app_language.$!,
+      },
+      body: postBody,
+      middleware: BannedUser(),
+    );
     return shippingCostResponseFromJson(response.body);
   }
 
-  Future<dynamic> getAddressUpdateInCartResponse(
-      {int? address_id = 0, int pickup_point_id = 0}) async {
+  Future<dynamic> getAddressUpdateInCartResponse({
+    int? address_id = 0,
+    int pickup_point_id = 0,
+  }) async {
     var postBody = jsonEncode({
       "address_id": "$address_id",
       "pickup_point_id": "$pickup_point_id",
-      "user_id": "${user_id.$}"
+      "user_id": "${user_id.$}",
     });
 
     String url = ("${AppConfig.BASE_URL}/update-address-in-cart");
     final response = await ApiRequest.post(
-        url: url,
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${access_token.$}",
-          "App-Language": app_language.$!
-        },
-        body: postBody,
-        middleware: BannedUser());
+      url: url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${access_token.$}",
+        "App-Language": app_language.$!,
+      },
+      body: postBody,
+      middleware: BannedUser(),
+    );
 
     return addressUpdateInCartResponseFromJson(response.body);
   }
 
-  Future<dynamic> getShippingTypeUpdateInCartResponse(
-      {required int shipping_id, shipping_type = "home_delivery"}) async {
+  Future<dynamic> getShippingTypeUpdateInCartResponse({
+    required int shipping_id,
+    shipping_type = "home_delivery",
+  }) async {
     var postBody = jsonEncode({
       "shipping_id": "$shipping_id",
       "shipping_type": "$shipping_type",
@@ -241,14 +251,15 @@ class AddressRepository {
     String url = ("${AppConfig.BASE_URL}/update-shipping-type-in-cart");
 
     final response = await ApiRequest.post(
-        url: url,
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${access_token.$}",
-          "App-Language": app_language.$!
-        },
-        body: postBody,
-        middleware: BannedUser());
+      url: url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${access_token.$}",
+        "App-Language": app_language.$!,
+      },
+      body: postBody,
+      middleware: BannedUser(),
+    );
 
     return addressUpdateInCartResponseFromJson(response.body);
   }

@@ -2,31 +2,31 @@
 
 import 'dart:async';
 
-import 'package:active_ecommerce_cms_demo_app/custom/aiz_route.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/box_decorations.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/device_info.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/lang_text.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/auth_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/presenter/unRead_notification_counter.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/profile_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/address.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/auction/auction_products.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/blog_list_screen.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/checkout/cart.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/classified_ads/classified_ads.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/classified_ads/my_classified_ads.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/coupon/coupons.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/digital_product/digital_products.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/filter.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/product/last_view_product.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/product/top_selling_products.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/refund_request.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/settings.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/wholesales_screen.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/wishlist/widgets/page_animation.dart';
+import 'package:active_ecommerce_flutter/custom/aiz_route.dart';
+import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
+import 'package:active_ecommerce_flutter/custom/device_info.dart';
+import 'package:active_ecommerce_flutter/custom/lang_text.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/helpers/auth_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/presenter/unRead_notification_counter.dart';
+import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
+import 'package:active_ecommerce_flutter/screens/address.dart';
+import 'package:active_ecommerce_flutter/screens/auction/auction_products.dart';
+import 'package:active_ecommerce_flutter/screens/blog_list_screen.dart';
+import 'package:active_ecommerce_flutter/screens/checkout/cart.dart';
+import 'package:active_ecommerce_flutter/screens/classified_ads/classified_ads.dart';
+import 'package:active_ecommerce_flutter/screens/classified_ads/my_classified_ads.dart';
+import 'package:active_ecommerce_flutter/screens/coupon/coupons.dart';
+import 'package:active_ecommerce_flutter/screens/digital_product/digital_products.dart';
+import 'package:active_ecommerce_flutter/screens/filter.dart';
+import 'package:active_ecommerce_flutter/screens/product/last_view_product.dart';
+import 'package:active_ecommerce_flutter/screens/product/top_selling_products.dart';
+import 'package:active_ecommerce_flutter/screens/refund_request.dart';
+import 'package:active_ecommerce_flutter/screens/settings.dart';
+import 'package:active_ecommerce_flutter/screens/wholesales_screen.dart';
+import 'package:active_ecommerce_flutter/screens/wishlist/widgets/page_animation.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -118,12 +118,18 @@ class _ProfileState extends State<Profile> {
     _wishlistCounter = profileCountersResponse.wishlist_item_count;
     _orderCounter = profileCountersResponse.order_count;
 
-    _cartCounterString =
-        counterText(_cartCounter.toString(), default_length: 2);
-    _wishlistCounterString =
-        counterText(_wishlistCounter.toString(), default_length: 2);
-    _orderCounterString =
-        counterText(_orderCounter.toString(), default_length: 2);
+    _cartCounterString = counterText(
+      _cartCounter.toString(),
+      default_length: 2,
+    );
+    _wishlistCounterString = counterText(
+      _wishlistCounter.toString(),
+      default_length: 2,
+    );
+    _orderCounterString = counterText(
+      _orderCounter.toString(),
+      default_length: 2,
+    );
 
     setState(() {});
   }
@@ -197,13 +203,12 @@ class _ProfileState extends State<Profile> {
       child: Stack(
         children: [
           Container(
-              height: DeviceInfo(context).height! / 1.6,
-              width: DeviceInfo(context).width,
-              color: MyTheme.accent_color,
-              alignment: Alignment.topRight,
-              child: Image.asset(
-                "assets/background_1.png",
-              )),
+            height: DeviceInfo(context).height! / 1.6,
+            width: DeviceInfo(context).width,
+            color: MyTheme.accent_color,
+            alignment: Alignment.topRight,
+            child: Image.asset("assets/background_1.png"),
+          ),
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: buildCustomAppBar(context),
@@ -227,8 +232,9 @@ class _ProfileState extends State<Profile> {
   CustomScrollView buildBodyChildren() {
     return CustomScrollView(
       controller: _mainScrollController,
-      physics:
-          const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+      physics: const BouncingScrollPhysics(
+        parent: AlwaysScrollableScrollPhysics(),
+      ),
       slivers: [
         SliverList(
           delegate: SliverChildListDelegate([
@@ -249,7 +255,7 @@ class _ProfileState extends State<Profile> {
               child: buildBottomVerticalCardList(),
             ),
           ]),
-        )
+        ),
       ],
     );
   }
@@ -268,14 +274,11 @@ class _ProfileState extends State<Profile> {
                   margin: EdgeInsets.only(right: 18),
                   height: 30,
                   child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.close,
-                        color: MyTheme.white,
-                        size: 20,
-                      )),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(Icons.close, color: MyTheme.white, size: 20),
+                  ),
                 ),
               ),
 
@@ -306,33 +309,30 @@ class _ProfileState extends State<Profile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 buildBottomVerticalCardListItem(
-                    "assets/coupon.png", LangText(context).local.coupons_ucf,
-                    onPressed: () {}),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
+                  "assets/coupon.png",
+                  LangText(context).local.coupons_ucf,
+                  onPressed: () {},
                 ),
-                buildBottomVerticalCardListItem("assets/favoriteseller.png",
-                    LangText(context).local.favorite_seller_ucf,
-                    onPressed: () {}),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
+                Divider(thickness: 1, color: MyTheme.light_grey),
+                buildBottomVerticalCardListItem(
+                  "assets/favoriteseller.png",
+                  LangText(context).local.favorite_seller_ucf,
+                  onPressed: () {},
                 ),
+                Divider(thickness: 1, color: MyTheme.light_grey),
               ],
             ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildBottomVerticalCardListItem("assets/products.png",
-                  LangText(context).local.top_selling_products_ucf,
-                  onPressed: () {
-                AIZRoute.push(context, TopSellingProducts());
-              }),
-              Divider(
-                thickness: 1,
-                color: MyTheme.light_grey,
+              buildBottomVerticalCardListItem(
+                "assets/products.png",
+                LangText(context).local.top_selling_products_ucf,
+                onPressed: () {
+                  AIZRoute.push(context, TopSellingProducts());
+                },
               ),
+              Divider(thickness: 1, color: MyTheme.light_grey),
             ],
           ),
           if (whole_sale_addon_installed.$)
@@ -340,121 +340,150 @@ class _ProfileState extends State<Profile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 buildBottomVerticalCardListItem(
-                    "assets/wholesale.png", 'Wholesale', onPressed: () {
-                  Navigator.push(
+                  "assets/wholesale.png",
+                  'Wholesale',
+                  onPressed: () {
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => WholesalesScreen()));
-                }),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
+                        builder: (context) => WholesalesScreen(),
+                      ),
+                    );
+                  },
                 ),
+                Divider(thickness: 1, color: MyTheme.light_grey),
               ],
             ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildBottomVerticalCardListItem("assets/blog.png", 'Blog List',
-                  onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => BlogListScreen()));
-              }),
-              Divider(
-                thickness: 1,
-                color: MyTheme.light_grey,
+              buildBottomVerticalCardListItem(
+                "assets/blog.png",
+                'Blog List',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => BlogListScreen()),
+                  );
+                },
               ),
+              Divider(thickness: 1, color: MyTheme.light_grey),
             ],
           ),
 
-          buildBottomVerticalCardListItem("assets/download.png",
-              LangText(context).local.all_digital_products_ucf, onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return DigitalProducts();
-            }));
-          }),
-          Divider(
-            thickness: 1,
-            color: MyTheme.light_grey,
+          buildBottomVerticalCardListItem(
+            "assets/download.png",
+            LangText(context).local.all_digital_products_ucf,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return DigitalProducts();
+                  },
+                ),
+              );
+            },
           ),
+          Divider(thickness: 1, color: MyTheme.light_grey),
 
           buildBottomVerticalCardListItem(
-              "assets/coupon.png", LangText(context).local.coupons_ucf,
-              onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return Coupons();
-            }));
-          }),
-          Divider(
-            thickness: 1,
-            color: MyTheme.light_grey,
+            "assets/coupon.png",
+            LangText(context).local.coupons_ucf,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return Coupons();
+                  },
+                ),
+              );
+            },
           ),
+          Divider(thickness: 1, color: MyTheme.light_grey),
 
           // this is addon
           if (false)
             Column(
               children: [
-                buildBottomVerticalCardListItem("assets/auction.png",
-                    LangText(context).local.on_auction_products_ucf,
-                    onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return AuctionProducts();
-                  }));
-                }),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
+                buildBottomVerticalCardListItem(
+                  "assets/auction.png",
+                  LangText(context).local.on_auction_products_ucf,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return AuctionProducts();
+                        },
+                      ),
+                    );
+                  },
                 ),
+                Divider(thickness: 1, color: MyTheme.light_grey),
               ],
             ),
           if (classified_product_status.$)
             Column(
               children: [
                 buildBottomVerticalCardListItem(
-                    "assets/my_clissified.png", 'My Classified Ads',
-                    onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return MyClassifiedAds();
-                  }));
-                }),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
+                  "assets/my_clissified.png",
+                  'My Classified Ads',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return MyClassifiedAds();
+                        },
+                      ),
+                    );
+                  },
                 ),
+                Divider(thickness: 1, color: MyTheme.light_grey),
               ],
             ),
-/////
+          /////
           if (classified_product_status.$)
             Column(
               children: [
                 buildBottomVerticalCardListItem(
-                    "assets/classified_product.png", 'All Classified Ads',
-                    onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ClassifiedAds();
-                  }));
-                }),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
+                  "assets/classified_product.png",
+                  'All Classified Ads',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ClassifiedAds();
+                        },
+                      ),
+                    );
+                  },
                 ),
+                Divider(thickness: 1, color: MyTheme.light_grey),
               ],
             ),
 
           if (last_viewed_product_status.$ && is_logged_in.$)
             Column(
               children: [
-                buildBottomVerticalCardListItem("assets/last_view_product.png",
-                    LangText(context).local.last_view_product_ucf,
-                    onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return LastViewProduct();
-                  }));
-                }),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
+                buildBottomVerticalCardListItem(
+                  "assets/last_view_product.png",
+                  LangText(context).local.last_view_product_ucf,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return LastViewProduct();
+                        },
+                      ),
+                    );
+                  },
                 ),
+                Divider(thickness: 1, color: MyTheme.light_grey),
               ],
             ),
 
@@ -462,28 +491,33 @@ class _ProfileState extends State<Profile> {
           if (false)
             Column(
               children: [
-                buildBottomVerticalCardListItem("assets/auction.png",
-                    LangText(context).local.on_auction_products_ucf,
-                    onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return AuctionProducts();
-                  }));
-                }),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
+                buildBottomVerticalCardListItem(
+                  "assets/auction.png",
+                  LangText(context).local.on_auction_products_ucf,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return AuctionProducts();
+                        },
+                      ),
+                    );
+                  },
                 ),
+                Divider(thickness: 1, color: MyTheme.light_grey),
               ],
             ),
           if (auction_addon_installed.$)
             Column(
               children: [
                 Container(
-                  height: _auctionExpand
-                      ? is_logged_in.$
-                          ? 140
-                          : 77
-                      : 40,
+                  height:
+                      _auctionExpand
+                          ? is_logged_in.$
+                              ? 140
+                              : 77
+                          : 40,
                   alignment: Alignment.topCenter,
                   padding: const EdgeInsets.only(top: 10.0),
                   child: InkWell(
@@ -510,8 +544,9 @@ class _ProfileState extends State<Profile> {
                                 Text(
                                   LangText(context).local.auction_ucf,
                                   style: TextStyle(
-                                      fontSize: 12,
-                                      color: MyTheme.dark_font_grey),
+                                    fontSize: 12,
+                                    color: MyTheme.dark_font_grey,
+                                  ),
                                 ),
                               ],
                             ),
@@ -521,12 +556,10 @@ class _ProfileState extends State<Profile> {
                                   : Icons.navigate_next_rounded,
                               size: 20,
                               color: MyTheme.dark_font_grey,
-                            )
+                            ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
                         Visibility(
                           visible: _auctionExpand,
                           child: Container(
@@ -537,11 +570,12 @@ class _ProfileState extends State<Profile> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 GestureDetector(
-                                  onTap: () => OneContext().push(
-                                    MaterialPageRoute(
-                                      builder: (_) => AuctionProducts(),
-                                    ),
-                                  ),
+                                  onTap:
+                                      () => OneContext().push(
+                                        MaterialPageRoute(
+                                          builder: (_) => AuctionProducts(),
+                                        ),
+                                      ),
                                   child: Row(
                                     children: [
                                       Text(
@@ -560,19 +594,19 @@ class _ProfileState extends State<Profile> {
                                     ],
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
+                                const SizedBox(height: 20),
                                 if (is_logged_in.$)
                                   Column(
                                     children: [
                                       GestureDetector(
-                                        onTap: () => OneContext().push(
-                                          MaterialPageRoute(
-                                            builder: (_) =>
-                                                AuctionBiddedProducts(),
-                                          ),
-                                        ),
+                                        onTap:
+                                            () => OneContext().push(
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (_) =>
+                                                        AuctionBiddedProducts(),
+                                              ),
+                                            ),
                                         child: Row(
                                           children: [
                                             Text(
@@ -591,16 +625,16 @@ class _ProfileState extends State<Profile> {
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
+                                      const SizedBox(height: 20),
                                       GestureDetector(
-                                        onTap: () => OneContext().push(
-                                          MaterialPageRoute(
-                                            builder: (_) =>
-                                                AuctionPurchaseHistory(),
-                                          ),
-                                        ),
+                                        onTap:
+                                            () => OneContext().push(
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (_) =>
+                                                        AuctionPurchaseHistory(),
+                                              ),
+                                            ),
                                         child: Row(
                                           children: [
                                             Text(
@@ -624,50 +658,53 @@ class _ProfileState extends State<Profile> {
                               ],
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
                 ),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
-                ),
+                Divider(thickness: 1, color: MyTheme.light_grey),
               ],
             ),
           if (vendor_system.$)
             Column(
               children: [
-                buildBottomVerticalCardListItem("assets/shop.png",
-                    LangText(context).local.browse_all_sellers_ucf,
-                    onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return Filter(
-                      selected_filter: "sellers",
+                buildBottomVerticalCardListItem(
+                  "assets/shop.png",
+                  LangText(context).local.browse_all_sellers_ucf,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return Filter(selected_filter: "sellers");
+                        },
+                      ),
                     );
-                  }));
-                }),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
+                  },
                 ),
+                Divider(thickness: 1, color: MyTheme.light_grey),
               ],
             ),
 
           if (is_logged_in.$ && (vendor_system.$))
             Column(
               children: [
-                buildBottomVerticalCardListItem("assets/follow_seller.png",
-                    LangText(context).local.followed_sellers_ucf,
-                    onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return FollowedSellers();
-                  }));
-                }),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
+                buildBottomVerticalCardListItem(
+                  "assets/follow_seller.png",
+                  LangText(context).local.followed_sellers_ucf,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return FollowedSellers();
+                        },
+                      ),
+                    );
+                  },
                 ),
+                Divider(thickness: 1, color: MyTheme.light_grey),
               ],
             ),
 
@@ -697,16 +734,21 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  SizedBox buildBottomVerticalCardListItem(String img, String label,
-      {Function()? onPressed, bool isDisable = false}) {
+  SizedBox buildBottomVerticalCardListItem(
+    String img,
+    String label, {
+    Function()? onPressed,
+    bool isDisable = false,
+  }) {
     return SizedBox(
       height: 40,
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-            splashFactory: NoSplash.splashFactory,
-            alignment: Alignment.center,
-            padding: EdgeInsets.zero),
+          splashFactory: NoSplash.splashFactory,
+          alignment: Alignment.center,
+          padding: EdgeInsets.zero,
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -722,8 +764,9 @@ class _ProfileState extends State<Profile> {
             Text(
               label,
               style: TextStyle(
-                  fontSize: 12,
-                  color: isDisable ? MyTheme.grey_153 : MyTheme.dark_font_grey),
+                fontSize: 12,
+                color: isDisable ? MyTheme.grey_153 : MyTheme.dark_font_grey,
+              ),
             ),
           ],
         ),
@@ -739,22 +782,31 @@ class _ProfileState extends State<Profile> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          buildHorizontalSettingItem(true, "assets/language.png",
-              AppLocalizations.of(context)!.language_ucf, () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return ChangeLanguage();
-                },
-              ),
-            );
-          }),
+          buildHorizontalSettingItem(
+            true,
+            "assets/language.png",
+            AppLocalizations.of(context)!.language_ucf,
+            () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ChangeLanguage();
+                  },
+                ),
+              );
+            },
+          ),
           InkWell(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return CurrencyChange();
-              }));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return CurrencyChange();
+                  },
+                ),
+              );
             },
             child: Column(
               children: [
@@ -764,54 +816,59 @@ class _ProfileState extends State<Profile> {
                   width: 16,
                   color: MyTheme.white,
                 ),
-                SizedBox(
-                  height: 5,
-                ),
+                SizedBox(height: 5),
                 Text(
                   AppLocalizations.of(context)!.currency_ucf,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: 10,
-                      color: MyTheme.white,
-                      fontWeight: FontWeight.w500),
-                )
+                    fontSize: 10,
+                    color: MyTheme.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ],
             ),
           ),
           buildHorizontalSettingItem(
-              is_logged_in.$,
-              "assets/edit.png",
-              AppLocalizations.of(context)!.edit_profile_ucf,
-              is_logged_in.$
-                  ? () {
-                      AIZRoute.push(context, ProfileEdit()).then((value) {
-                        //onPopped(value);
-                      });
-                    }
-                  : () => showLoginWarning()),
+            is_logged_in.$,
+            "assets/edit.png",
+            AppLocalizations.of(context)!.edit_profile_ucf,
+            is_logged_in.$
+                ? () {
+                  AIZRoute.push(context, ProfileEdit()).then((value) {
+                    //onPopped(value);
+                  });
+                }
+                : () => showLoginWarning(),
+          ),
           buildHorizontalSettingItem(
-              is_logged_in.$,
-              "assets/location.png",
-              AppLocalizations.of(context)!.address_ucf,
-              is_logged_in.$
-                  ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return Address();
-                          },
-                        ),
-                      );
-                    }
-                  : () => showLoginWarning()),
+            is_logged_in.$,
+            "assets/location.png",
+            AppLocalizations.of(context)!.address_ucf,
+            is_logged_in.$
+                ? () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return Address();
+                      },
+                    ),
+                  );
+                }
+                : () => showLoginWarning(),
+          ),
         ],
       ),
     );
   }
 
   InkWell buildHorizontalSettingItem(
-      bool isLogin, String img, String text, Function() onTap) {
+    bool isLogin,
+    String img,
+    String text,
+    Function() onTap,
+  ) {
     return InkWell(
       onTap: onTap,
       child: Column(
@@ -822,17 +879,16 @@ class _ProfileState extends State<Profile> {
             width: 16,
             color: isLogin ? MyTheme.white : MyTheme.blue_grey,
           ),
-          SizedBox(
-            height: 5,
-          ),
+          SizedBox(height: 5),
           Text(
             text,
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 10,
-                color: isLogin ? MyTheme.white : MyTheme.blue_grey,
-                fontWeight: FontWeight.w500),
-          )
+              fontSize: 10,
+              color: isLogin ? MyTheme.white : MyTheme.blue_grey,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ],
       ),
     );
@@ -846,30 +902,34 @@ class _ProfileState extends State<Profile> {
 
   deleteWarningDialog() {
     return showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text(
-                LangText(context).local.delete_account_warning_title,
-                style: TextStyle(fontSize: 15, color: MyTheme.dark_font_grey),
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: Text(
+              LangText(context).local.delete_account_warning_title,
+              style: TextStyle(fontSize: 15, color: MyTheme.dark_font_grey),
+            ),
+            content: Text(
+              LangText(context).local.delete_account_warning_description,
+              style: TextStyle(fontSize: 13, color: MyTheme.dark_font_grey),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  pop(context);
+                },
+                child: Text(LangText(context).local.no_ucf),
               ),
-              content: Text(
-                LangText(context).local.delete_account_warning_description,
-                style: TextStyle(fontSize: 13, color: MyTheme.dark_font_grey),
+              TextButton(
+                onPressed: () {
+                  pop(context);
+                  deleteAccountReq();
+                },
+                child: Text(LangText(context).local.yes_ucf),
               ),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      pop(context);
-                    },
-                    child: Text(LangText(context).local.no_ucf)),
-                TextButton(
-                    onPressed: () {
-                      pop(context);
-                      deleteAccountReq();
-                    },
-                    child: Text(LangText(context).local.yes_ucf))
-              ],
-            ));
+            ],
+          ),
+    );
   }
 
   Widget buildSettingAndAddonsHorizontalMenu() {
@@ -879,7 +939,9 @@ class _ProfileState extends State<Profile> {
       width: DeviceInfo(context).width,
       height: 208,
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(6)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(6),
+      ),
       child: GridView(
         scrollDirection: Axis.horizontal,
         physics: const PageScrollPhysics(),
@@ -894,39 +956,44 @@ class _ProfileState extends State<Profile> {
           if (wallet_system_status.$)
             Container(
               child: buildSettingAndAddonsHorizontalMenuItem(
-                  "assets/wallet.png",
-                  AppLocalizations.of(context)!.my_wallet_ucf, () {
-                Navigator.push(context, PageAnimation.fadeRoute(Wallet()));
-              }),
+                "assets/wallet.png",
+                AppLocalizations.of(context)!.my_wallet_ucf,
+                () {
+                  Navigator.push(context, PageAnimation.fadeRoute(Wallet()));
+                },
+              ),
             ),
           buildSettingAndAddonsHorizontalMenuItem(
-              "assets/orders.png",
-              AppLocalizations.of(context)!.orders_ucf,
-              is_logged_in.$
-                  ? () {
-                      Navigator.push(
-                          context, PageAnimation.fadeRoute(OrderList()));
-                    }
-                  : () => null),
+            "assets/orders.png",
+            AppLocalizations.of(context)!.orders_ucf,
+            is_logged_in.$
+                ? () {
+                  Navigator.push(context, PageAnimation.fadeRoute(OrderList()));
+                }
+                : () => null,
+          ),
           buildSettingAndAddonsHorizontalMenuItem(
-              "assets/heart.png",
-              AppLocalizations.of(context)!.my_wishlist_ucf,
-              is_logged_in.$
-                  ? () {
-                      Navigator.push(
-                          context, PageAnimation.fadeRoute(Wishlist()));
-                    }
-                  : () => null),
+            "assets/heart.png",
+            AppLocalizations.of(context)!.my_wishlist_ucf,
+            is_logged_in.$
+                ? () {
+                  Navigator.push(context, PageAnimation.fadeRoute(Wishlist()));
+                }
+                : () => null,
+          ),
           if (club_point_addon_installed.$)
             buildSettingAndAddonsHorizontalMenuItem(
-                "assets/points.png",
-                AppLocalizations.of(context)!.club_point_ucf,
-                is_logged_in.$
-                    ? () {
-                        Navigator.push(
-                            context, PageAnimation.fadeRoute(Clubpoint()));
-                      }
-                    : () => null),
+              "assets/points.png",
+              AppLocalizations.of(context)!.club_point_ucf,
+              is_logged_in.$
+                  ? () {
+                    Navigator.push(
+                      context,
+                      PageAnimation.fadeRoute(Clubpoint()),
+                    );
+                  }
+                  : () => null,
+            ),
           Container(
             child: badges.Badge(
               position: badges.BadgePosition.topEnd(top: 8, end: 20),
@@ -945,70 +1012,87 @@ class _ProfileState extends State<Profile> {
                 },
               ),
               child: buildSettingAndAddonsHorizontalMenuItem(
-                  "assets/notification.png",
-                  "Notifications",
-                  is_logged_in.$
-                      ? () {
-                          Navigator.push(context,
-                                  PageAnimation.fadeRoute(NotificationList()))
-                              .then((value) {
-                            onPopped(value);
-                          });
-                        }
-                      : () => null),
+                "assets/notification.png",
+                "Notifications",
+                is_logged_in.$
+                    ? () {
+                      Navigator.push(
+                        context,
+                        PageAnimation.fadeRoute(NotificationList()),
+                      ).then((value) {
+                        onPopped(value);
+                      });
+                    }
+                    : () => null,
+              ),
             ),
           ),
           if (refund_addon_installed.$)
             buildSettingAndAddonsHorizontalMenuItem(
-                "assets/refund.png",
-                AppLocalizations.of(context)!.refund_requests_ucf,
-                is_logged_in.$
-                    ? () {
-                        Navigator.push(
-                            context, PageAnimation.fadeRoute(RefundRequest()));
-                      }
-                    : () => null),
+              "assets/refund.png",
+              AppLocalizations.of(context)!.refund_requests_ucf,
+              is_logged_in.$
+                  ? () {
+                    Navigator.push(
+                      context,
+                      PageAnimation.fadeRoute(RefundRequest()),
+                    );
+                  }
+                  : () => null,
+            ),
           if (conversation_system_status.$)
             buildSettingAndAddonsHorizontalMenuItem(
-                "assets/messages.png",
-                AppLocalizations.of(context)!.messages_ucf,
-                is_logged_in.$
-                    ? () {
-                        Navigator.push(
-                            context, PageAnimation.fadeRoute(MessengerList()));
-                      }
-                    : () => null),
+              "assets/messages.png",
+              AppLocalizations.of(context)!.messages_ucf,
+              is_logged_in.$
+                  ? () {
+                    Navigator.push(
+                      context,
+                      PageAnimation.fadeRoute(MessengerList()),
+                    );
+                  }
+                  : () => null,
+            ),
           // if (auction_addon_installed.$)
           if (false)
             if (classified_product_status.$)
               buildSettingAndAddonsHorizontalMenuItem(
-                  "assets/classified_product.png",
-                  AppLocalizations.of(context)!.classified_products,
-                  is_logged_in.$
-                      ? () {
-                          Navigator.push(context,
-                              PageAnimation.fadeRoute(MyClassifiedAds()));
-                        }
-                      : () => null),
+                "assets/classified_product.png",
+                AppLocalizations.of(context)!.classified_products,
+                is_logged_in.$
+                    ? () {
+                      Navigator.push(
+                        context,
+                        PageAnimation.fadeRoute(MyClassifiedAds()),
+                      );
+                    }
+                    : () => null,
+              ),
 
           buildSettingAndAddonsHorizontalMenuItem(
-              "assets/download.png",
-              AppLocalizations.of(context)!.downloads_ucf,
-              is_logged_in.$
-                  ? () {
-                      Navigator.push(context,
-                          PageAnimation.fadeRoute(PurchasedDigitalProducts()));
-                    }
-                  : () => null),
+            "assets/download.png",
+            AppLocalizations.of(context)!.downloads_ucf,
+            is_logged_in.$
+                ? () {
+                  Navigator.push(
+                    context,
+                    PageAnimation.fadeRoute(PurchasedDigitalProducts()),
+                  );
+                }
+                : () => null,
+          ),
           buildSettingAndAddonsHorizontalMenuItem(
-              "assets/upload.png",
-              "Upload file",
-              is_logged_in.$
-                  ? () {
-                      Navigator.push(
-                          context, PageAnimation.fadeRoute(UploadFile()));
-                    }
-                  : () => null),
+            "assets/upload.png",
+            "Upload file",
+            is_logged_in.$
+                ? () {
+                  Navigator.push(
+                    context,
+                    PageAnimation.fadeRoute(UploadFile()),
+                  );
+                }
+                : () => null,
+          ),
           // notification and badge contents
         ],
       ),
@@ -1016,17 +1100,21 @@ class _ProfileState extends State<Profile> {
   }
 
   Container buildSettingAndAddonsHorizontalMenuItem(
-      String img, String text, Function() onTap) {
+    String img,
+    String text,
+    Function() onTap,
+  ) {
     return Container(
       alignment: Alignment.center,
       //color: Colors.red,
       // width: DeviceInfo(context).width / 4,
       child: InkWell(
-        onTap: is_logged_in.$
-            ? onTap
-            : () {
-                showLoginWarning();
-              },
+        onTap:
+            is_logged_in.$
+                ? onTap
+                : () {
+                  showLoginWarning();
+                },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -1034,23 +1122,24 @@ class _ProfileState extends State<Profile> {
               img,
               width: 16,
               height: 16,
-              color: is_logged_in.$
-                  ? MyTheme.dark_font_grey
-                  : MyTheme.medium_grey_50,
+              color:
+                  is_logged_in.$
+                      ? MyTheme.dark_font_grey
+                      : MyTheme.medium_grey_50,
             ),
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 10),
             Text(
               text,
               textAlign: TextAlign.center,
               maxLines: 1,
               style: TextStyle(
-                  color: is_logged_in.$
-                      ? MyTheme.dark_font_grey
-                      : MyTheme.medium_grey_50,
-                  fontSize: 11.5),
-            )
+                color:
+                    is_logged_in.$
+                        ? MyTheme.dark_font_grey
+                        : MyTheme.medium_grey_50,
+                fontSize: 11.5,
+              ),
+            ),
           ],
         ),
       ),
@@ -1063,7 +1152,7 @@ class _ProfileState extends State<Profile> {
       children: [
         buildCountersRowItem(
           _cartCounterString,
-          AppLocalizations.of(context)!.in_your_cart_all_lower
+          AppLocalizations.of(context)!.in_your_cart_all_lower,
         ),
         buildCountersRowItem(
           _wishlistCounterString,
@@ -1077,7 +1166,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget buildCountersRowItem(String counter, String title,) {
+  Widget buildCountersRowItem(String counter, String title) {
     return Container(
       margin: EdgeInsets.only(top: 20),
       padding: EdgeInsets.symmetric(vertical: 14),
@@ -1093,20 +1182,13 @@ class _ProfileState extends State<Profile> {
             counter,
             maxLines: 2,
             style: TextStyle(
-                fontSize: 18,
-                color: MyTheme.dark_font_grey,
-                fontWeight: FontWeight.bold),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Text(
-            title,
-            maxLines: 2,
-            style: TextStyle(
-              color: Color(0xff3E4447),
+              fontSize: 18,
+              color: MyTheme.dark_font_grey,
+              fontWeight: FontWeight.bold,
             ),
           ),
+          SizedBox(height: 5),
+          Text(title, maxLines: 2, style: TextStyle(color: Color(0xff3E4447))),
         ],
       ),
     );
@@ -1139,69 +1221,78 @@ class _ProfileState extends State<Profile> {
                 border: Border.all(color: MyTheme.white, width: 1),
                 //shape: BoxShape.rectangle,
               ),
-              child: is_logged_in.$
-                  ? ClipRRect(
-                      clipBehavior: Clip.hardEdge,
-                      borderRadius: BorderRadius.all(Radius.circular(100.0)),
-                      child: FadeInImage.assetNetwork(
-                        placeholder: 'assets/placeholder.png',
-                        image: "${avatar_original.$}",
-                        fit: BoxFit.fill,
-                      ))
-                  : Image.asset(
-                      'assets/profile_placeholder.png',
-                      height: 48,
-                      width: 48,
-                      fit: BoxFit.fitHeight,
-                    ),
+              child:
+                  is_logged_in.$
+                      ? ClipRRect(
+                        clipBehavior: Clip.hardEdge,
+                        borderRadius: BorderRadius.all(Radius.circular(100.0)),
+                        child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/placeholder.png',
+                          image: "${avatar_original.$}",
+                          fit: BoxFit.fill,
+                        ),
+                      )
+                      : Image.asset(
+                        'assets/profile_placeholder.png',
+                        height: 48,
+                        width: 48,
+                        fit: BoxFit.fitHeight,
+                      ),
             ),
           ),
           buildUserInfo(),
           Spacer(),
-       
-       GestureDetector(
-  child: Icon(
-    is_logged_in.$ ? Icons.logout : Icons.login,
-    color: Colors.white,
-    size: 25,
-  ),
-  onTap: () {
-    if (is_logged_in.$) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(backgroundColor: Colors.white,
-            title: Text("Logout"),
-            content: Text("Are you sure you want to logout?"),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close dialog
-                },
-                child: Text("Cancel"),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close dialog
-                  AuthHelper().clearUserData();
-                  context.go("/"); // Navigate after logout
-                },
-                child: Text("OK"),
-              ),
-            ],
-          );
-        },
-      );
-    } else {
-      context.push("/users/login");
-    }
-  },
-),
 
-          
-            is_logged_in.$? IconButton(onPressed: (){
-            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Settings()));
-          }, icon: Icon(Icons.settings,color: Colors.white,)):SizedBox(),
+          GestureDetector(
+            child: Icon(
+              is_logged_in.$ ? Icons.logout : Icons.login,
+              color: Colors.white,
+              size: 25,
+            ),
+            onTap: () {
+              if (is_logged_in.$) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: Colors.white,
+                      title: Text("Logout"),
+                      content: Text("Are you sure you want to logout?"),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Close dialog
+                          },
+                          child: Text("Cancel"),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Close dialog
+                            AuthHelper().clearUserData();
+                            context.go("/"); // Navigate after logout
+                          },
+                          child: Text("OK"),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              } else {
+                context.push("/users/login");
+              }
+            },
+          ),
+
+          is_logged_in.$
+              ? IconButton(
+                onPressed: () {
+                  Navigator.of(
+                    context,
+                  ).push(MaterialPageRoute(builder: (context) => Settings()));
+                },
+                icon: Icon(Icons.settings, color: Colors.white),
+              )
+              : SizedBox(),
         ],
       ),
     );
@@ -1210,51 +1301,56 @@ class _ProfileState extends State<Profile> {
   Widget buildUserInfo() {
     return is_logged_in.$
         ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "${user_name.$}",
-                style: TextStyle(
-                    fontSize: 14,
-                    color: MyTheme.white,
-                    fontWeight: FontWeight.w600),
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
-                  child: Text(
-                    //if user email is not available then check user phone if user phone is not available use empty string
-                    user_email.$ != "" ? user_email.$ : user_phone.$ != "" ? user_phone.$ : '',
-                    style: TextStyle(
-                      color: MyTheme.light_grey,
-                    ),
-                  )),
-            ],
-          )
-        : Text(
-            LangText(context).local.login_or_reg,
-            style: TextStyle(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "${user_name.$}",
+              style: TextStyle(
                 fontSize: 14,
                 color: MyTheme.white,
-                fontWeight: FontWeight.bold),
-          );
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: Text(
+                //if user email is not available then check user phone if user phone is not available use empty string
+                user_email.$ != ""
+                    ? user_email.$
+                    : user_phone.$ != ""
+                    ? user_phone.$
+                    : '',
+                style: TextStyle(color: MyTheme.light_grey),
+              ),
+            ),
+          ],
+        )
+        : Text(
+          LangText(context).local.login_or_reg,
+          style: TextStyle(
+            fontSize: 14,
+            color: MyTheme.white,
+            fontWeight: FontWeight.bold,
+          ),
+        );
   }
 
   loading() {
     showDialog(
-        context: context,
-        builder: (context) {
-          loadingcontext = context;
-          return AlertDialog(
-              content: Row(
+      context: context,
+      builder: (context) {
+        loadingcontext = context;
+        return AlertDialog(
+          content: Row(
             children: [
               CircularProgressIndicator(),
-              SizedBox(
-                width: 10,
-              ),
+              SizedBox(width: 10),
               Text(AppLocalizations.of(context)!.please_wait_ucf),
             ],
-          ));
-        });
+          ),
+        );
+      },
+    );
   }
 }

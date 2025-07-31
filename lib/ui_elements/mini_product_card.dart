@@ -1,7 +1,7 @@
-// import 'package:active_ecommerce_cms_demo_app/custom/box_decorations.dart';
-// import 'package:active_ecommerce_cms_demo_app/helpers/system_config.dart';
-// import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-// import 'package:active_ecommerce_cms_demo_app/screens/product/product_details.dart';
+// import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
+// import 'package:active_ecommerce_flutter/helpers/system_config.dart';
+// import 'package:active_ecommerce_flutter/my_theme.dart';
+// import 'package:active_ecommerce_flutter/screens/product/product_details.dart';
 // import 'package:flutter/material.dart';
 
 // import '../helpers/shared_value_helper.dart';
@@ -199,9 +199,9 @@
 //   }
 // }
 
-import 'package:active_ecommerce_cms_demo_app/helpers/system_config.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/product/product_details.dart';
+import 'package:active_ecommerce_flutter/helpers/system_config.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/screens/product/product_details.dart';
 import 'package:flutter/material.dart';
 
 class MiniProductCard extends StatefulWidget {
@@ -236,32 +236,38 @@ class _MiniProductCardState extends State<MiniProductCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ProductDetails(
-            slug: widget.slug,
-          );
-        }));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return ProductDetails(slug: widget.slug);
+            },
+          ),
+        );
       },
       child: SizedBox(
         width: 140,
-        //  decoration: BoxDecorations.buildBoxDecoration_1(),
 
-        child: Stack(children: [
-          Column(
+        //  decoration: BoxDecorations.buildBoxDecoration_1(),
+        child: Stack(
+          children: [
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 AspectRatio(
                   aspectRatio: 1,
                   child: SizedBox(
-                      width: double.infinity,
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: FadeInImage.assetNetwork(
-                            placeholder: 'assets/placeholder.png',
-                            image: widget.image!,
-                            fit: BoxFit.cover,
-                          ))),
+                    width: double.infinity,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: FadeInImage.assetNetwork(
+                        placeholder: 'assets/placeholder.png',
+                        image: widget.image!,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(8, 12, 8, 6),
@@ -270,10 +276,11 @@ class _MiniProductCardState extends State<MiniProductCard> {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     style: TextStyle(
-                        color: MyTheme.font_grey_Light,
-                        fontSize: 12,
-                        height: 1.2,
-                        fontWeight: FontWeight.w400),
+                      color: MyTheme.font_grey_Light,
+                      fontSize: 12,
+                      height: 1.2,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
                 Padding(
@@ -281,18 +288,22 @@ class _MiniProductCardState extends State<MiniProductCard> {
                   child: Text(
                     SystemConfig.systemCurrency != null
                         ? widget.main_price!.replaceAll(
-                            SystemConfig.systemCurrency!.code!,
-                            SystemConfig.systemCurrency!.symbol!)
+                          SystemConfig.systemCurrency!.code!,
+                          SystemConfig.systemCurrency!.symbol!,
+                        )
                         : widget.main_price!,
                     maxLines: 1,
                     style: TextStyle(
-                        color: Color(0xff000000),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
+                      color: Color(0xff000000),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ]),
-        ]),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

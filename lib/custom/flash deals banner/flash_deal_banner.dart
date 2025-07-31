@@ -1,8 +1,8 @@
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/aiz_image.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/presenter/home_presenter.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/custom/aiz_image.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/presenter/home_presenter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -28,12 +28,15 @@ class FlashDealBanner extends StatelessWidget {
     if (homeData!.isFlashDealInitial &&
         homeData!.flashDealBannerImageList.isEmpty) {
       return Padding(
-        padding:
-            const EdgeInsets.only(left: 18.0, right: 18, top: 10, bottom: 20),
+        padding: const EdgeInsets.only(
+          left: 18.0,
+          right: 18,
+          top: 10,
+          bottom: 20,
+        ),
         child: ShimmerHelper().buildBasicShimmer(height: 120),
       );
     }
-
     // When banner images are available
     else if (homeData!.flashDealBannerImageList.isNotEmpty) {
       return CarouselSlider(
@@ -49,55 +52,62 @@ class FlashDealBanner extends StatelessWidget {
             // Optionally handle page change
           },
         ),
-        items: homeData!.flashDealBannerImageList.map((i) {
-          return Builder(
-            builder: (BuildContext context) {
-              return Padding(
-                padding: const EdgeInsets.only(
-                    left: 12, right: 0, top: 0, bottom: 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white, // background color for container
-                    borderRadius: BorderRadius.circular(10), // rounded corners
-                    boxShadow: [
-                      BoxShadow(
-                        color:
-                            Color(0xff000000).withOpacity(0.1), // shadow color
-                        spreadRadius: 2, // spread radius
-                        blurRadius: 5, // blur radius
-                        offset: Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(
-                        10), // round corners for the image too
-                    child: InkWell(
-                      onTap: () {
-                        // Null safety for URL and handle it properly
-                        var url =
-                            i.url?.split(AppConfig.DOMAIN_PATH).last;
-                        if (url != null && url.isNotEmpty) {
-                          GoRouter.of(context).go(url);
-                        } else {
-                          // Handle invalid or empty URL case
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('Invalid URL'),
-                          ));
-                        }
-                      },
-                      child: AIZImage.radiusImage(i.photo, 6),
-                      // Display the image with rounded corners
+        items:
+            homeData!.flashDealBannerImageList.map((i) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return Padding(
+                    padding: const EdgeInsets.only(
+                      left: 12,
+                      right: 0,
+                      top: 0,
+                      bottom: 10,
                     ),
-                  ),
-                ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white, // background color for container
+                        borderRadius: BorderRadius.circular(
+                          10,
+                        ), // rounded corners
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(
+                              0xff000000,
+                            ).withOpacity(0.1), // shadow color
+                            spreadRadius: 2, // spread radius
+                            blurRadius: 5, // blur radius
+                            offset: Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                          10,
+                        ), // round corners for the image too
+                        child: InkWell(
+                          onTap: () {
+                            // Null safety for URL and handle it properly
+                            var url = i.url?.split(AppConfig.DOMAIN_PATH).last;
+                            if (url != null && url.isNotEmpty) {
+                              GoRouter.of(context).go(url);
+                            } else {
+                              // Handle invalid or empty URL case
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Invalid URL')),
+                              );
+                            }
+                          },
+                          child: AIZImage.radiusImage(i.photo, 6),
+                          // Display the image with rounded corners
+                        ),
+                      ),
+                    ),
+                  );
+                },
               );
-            },
-          );
-        }).toList(),
+            }).toList(),
       );
     }
-
     // When images are not found and loading is complete
     else if (!homeData!.isFlashDealInitial &&
         homeData!.flashDealBannerImageList.isEmpty) {
@@ -111,7 +121,6 @@ class FlashDealBanner extends StatelessWidget {
         ),
       );
     }
-
     // Default container if no condition matches
     else {
       return Container(height: 100);

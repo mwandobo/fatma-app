@@ -1,6 +1,6 @@
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/device_info.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/custom/device_info.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -55,7 +55,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 tag: "backgroundImageInSplash",
                 child: Container(
                   child: Image.asset(
-                      "assets/splash_login_registration_background_image.png"),
+                    "assets/splash_login_registration_background_image.png",
+                  ),
                 ),
               ),
             ),
@@ -70,11 +71,14 @@ class _SplashScreenState extends State<SplashScreen> {
                       child: Container(
                         height: 72,
                         width: 72,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 12,
+                        ),
                         decoration: BoxDecoration(
-                            color: MyTheme.white,
-                            borderRadius: BorderRadius.circular(8)),
+                          color: MyTheme.white,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         child: Image.asset(
                           "assets/splash_screen_logo.png",
                           filterQuality: FilterQuality.low,
@@ -87,9 +91,10 @@ class _SplashScreenState extends State<SplashScreen> {
                     child: Text(
                       AppConfig.app_name,
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14.0,
-                          color: Colors.white),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.0,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   Text(

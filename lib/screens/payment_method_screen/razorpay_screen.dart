@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/payment_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/orders/order_list.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/wallet.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/payment_repository.dart';
+import 'package:active_ecommerce_flutter/screens/orders/order_list.dart';
+import 'package:active_ecommerce_flutter/screens/wallet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,13 +21,14 @@ class RazorpayScreen extends StatefulWidget {
   String? payment_method_key;
   int? orderId;
   var package_id;
-  RazorpayScreen(
-      {super.key,
-      this.amount = 0.00,
-      this.orderId = 0,
-      this.payment_type = "",
-      this.package_id = "0",
-      this.payment_method_key = ""});
+  RazorpayScreen({
+    super.key,
+    this.amount = 0.00,
+    this.orderId = 0,
+    this.payment_type = "",
+    this.package_id = "0",
+    this.payment_method_key = "",
+  });
 
   @override
   _RazorpayScreenState createState() => _RazorpayScreenState();
@@ -72,26 +73,28 @@ class _RazorpayScreenState extends State<RazorpayScreen> {
           },
         ),
       )
-      ..loadRequest(Uri.parse(initialUrl), headers: {
-        "Content-Type": "application/json",
-        "App-Language": app_language.$!,
-        "Accept": "application/json",
-        "System-Key": AppConfig.system_key,
-        "Authorization": "Bearer ${access_token.$}",
-        "Currency-Code": SystemConfig.systemCurrency!.code!,
-        "Currency-Exchange-Rate":
-            SystemConfig.systemCurrency!.exchangeRate.toString(),
-      });
+      ..loadRequest(
+        Uri.parse(initialUrl),
+        headers: {
+          "Content-Type": "application/json",
+          "App-Language": app_language.$!,
+          "Accept": "application/json",
+          "System-Key": AppConfig.system_key,
+          "Authorization": "Bearer ${access_token.$}",
+          "Currency-Code": SystemConfig.systemCurrency!.code!,
+          "Currency-Exchange-Rate":
+              SystemConfig.systemCurrency!.exchangeRate.toString(),
+        },
+      );
   }
 
   createOrder() async {
-    var orderCreateResponse = await PaymentRepository()
-        .getOrderCreateResponse(widget.payment_method_key);
+    var orderCreateResponse = await PaymentRepository().getOrderCreateResponse(
+      widget.payment_method_key,
+    );
 
     if (orderCreateResponse.result == false) {
-      ToastComponent.showDialog(
-        orderCreateResponse.message,
-      );
+      ToastComponent.showDialog(orderCreateResponse.message);
       Navigator.of(context).pop();
       return;
     }
@@ -129,61 +132,79 @@ class _RazorpayScreenState extends State<RazorpayScreen> {
     _webViewController
         .runJavaScriptReturningResult("document.body.innerText")
         .then((data) {
-      var responseJSON = jsonDecode(data as String);
-      if (responseJSON.runtimeType == String) {
-        responseJSON = jsonDecode(responseJSON);
-      }
+          var responseJSON = jsonDecode(data as String);
+          if (responseJSON.runtimeType == String) {
+            responseJSON = jsonDecode(responseJSON);
+          }
 
-      // print('responseJSON');
-      // print(responseJSON);
-      if (responseJSON["result"] == false) {
-        ToastComponent.showDialog(
-          responseJSON["message"],
-        );
+          // print('responseJSON');
+          // print(responseJSON);
+          if (responseJSON["result"] == false) {
+            ToastComponent.showDialog(responseJSON["message"]);
 
-        Navigator.pop(context);
-      } else if (responseJSON["result"] == true) {
-        paymentDetails = responseJSON['payment_details'];
-        onPaymentSuccess(paymentDetails);
-      }
-    });
+            Navigator.pop(context);
+          } else if (responseJSON["result"] == true) {
+            paymentDetails = responseJSON['payment_details'];
+            onPaymentSuccess(paymentDetails);
+          }
+        });
   }
 
   onPaymentSuccess(paymentDetails) async {
     var razorpayPaymentSuccessResponse = await PaymentRepository()
-        .getRazorpayPaymentSuccessResponse(widget.payment_type, widget.amount,
-            _combined_order_id, paymentDetails);
+        .getRazorpayPaymentSuccessResponse(
+          widget.payment_type,
+          widget.amount,
+          _combined_order_id,
+          paymentDetails,
+        );
 
     if (razorpayPaymentSuccessResponse.result == false) {
-      ToastComponent.showDialog(
-        razorpayPaymentSuccessResponse.message!,
-      );
+      ToastComponent.showDialog(razorpayPaymentSuccessResponse.message!);
       Navigator.pop(context);
       return;
     }
     // print(razorpayPaymentSuccessResponse);
     // print(razorpayPaymentSuccessResponse.message);
 
-    ToastComponent.showDialog(
-      razorpayPaymentSuccessResponse.message!,
-    );
+    ToastComponent.showDialog(razorpayPaymentSuccessResponse.message!);
 
     if (widget.payment_type == "cart_payment") {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return OrderList(from_checkout: true);
-      }));
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return OrderList(from_checkout: true);
+          },
+        ),
+      );
     } else if (widget.payment_type == "wallet_payment") {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return Wallet(from_recharge: true);
-      }));
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return Wallet(from_recharge: true);
+          },
+        ),
+      );
     } else if (widget.payment_type == "order_re_payment") {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return OrderList(from_checkout: true);
-      }));
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return OrderList(from_checkout: true);
+          },
+        ),
+      );
     } else if (widget.payment_type == "customer_package_payment") {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return Profile();
-      }));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return Profile();
+          },
+        ),
+      );
     }
   }
 
@@ -198,11 +219,7 @@ class _RazorpayScreenState extends State<RazorpayScreen> {
       );
     } else {
       return SizedBox.expand(
-        child: Container(
-          child: WebViewWidget(
-            controller: _webViewController,
-          ),
-        ),
+        child: Container(child: WebViewWidget(controller: _webViewController)),
       );
     }
   }
@@ -212,10 +229,11 @@ class _RazorpayScreenState extends State<RazorpayScreen> {
       backgroundColor: Colors.white,
       centerTitle: true,
       leading: Builder(
-        builder: (context) => IconButton(
-          icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        builder:
+            (context) => IconButton(
+              icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
       ),
       title: Text(
         AppLocalizations.of(context)!.pay_with_razorpay,

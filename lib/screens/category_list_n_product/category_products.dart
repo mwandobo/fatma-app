@@ -1,11 +1,11 @@
-import 'package:active_ecommerce_cms_demo_app/custom/device_info.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/useful_elements.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/category_response.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/category_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/product_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/ui_elements/product_card.dart';
+import 'package:active_ecommerce_flutter/custom/device_info.dart';
+import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
+import 'package:active_ecommerce_flutter/data_model/category_response.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/category_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
+import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -83,8 +83,11 @@ class _CategoryProductsState extends State<CategoryProducts> {
   }
 
   fetchData() async {
-    var productResponse = await ProductRepository()
-        .getCategoryProducts(id: widget.slug, page: _page, name: _searchKey);
+    var productResponse = await ProductRepository().getCategoryProducts(
+      id: widget.slug,
+      page: _page,
+      name: _searchKey,
+    );
     _productList.addAll(productResponse.products!);
     _isInitial = false;
     _totalData = productResponse.meta!.total;
@@ -121,7 +124,9 @@ class _CategoryProductsState extends State<CategoryProducts> {
         children: [
           buildProductList(),
           Align(
-              alignment: Alignment.bottomCenter, child: buildLoadingContainer())
+            alignment: Alignment.bottomCenter,
+            child: buildLoadingContainer(),
+          ),
         ],
       ),
     );
@@ -133,9 +138,11 @@ class _CategoryProductsState extends State<CategoryProducts> {
       width: double.infinity,
       color: Colors.white,
       child: Center(
-        child: Text(_totalData == _productList.length
-            ? AppLocalizations.of(context)!.no_more_products_ucf
-            : AppLocalizations.of(context)!.loading_more_products_ucf),
+        child: Text(
+          _totalData == _productList.length
+              ? AppLocalizations.of(context)!.no_more_products_ucf
+              : AppLocalizations.of(context)!.loading_more_products_ucf,
+        ),
       ),
     );
   }
@@ -143,9 +150,10 @@ class _CategoryProductsState extends State<CategoryProducts> {
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      toolbarHeight: _subCategoryList.isEmpty
-          ? DeviceInfo(context).height! / 10
-          : DeviceInfo(context).height! / 6.5,
+      toolbarHeight:
+          _subCategoryList.isEmpty
+              ? DeviceInfo(context).height! / 10
+              : DeviceInfo(context).height! / 6.5,
       flexibleSpace: Container(
         height: DeviceInfo(context).height! / 4,
         width: DeviceInfo(context).width,
@@ -153,13 +161,14 @@ class _CategoryProductsState extends State<CategoryProducts> {
         alignment: Alignment.topRight,
       ),
       bottom: PreferredSize(
-          preferredSize: Size.fromHeight(-35),
-          child: AnimatedContainer(
-            color: MyTheme.mainColor,
-            height: _subCategoryList.isEmpty ? 0 : 40,
-            duration: Duration(milliseconds: 500),
-            child: !_isInitial ? buildSubCategory() : buildSubCategory(),
-          )),
+        preferredSize: Size.fromHeight(-35),
+        child: AnimatedContainer(
+          color: MyTheme.mainColor,
+          height: _subCategoryList.isEmpty ? 0 : 40,
+          duration: Duration(milliseconds: 500),
+          child: !_isInitial ? buildSubCategory() : buildSubCategory(),
+        ),
+      ),
       title: buildAppBarTitle(context),
       elevation: 0.0,
       titleSpacing: 0,
@@ -168,14 +177,14 @@ class _CategoryProductsState extends State<CategoryProducts> {
 
   Widget buildAppBarTitle(BuildContext context) {
     return AnimatedCrossFade(
-        firstChild: buildAppBarTitleOption(context),
-        secondChild: buildAppBarSearchOption(context),
-        firstCurve: Curves.fastOutSlowIn,
-        secondCurve: Curves.fastOutSlowIn,
-        crossFadeState: _showSearchBar
-            ? CrossFadeState.showSecond
-            : CrossFadeState.showFirst,
-        duration: Duration(milliseconds: 500));
+      firstChild: buildAppBarTitleOption(context),
+      secondChild: buildAppBarSearchOption(context),
+      firstCurve: Curves.fastOutSlowIn,
+      secondCurve: Curves.fastOutSlowIn,
+      crossFadeState:
+          _showSearchBar ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+      duration: Duration(milliseconds: 500),
+    );
   }
 
   Container buildAppBarTitleOption(BuildContext context) {
@@ -199,13 +208,15 @@ class _CategoryProductsState extends State<CategoryProducts> {
           ),
           Spacer(),
           SizedBox(
-              width: 20,
-              child: GestureDetector(
-                  onTap: () {
-                    _showSearchBar = true;
-                    setState(() {});
-                  },
-                  child: Image.asset('assets/search.png')))
+            width: 20,
+            child: GestureDetector(
+              onTap: () {
+                _showSearchBar = true;
+                setState(() {});
+              },
+              child: Image.asset('assets/search.png'),
+            ),
+          ),
         ],
       ),
     );
@@ -236,22 +247,22 @@ class _CategoryProductsState extends State<CategoryProducts> {
               _showSearchBar = false;
               setState(() {});
             },
-            icon: Icon(
-              Icons.clear,
-              color: MyTheme.grey_153,
-            ),
+            icon: Icon(Icons.clear, color: MyTheme.grey_153),
           ),
           filled: true,
           fillColor: MyTheme.white.withOpacity(0.6),
-          hintText: "${AppLocalizations.of(context)!.search_products_from} : " "" //widget.category_name!
-          ,
+          hintText:
+              "${AppLocalizations.of(context)!.search_products_from} : "
+              "", //widget.category_name!
           hintStyle: TextStyle(fontSize: 14.0, color: MyTheme.font_grey),
           enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: MyTheme.noColor, width: 0.0),
-              borderRadius: BorderRadius.circular(6)),
+            borderSide: BorderSide(color: MyTheme.noColor, width: 0.0),
+            borderRadius: BorderRadius.circular(6),
+          ),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: MyTheme.noColor, width: 0.0),
-              borderRadius: BorderRadius.circular(6)),
+            borderSide: BorderSide(color: MyTheme.noColor, width: 0.0),
+            borderRadius: BorderRadius.circular(6),
+          ),
           contentPadding: EdgeInsets.all(8.0),
         ),
       ),
@@ -287,9 +298,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return CategoryProducts(
-                    slug: _subCategoryList[index].slug!,
-                  );
+                  return CategoryProducts(slug: _subCategoryList[index].slug!);
                 },
               ),
             );
@@ -316,9 +325,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
         );
       },
       separatorBuilder: (context, index) {
-        return SizedBox(
-          width: 10,
-        );
+        return SizedBox(width: 10);
       },
       itemCount: _subCategoryList.length,
     );
@@ -340,35 +347,42 @@ class _CategoryProductsState extends State<CategoryProducts> {
         child: SingleChildScrollView(
           controller: _xcrollController,
           physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics()),
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
           child: MasonryGridView.count(
             crossAxisCount: 2,
             mainAxisSpacing: 14,
             crossAxisSpacing: 14,
             itemCount: _productList.length,
             shrinkWrap: true,
-            padding:
-                EdgeInsets.only(top: 10.0, bottom: 10, left: 18, right: 18),
+            padding: EdgeInsets.only(
+              top: 10.0,
+              bottom: 10,
+              left: 18,
+              right: 18,
+            ),
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               // 3
               return ProductCard(
-                  id: _productList[index].id,
-                  slug: _productList[index].slug,
-                  image: _productList[index].thumbnail_image,
-                  name: _productList[index].name,
-                  main_price: _productList[index].main_price,
-                  stroked_price: _productList[index].stroked_price,
-                  discount: _productList[index].discount,
-                  is_wholesale: _productList[index].isWholesale,
-                  has_discount: _productList[index].has_discount);
+                id: _productList[index].id,
+                slug: _productList[index].slug,
+                image: _productList[index].thumbnail_image,
+                name: _productList[index].name,
+                main_price: _productList[index].main_price,
+                stroked_price: _productList[index].stroked_price,
+                discount: _productList[index].discount,
+                is_wholesale: _productList[index].isWholesale,
+                has_discount: _productList[index].has_discount,
+              );
             },
           ),
         ),
       );
     } else if (_totalData == 0) {
       return Center(
-          child: Text(AppLocalizations.of(context)!.no_data_is_available));
+        child: Text(AppLocalizations.of(context)!.no_data_is_available),
+      );
     } else {
       return Container();
     }

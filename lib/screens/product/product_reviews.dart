@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:active_ecommerce_cms_demo_app/custom/btn.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/review_repositories.dart';
+import 'package:active_ecommerce_flutter/custom/btn.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/review_repositories.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -108,19 +108,18 @@ class _ProductReviewsState extends State<ProductReviews> {
       return;
     }
 
-    var reviewSubmitResponse = await ReviewRepository()
-        .getReviewSubmitResponse(widget.id, _my_rating.toInt(), myReviewText);
+    var reviewSubmitResponse = await ReviewRepository().getReviewSubmitResponse(
+      widget.id,
+      _my_rating.toInt(),
+      myReviewText,
+    );
 
     if (reviewSubmitResponse.result == false) {
-      ToastComponent.showDialog(
-        reviewSubmitResponse.message,
-      );
+      ToastComponent.showDialog(reviewSubmitResponse.message);
       return;
     }
 
-    ToastComponent.showDialog(
-      reviewSubmitResponse.message,
-    );
+    ToastComponent.showDialog(reviewSubmitResponse.message);
 
     reset();
     fetchData();
@@ -139,44 +138,45 @@ class _ProductReviewsState extends State<ProductReviews> {
       textDirection:
           app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: buildAppBar(context),
-          body: Stack(
-            children: [
-              RefreshIndicator(
-                color: MyTheme.accent_color,
-                backgroundColor: Colors.white,
-                onRefresh: _onRefresh,
-                displacement: 0,
-                child: CustomScrollView(
-                  controller: _xcrollController,
-                  physics: const BouncingScrollPhysics(
-                      parent: AlwaysScrollableScrollPhysics()),
-                  slivers: [
-                    SliverList(
-                      delegate: SliverChildListDelegate([
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: buildProductReviewsList(),
-                        ),
-                        Container(
-                          height: 120,
-                        )
-                      ]),
-                    )
-                  ],
+        backgroundColor: Colors.white,
+        appBar: buildAppBar(context),
+        body: Stack(
+          children: [
+            RefreshIndicator(
+              color: MyTheme.accent_color,
+              backgroundColor: Colors.white,
+              onRefresh: _onRefresh,
+              displacement: 0,
+              child: CustomScrollView(
+                controller: _xcrollController,
+                physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
                 ),
-              ), //original
-
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: buildBottomBar(context),
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildListDelegate([
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: buildProductReviewsList(),
+                      ),
+                      Container(height: 120),
+                    ]),
+                  ),
+                ],
               ),
-              Align(
-                  alignment: Alignment.bottomCenter,
-                  child: buildLoadingContainer()),
-            ],
-          )),
+            ), //original
+
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: buildBottomBar(context),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: buildLoadingContainer(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -190,7 +190,11 @@ class _ProductReviewsState extends State<ProductReviews> {
           //color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.only(
-                top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
+              top: 8.0,
+              bottom: 8.0,
+              left: 16.0,
+              right: 16.0,
+            ),
             child: buildGiveReviewSection(context),
           ),
         ),
@@ -203,10 +207,11 @@ class _ProductReviewsState extends State<ProductReviews> {
       backgroundColor: Colors.white,
       centerTitle: true,
       leading: Builder(
-        builder: (context) => IconButton(
-          icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        builder:
+            (context) => IconButton(
+              icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
       ),
       title: Text(
         AppLocalizations.of(context)!.reviews_ucf,
@@ -220,8 +225,11 @@ class _ProductReviewsState extends State<ProductReviews> {
   buildProductReviewsList() {
     if (_isInitial && _reviewList.isEmpty) {
       return SingleChildScrollView(
-          child: ShimmerHelper()
-              .buildListShimmer(item_count: 10, item_height: 75.0));
+        child: ShimmerHelper().buildListShimmer(
+          item_count: 10,
+          item_height: 75.0,
+        ),
+      );
     } else if (_reviewList.isNotEmpty) {
       return SingleChildScrollView(
         child: ListView.builder(
@@ -242,8 +250,10 @@ class _ProductReviewsState extends State<ProductReviews> {
       return SizedBox(
         height: 300,
         child: Center(
-            child: Text(
-                AppLocalizations.of(context)!.no_reviews_yet_be_the_first)),
+          child: Text(
+            AppLocalizations.of(context)!.no_reviews_yet_be_the_first,
+          ),
+        ),
       );
     } else {
       return Container(); // should never be happening
@@ -256,64 +266,72 @@ class _ProductReviewsState extends State<ProductReviews> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(35),
-                border: Border.all(
-                    color: Color.fromRGBO(112, 112, 112, .3), width: 1),
-                //shape: BoxShape.rectangle,
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(35),
-                child: FadeInImage.assetNetwork(
-                  placeholder: 'assets/placeholder.png',
-                  image: _reviewList[index].avatar,
-                  fit: BoxFit.cover,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(35),
+                  border: Border.all(
+                    color: Color.fromRGBO(112, 112, 112, .3),
+                    width: 1,
+                  ),
+                  //shape: BoxShape.rectangle,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(35),
+                  child: FadeInImage.assetNetwork(
+                    placeholder: 'assets/placeholder.png',
+                    image: _reviewList[index].avatar,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-            Column(
-              children: [
-                SizedBox(
-                  width: 180,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Text(
-                          _reviewList[index].user_name,
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
+              Column(
+                children: [
+                  SizedBox(
+                    width: 180,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Text(
+                            _reviewList[index].user_name,
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
                               color: MyTheme.font_grey,
                               fontSize: 13,
                               height: 1.6,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 4.0),
-                          child: Text(
-                            _reviewList[index].time,
-                            style: TextStyle(color: MyTheme.medium_grey),
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 4.0),
+                            child: Text(
+                              _reviewList[index].time,
+                              style: TextStyle(color: MyTheme.medium_grey),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+                ],
+              ),
+              Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 0.0,
+                  bottom: 0.0,
+                  left: 16.0,
                 ),
-              ],
-            ),
-            Spacer(),
-            Padding(
-                padding:
-                    const EdgeInsets.only(top: 0.0, bottom: 0.0, left: 16.0),
                 child: Container(
                   child: RatingBar(
                     itemSize: 12.0,
@@ -325,20 +343,24 @@ class _ProductReviewsState extends State<ProductReviews> {
                     ratingWidget: RatingWidget(
                       full: Icon(Icons.star, color: Colors.amber),
                       half: Icon(Icons.star_half, color: Colors.amber),
-                      empty: Icon(Icons.star,
-                          color: Color.fromRGBO(224, 224, 225, 1)),
+                      empty: Icon(
+                        Icons.star,
+                        color: Color.fromRGBO(224, 224, 225, 1),
+                      ),
                     ),
                     itemPadding: EdgeInsets.only(right: 1.0),
                     onRatingUpdate: (rating) {
                       //print(rating);
                     },
                   ),
-                ))
-          ]),
+                ),
+              ),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 56.0),
             child: buildExpandableDescription(index),
-          )
+          ),
         ],
       ),
     );
@@ -346,21 +368,27 @@ class _ProductReviewsState extends State<ProductReviews> {
 
   ExpandableNotifier buildExpandableDescription(index) {
     return ExpandableNotifier(
-        child: ScrollOnExpand(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Expandable(
-            collapsed: SizedBox(
+      child: ScrollOnExpand(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expandable(
+              collapsed: SizedBox(
                 height: _reviewList[index].comment.length > 100 ? 32 : 16,
-                child: Text(_reviewList[index].comment,
-                    style: TextStyle(color: MyTheme.font_grey))),
-            expanded: Container(
-                child: Text(_reviewList[index].comment,
-                    style: TextStyle(color: MyTheme.font_grey))),
-          ),
-          _reviewList[index].comment.length > 100
-              ? Row(
+                child: Text(
+                  _reviewList[index].comment,
+                  style: TextStyle(color: MyTheme.font_grey),
+                ),
+              ),
+              expanded: Container(
+                child: Text(
+                  _reviewList[index].comment,
+                  style: TextStyle(color: MyTheme.font_grey),
+                ),
+              ),
+            ),
+            _reviewList[index].comment.length > 100
+                ? Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Builder(
@@ -372,7 +400,9 @@ class _ProductReviewsState extends State<ProductReviews> {
                                 ? AppLocalizations.of(context)!.view_more
                                 : AppLocalizations.of(context)!.show_less_ucf,
                             style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 11),
+                              color: MyTheme.font_grey,
+                              fontSize: 11,
+                            ),
                           ),
                           onPressed: () {
                             controller.toggle();
@@ -382,10 +412,11 @@ class _ProductReviewsState extends State<ProductReviews> {
                     ),
                   ],
                 )
-              : Container(),
-        ],
+                : Container(),
+          ],
+        ),
       ),
-    ));
+    );
   }
 
   Container buildLoadingContainer() {
@@ -394,9 +425,11 @@ class _ProductReviewsState extends State<ProductReviews> {
       width: double.infinity,
       color: Colors.white,
       child: Center(
-        child: Text(_totalData == _reviewList.length
-            ? AppLocalizations.of(context)!.no_more_reviews_ucf
-            : AppLocalizations.of(context)!.loading_more_reviews_ucf),
+        child: Text(
+          _totalData == _reviewList.length
+              ? AppLocalizations.of(context)!.no_more_reviews_ucf
+              : AppLocalizations.of(context)!.loading_more_reviews_ucf,
+        ),
       ),
     );
   }
@@ -434,32 +467,32 @@ class _ProductReviewsState extends State<ProductReviews> {
               child: TextField(
                 autofocus: false,
                 maxLines: null,
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(125),
-                ],
+                inputFormatters: [LengthLimitingTextInputFormatter(125)],
                 controller: _myReviewTextController,
                 decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromRGBO(251, 251, 251, 1),
-                    hintText:
-                        AppLocalizations.of(context)!.type_your_review_here,
-                    hintStyle: TextStyle(
-                        fontSize: 14.0, color: MyTheme.textfield_grey),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: MyTheme.textfield_grey, width: 0.5),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(35.0),
-                      ),
+                  filled: true,
+                  fillColor: Color.fromRGBO(251, 251, 251, 1),
+                  hintText: AppLocalizations.of(context)!.type_your_review_here,
+                  hintStyle: TextStyle(
+                    fontSize: 14.0,
+                    color: MyTheme.textfield_grey,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: MyTheme.textfield_grey,
+                      width: 0.5,
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: MyTheme.medium_grey, width: 0.5),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(35.0),
-                      ),
+                    borderRadius: const BorderRadius.all(Radius.circular(35.0)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: MyTheme.medium_grey,
+                      width: 0.5,
                     ),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16.0)),
+                    borderRadius: const BorderRadius.all(Radius.circular(35.0)),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+                ),
               ),
             ),
             Padding(
@@ -476,15 +509,13 @@ class _ProductReviewsState extends State<ProductReviews> {
                     color: MyTheme.accent_color,
                     borderRadius: BorderRadius.circular(35),
                     border: Border.all(
-                        color: Color.fromRGBO(112, 112, 112, .3), width: 1),
+                      color: Color.fromRGBO(112, 112, 112, .3),
+                      width: 1,
+                    ),
                     //shape: BoxShape.rectangle,
                   ),
                   child: Center(
-                    child: Icon(
-                      Icons.send,
-                      color: Colors.white,
-                      size: 16,
-                    ),
+                    child: Icon(Icons.send, color: Colors.white, size: 16),
                   ),
                 ),
               ),

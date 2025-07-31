@@ -1,8 +1,8 @@
-// import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
-// import 'package:active_ecommerce_cms_demo_app/data_model/cart_response.dart';
-// import 'package:active_ecommerce_cms_demo_app/helpers/system_config.dart';
-// import 'package:active_ecommerce_cms_demo_app/presenter/cart_counter.dart';
-// import 'package:active_ecommerce_cms_demo_app/repositories/cart_repository.dart';
+// import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+// import 'package:active_ecommerce_flutter/data_model/cart_response.dart';
+// import 'package:active_ecommerce_flutter/helpers/system_config.dart';
+// import 'package:active_ecommerce_flutter/presenter/cart_counter.dart';
+// import 'package:active_ecommerce_flutter/repositories/cart_repository.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
@@ -249,11 +249,11 @@
 //   }
 // }
 
-import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/cart_response.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/system_config.dart';
-import 'package:active_ecommerce_cms_demo_app/presenter/cart_counter.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/cart_repository.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/data_model/cart_response.dart';
+import 'package:active_ecommerce_flutter/helpers/system_config.dart';
+import 'package:active_ecommerce_flutter/presenter/cart_counter.dart';
+import 'package:active_ecommerce_flutter/repositories/cart_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -295,8 +295,9 @@ class CartProvider extends ChangeNotifier {
 
   Future<void> fetchData(BuildContext context) async {
     getCartCount(context);
-    CartResponse cartResponseList =
-        await CartRepository().getCartResponseList(user_id.$);
+    CartResponse cartResponseList = await CartRepository().getCartResponseList(
+      user_id.$,
+    );
 
     print('cart respones $cartResponseList');
 
@@ -317,14 +318,18 @@ class CartProvider extends ChangeNotifier {
   void getSetCartTotal() {
     if (_shopResponse != null) {
       _cartTotalString = _shopResponse!.grandTotal!.replaceAll(
-          SystemConfig.systemCurrency!.code!,
-          SystemConfig.systemCurrency!.symbol!);
+        SystemConfig.systemCurrency!.code!,
+        SystemConfig.systemCurrency!.symbol!,
+      );
     }
     notifyListeners();
   }
 
   void onQuantityIncrease(
-      BuildContext context, int sellerIndex, int itemIndex) {
+    BuildContext context,
+    int sellerIndex,
+    int itemIndex,
+  ) {
     if (_shopList[sellerIndex].cartItems[itemIndex].quantity <
         _shopList[sellerIndex].cartItems[itemIndex].upperLimit) {
       _shopList[sellerIndex].cartItems[itemIndex].quantity++;
@@ -332,14 +337,18 @@ class CartProvider extends ChangeNotifier {
       process(context, mode: "update");
     } else {
       ToastComponent.showDialog(
-          "${AppLocalizations.of(context)!.cannot_order_more_than} ${_shopList[sellerIndex].cartItems[itemIndex].upperLimit} ${AppLocalizations.of(context)!.items_of_this_all_lower}",
-          gravity: ToastGravity.CENTER,
-          duration: Toast.LENGTH_LONG);
+        "${AppLocalizations.of(context)!.cannot_order_more_than} ${_shopList[sellerIndex].cartItems[itemIndex].upperLimit} ${AppLocalizations.of(context)!.items_of_this_all_lower}",
+        gravity: ToastGravity.CENTER,
+        duration: Toast.LENGTH_LONG,
+      );
     }
   }
 
   void onQuantityDecrease(
-      BuildContext context, int sellerIndex, int itemIndex) {
+    BuildContext context,
+    int sellerIndex,
+    int itemIndex,
+  ) {
     if (_shopList[sellerIndex].cartItems[itemIndex].quantity >
         _shopList[sellerIndex].cartItems[itemIndex].lowerLimit) {
       _shopList[sellerIndex].cartItems[itemIndex].quantity--;
@@ -355,46 +364,55 @@ class CartProvider extends ChangeNotifier {
   void onPressDelete(BuildContext context, String cartId) {
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        contentPadding:
-            EdgeInsets.only(top: 16.0, left: 2.0, right: 2.0, bottom: 2.0),
-        content: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-          child: Text(
-            AppLocalizations.of(context)!.are_you_sure_to_remove_this_item,
-            maxLines: 3,
-            style: TextStyle(color: MyTheme.font_grey, fontSize: 14),
-          ),
-        ),
-        actions: [
-          Btn.basic(
-            child: Text(
-              AppLocalizations.of(context)!.cancel_ucf,
-              style: TextStyle(color: MyTheme.medium_grey),
+      builder:
+          (_) => AlertDialog(
+            contentPadding: EdgeInsets.only(
+              top: 16.0,
+              left: 2.0,
+              right: 2.0,
+              bottom: 2.0,
             ),
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
-            },
-          ),
-          Btn.basic(
-            color: MyTheme.soft_accent_color,
-            child: Text(
-              AppLocalizations.of(context)!.confirm_ucf,
-              style: TextStyle(color: MyTheme.dark_grey),
+            content: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 8.0,
+                horizontal: 16.0,
+              ),
+              child: Text(
+                AppLocalizations.of(context)!.are_you_sure_to_remove_this_item,
+                maxLines: 3,
+                style: TextStyle(color: MyTheme.font_grey, fontSize: 14),
+              ),
             ),
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
-              confirmDelete(context, cartId);
-            },
+            actions: [
+              Btn.basic(
+                child: Text(
+                  AppLocalizations.of(context)!.cancel_ucf,
+                  style: TextStyle(color: MyTheme.medium_grey),
+                ),
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                },
+              ),
+              Btn.basic(
+                color: MyTheme.soft_accent_color,
+                child: Text(
+                  AppLocalizations.of(context)!.confirm_ucf,
+                  style: TextStyle(color: MyTheme.dark_grey),
+                ),
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  confirmDelete(context, cartId);
+                },
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 
   void confirmDelete(BuildContext context, String cartId) async {
-    var cartDeleteResponse =
-        await CartRepository().getCartDeleteResponse(int.parse(cartId));
+    var cartDeleteResponse = await CartRepository().getCartDeleteResponse(
+      int.parse(cartId),
+    );
 
     if (cartDeleteResponse.result == true) {
       ToastComponent.showDialog(cartDeleteResponse.message);
@@ -435,8 +453,10 @@ class CartProvider extends ChangeNotifier {
     var cartIdsString = cartIds.join(',');
     var cartQuantitiesString = cartQuantities.join(',');
 
-    var cartProcessResponse = await CartRepository()
-        .getCartProcessResponse(cartIdsString, cartQuantitiesString);
+    var cartProcessResponse = await CartRepository().getCartProcessResponse(
+      cartIdsString,
+      cartQuantitiesString,
+    );
 
     if (!cartProcessResponse.result) {
       ToastComponent.showDialog(cartProcessResponse.message);
@@ -445,9 +465,14 @@ class CartProvider extends ChangeNotifier {
         fetchData(context);
       } else if (mode == "proceed_to_shipping") {
         if (guest_checkout_status.$ && !is_logged_in.$) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return GuestCheckoutAddress();
-          }));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return GuestCheckoutAddress();
+              },
+            ),
+          );
         } else {
           AIZRoute.push(context, SelectAddress()).then((value) {
             onPopped(context, value);

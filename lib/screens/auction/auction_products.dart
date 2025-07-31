@@ -1,9 +1,9 @@
-import 'package:active_ecommerce_cms_demo_app/custom/lang_text.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/useful_elements.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/ui_elements/product_card.dart';
+import 'package:active_ecommerce_flutter/custom/lang_text.dart';
+import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -11,9 +11,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../../repositories/auction_products_repository.dart';
 
 class AuctionProducts extends StatefulWidget {
-  const AuctionProducts({
-    super.key,
-  });
+  const AuctionProducts({super.key});
 
   @override
   _AuctionProductsState createState() => _AuctionProductsState();
@@ -65,8 +63,8 @@ class _AuctionProductsState extends State<AuctionProducts> {
   }
 
   fetchData() async {
-    var auctionProductResponse =
-        await AuctionProductsRepository().getAuctionProducts(page: _page);
+    var auctionProductResponse = await AuctionProductsRepository()
+        .getAuctionProducts(page: _page);
     _auctionProductItems.addAll(auctionProductResponse.products!);
     _totalData = auctionProductResponse.meta!.total;
     _dataFetch = true;
@@ -92,8 +90,9 @@ class _AuctionProductsState extends State<AuctionProducts> {
           children: [
             body(),
             Align(
-                alignment: Alignment.bottomCenter,
-                child: buildLoadingContainer())
+              alignment: Alignment.bottomCenter,
+              child: buildLoadingContainer(),
+            ),
           ],
         ),
       ),
@@ -106,9 +105,11 @@ class _AuctionProductsState extends State<AuctionProducts> {
       width: double.infinity,
       color: Colors.white,
       child: Center(
-        child: Text(_totalData == _auctionProductItems.length
-            ? AppLocalizations.of(context)!.no_more_products_ucf
-            : AppLocalizations.of(context)!.loading_more_products_ucf),
+        child: Text(
+          _totalData == _auctionProductItems.length
+              ? AppLocalizations.of(context)!.no_more_products_ucf
+              : AppLocalizations.of(context)!.loading_more_products_ucf,
+        ),
       ),
     );
   }
@@ -127,16 +128,14 @@ class _AuctionProductsState extends State<AuctionProducts> {
             Text(
               AppLocalizations.of(context)!.auction_product_screen_title,
               style: TextStyle(
-                  fontSize: 16,
-                  color: MyTheme.dark_font_grey,
-                  fontWeight: FontWeight.bold),
+                fontSize: 16,
+                color: MyTheme.dark_font_grey,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             GestureDetector(
               onTap: () {},
-              child: Image.asset(
-                'assets/search.png',
-                height: 20,
-              ),
+              child: Image.asset('assets/search.png', height: 20),
             ),
           ],
         ),
@@ -148,14 +147,13 @@ class _AuctionProductsState extends State<AuctionProducts> {
 
   Widget body() {
     if (!_dataFetch) {
-      return ShimmerHelper()
-          .buildProductGridShimmer(scontroller: _mainScrollController);
+      return ShimmerHelper().buildProductGridShimmer(
+        scontroller: _mainScrollController,
+      );
     }
 
     if (_auctionProductItems.isEmpty) {
-      return Center(
-        child: Text(LangText(context).local.no_data_is_available),
-      );
+      return Center(child: Text(LangText(context).local.no_data_is_available));
     }
     return RefreshIndicator(
       color: Colors.red,
@@ -174,16 +172,17 @@ class _AuctionProductsState extends State<AuctionProducts> {
           itemBuilder: (context, index) {
             // 3
             return ProductCard(
-                identifier: 'auction',
-                id: _auctionProductItems[index].id,
-                slug: _auctionProductItems[index].slug,
-                image: _auctionProductItems[index].thumbnail_image,
-                name: _auctionProductItems[index].name,
-                main_price: _auctionProductItems[index].main_price,
-                stroked_price: _auctionProductItems[index].stroked_price,
-                is_wholesale: false,
-                // discount: _auctionlProductItems[index].discount,
-                has_discount: false);
+              identifier: 'auction',
+              id: _auctionProductItems[index].id,
+              slug: _auctionProductItems[index].slug,
+              image: _auctionProductItems[index].thumbnail_image,
+              name: _auctionProductItems[index].name,
+              main_price: _auctionProductItems[index].main_price,
+              stroked_price: _auctionProductItems[index].stroked_price,
+              is_wholesale: false,
+              // discount: _auctionlProductItems[index].discount,
+              has_discount: false,
+            );
           },
         ),
       ),

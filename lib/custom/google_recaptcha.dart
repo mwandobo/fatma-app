@@ -1,4 +1,4 @@
-import 'package:active_ecommerce_cms_demo_app/custom/device_info.dart';
+import 'package:active_ecommerce_flutter/custom/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -79,9 +79,7 @@ class CaptchaState extends State<Captcha> {
     return SizedBox(
       width: DeviceInfo(context).width,
       height: 70,
-      child: WebViewWidget(
-        controller: _webViewController,
-      ),
+      child: WebViewWidget(controller: _webViewController),
     );
   }
 

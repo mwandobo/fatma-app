@@ -1,6 +1,6 @@
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/data_model/pickup_points_response.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/api-request.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/data_model/pickup_points_response.dart';
+import 'package:active_ecommerce_flutter/repositories/api-request.dart';
 
 class PickupPointRepository {
   Future<PickupPointListResponse> getPickupPointListResponse() async {

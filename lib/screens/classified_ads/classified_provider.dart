@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/classified_product_repository.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/repositories/classified_product_repository.dart';
 import 'package:flutter/material.dart';
 
 import 'classified_model.dart';
@@ -58,8 +58,9 @@ class MyClassifiedProvider with ChangeNotifier {
       _loading = true;
       notifyListeners();
 
-      final response =
-          await _repository.getDeleteClassifiedProductResponse(productId);
+      final response = await _repository.getDeleteClassifiedProductResponse(
+        productId,
+      );
 
       if (response.result == true) {
         // Remove the deleted product from the list if successful
@@ -112,7 +113,7 @@ class MyClassifiedProvider with ChangeNotifier {
           "Content-Type": "application/json",
           "Authorization": "Bearer ${access_token.$}",
           "Accept": "application/json",
-          "system-key": AppConfig.system_key
+          "system-key": AppConfig.system_key,
         },
         body: json.encode(product.toJson()),
       );

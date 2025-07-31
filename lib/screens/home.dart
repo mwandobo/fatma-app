@@ -1,15 +1,15 @@
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/flash%20deals%20banner/flash_deal_banner.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/presenter/home_presenter.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/filter.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/flash_deal/flash_deal_list.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/product/todays_deal_products.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/top_sellers.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/custom/flash%20deals%20banner/flash_deal_banner.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/presenter/home_presenter.dart';
+import 'package:active_ecommerce_flutter/screens/filter.dart';
+import 'package:active_ecommerce_flutter/screens/flash_deal/flash_deal_list.dart';
+import 'package:active_ecommerce_flutter/screens/product/todays_deal_products.dart';
+import 'package:active_ecommerce_flutter/screens/top_sellers.dart';
 
-import 'package:active_ecommerce_cms_demo_app/single_banner/sincle_banner_page.dart';
+import 'package:active_ecommerce_flutter/single_banner/sincle_banner_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -23,12 +23,7 @@ import '../custom/home_search_box.dart';
 import '../custom/pirated_widget.dart';
 
 class Home extends StatefulWidget {
-  Home({
-    super.key,
-    this.title,
-    this.show_back_button = false,
-    go_back = true,
-  });
+  Home({super.key, this.title, this.show_back_button = false, go_back = true});
 
   final String? title;
   bool show_back_button;
@@ -90,8 +85,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                       onRefresh: homeData.onRefresh,
                       displacement: 0,
                       child:
-                          //CustomScroll
-                          CustomScrollView(
+                      //CustomScroll
+                      CustomScrollView(
                         controller: homeData.mainScrollController,
                         physics: const BouncingScrollPhysics(
                           parent: AlwaysScrollableScrollPhysics(),
@@ -115,10 +110,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                               if (homeData.isFlashDeal || homeData.isTodayDeal)
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(
-                                      12.0, 0.0, 0.0, 16.0),
+                                    12.0,
+                                    0.0,
+                                    0.0,
+                                    16.0,
+                                  ),
                                   child: buildHomeMenu(context, homeData),
                                 ),
-
 
                               //Home slider one
                               HomeBannerOne(
@@ -133,16 +131,22 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                             delegate: SliverChildListDelegate([
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(
-                                    20.0, 10.0, 18.0, 0.0),
+                                  20.0,
+                                  10.0,
+                                  18.0,
+                                  0.0,
+                                ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      AppLocalizations.of(context)!
-                                          .featured_categories_ucf,
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.featured_categories_ucf,
                                       style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w700),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -161,23 +165,31 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
                           if (homeData.isFlashDeal)
                             SliverList(
-                                delegate: SliverChildListDelegate([
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    20.0, 0.0, 0.0, 0.0),
-                                child: Text(
-                                  AppLocalizations.of(context)!.flash_deals_ucf,
-                                  style: TextStyle(
+                              delegate: SliverChildListDelegate([
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                    20.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                  ),
+                                  child: Text(
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.flash_deals_ucf,
+                                    style: TextStyle(
                                       fontSize: 18,
-                                      fontWeight: FontWeight.w700),
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 10),
-                              FlashDealBanner(
-                                context: context,
-                                homeData: homeData,
-                              ),
-                            ])),
+                                SizedBox(height: 10),
+                                FlashDealBanner(
+                                  context: context,
+                                  homeData: homeData,
+                                ),
+                              ]),
+                            ),
 
                           SliverList(
                             delegate: SliverChildListDelegate([PhotoWidget()]),
@@ -193,10 +205,15 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(
-                                          20, 22, 0, 0),
+                                        20,
+                                        22,
+                                        0,
+                                        0,
+                                      ),
                                       child: Text(
-                                        AppLocalizations.of(context)!
-                                            .featured_products_ucf,
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.featured_products_ucf,
                                         style: TextStyle(
                                           color: Color(0xff000000),
                                           fontSize: 18,
@@ -206,11 +223,15 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(
-                                          20, 15, 20, 0),
+                                        20,
+                                        15,
+                                        20,
+                                        0,
+                                      ),
                                       child:
                                           FeaturedProductHorizontalListWidget(
-                                        homeData: homeData,
-                                      ),
+                                            homeData: homeData,
+                                          ),
                                     ),
                                   ],
                                 ),
@@ -237,17 +258,23 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            18.0, 0.0, 20.0, 0.0),
+                                          18.0,
+                                          0.0,
+                                          20.0,
+                                          0.0,
+                                        ),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              AppLocalizations.of(context)!
-                                                  .all_products_ucf,
+                                              AppLocalizations.of(
+                                                context,
+                                              )!.all_products_ucf,
                                               style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w700),
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -257,8 +284,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                         child: Column(
                                           children: [
                                             HomeAllProducts2(
-                                                context: context,
-                                                homeData: homeData),
+                                              context: context,
+                                              homeData: homeData,
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -266,9 +294,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                   ),
                                 ),
                               ),
-                              Container(
-                                height: 80,
-                              ),
+                              Container(height: 80),
                             ]),
                           ),
                         ],
@@ -308,9 +334,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           "title": AppLocalizations.of(context)!.todays_deal_ucf,
           "image": "assets/todays_deal.png",
           "onTap": () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return TodaysDealProducts();
-            }));
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return TodaysDealProducts();
+                },
+              ),
+            );
           },
           "Textcolor": Colors.white,
         },
@@ -319,9 +350,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           "title": AppLocalizations.of(context)!.flash_deal_ucf,
           "image": "assets/flash_deal.png",
           "onTap": () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return FlashDealList();
-            }));
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return FlashDealList();
+                },
+              ),
+            );
           },
           "Textcolor": Colors.white,
         },
@@ -329,9 +365,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         "title": AppLocalizations.of(context)!.brands_ucf,
         "image": "assets/brands.png",
         "onTap": () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Filter(selected_filter: "brands");
-          }));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return Filter(selected_filter: "brands");
+              },
+            ),
+          );
         },
         "Textcolor": Color(0xff263140),
       },
@@ -341,9 +382,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           "title": AppLocalizations.of(context)!.top_sellers_ucf,
           "image": "assets/top_sellers.png",
           "onTap": () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return TopSellers();
-            }));
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return TopSellers();
+                },
+              ),
+            );
           },
           "Textcolor": Color(0xff263140),
         },
@@ -418,18 +464,23 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       centerTitle: false,
       elevation: 0,
       flexibleSpace: Padding(
-        padding:
-            const EdgeInsets.only(top: 10.0, bottom: 10, left: 18, right: 18),
+        padding: const EdgeInsets.only(
+          top: 10.0,
+          bottom: 10,
+          left: 18,
+          right: 18,
+        ),
         child: GestureDetector(
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => Filter()));
-            },
-            child: HomeSearchBox(context: context)),
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (context) => Filter()));
+          },
+          child: HomeSearchBox(context: context),
+        ),
       ),
     );
   }
-
 
   Container buildProductLoadingContainer(HomePresenter homeData) {
     return Container(

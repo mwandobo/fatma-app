@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:active_ecommerce_cms_demo_app/custom/toast_component.dart';
-import 'package:active_ecommerce_cms_demo_app/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_cms_demo_app/my_theme.dart';
-import 'package:active_ecommerce_cms_demo_app/repositories/payment_repository.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/orders/order_list.dart';
-import 'package:active_ecommerce_cms_demo_app/screens/wallet.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/payment_repository.dart';
+import 'package:active_ecommerce_flutter/screens/orders/order_list.dart';
+import 'package:active_ecommerce_flutter/screens/wallet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -20,13 +20,14 @@ class FlutterwaveScreen extends StatefulWidget {
   String? payment_method_key;
   var package_id;
   int? orderId;
-  FlutterwaveScreen(
-      {super.key,
-      this.amount = 0.00,
-      this.orderId = 0,
-      this.payment_type = "",
-      this.package_id = "0",
-      this.payment_method_key = ""});
+  FlutterwaveScreen({
+    super.key,
+    this.amount = 0.00,
+    this.orderId = 0,
+    this.payment_type = "",
+    this.package_id = "0",
+    this.payment_method_key = "",
+  });
 
   @override
   _FlutterwaveScreenState createState() => _FlutterwaveScreenState();
@@ -55,13 +56,12 @@ class _FlutterwaveScreenState extends State<FlutterwaveScreen> {
   }
 
   createOrder() async {
-    var orderCreateResponse = await PaymentRepository()
-        .getOrderCreateResponse(widget.payment_method_key);
+    var orderCreateResponse = await PaymentRepository().getOrderCreateResponse(
+      widget.payment_method_key,
+    );
 
     if (orderCreateResponse.result == false) {
-      ToastComponent.showDialog(
-        orderCreateResponse.message,
-      );
+      ToastComponent.showDialog(orderCreateResponse.message);
       Navigator.of(context).pop();
       return;
     }
@@ -75,13 +75,16 @@ class _FlutterwaveScreenState extends State<FlutterwaveScreen> {
 
   getSetInitialUrl() async {
     var flutterwaveUrlResponse = await PaymentRepository()
-        .getFlutterwaveUrlResponse(widget.payment_type, _combined_order_id,
-            widget.package_id, widget.amount, widget.orderId!);
+        .getFlutterwaveUrlResponse(
+          widget.payment_type,
+          _combined_order_id,
+          widget.package_id,
+          widget.amount,
+          widget.orderId!,
+        );
 
     if (flutterwaveUrlResponse.result == false) {
-      ToastComponent.showDialog(
-        flutterwaveUrlResponse.message!,
-      );
+      ToastComponent.showDialog(flutterwaveUrlResponse.message!);
       Navigator.of(context).pop();
       return;
     }
@@ -130,42 +133,57 @@ class _FlutterwaveScreenState extends State<FlutterwaveScreen> {
     _webViewController
         .runJavaScriptReturningResult("document.body.innerText")
         .then((data) {
-      // var decodedJSON = jsonDecode(data);
-      var responseJSON = jsonDecode(data as String);
-      if (responseJSON.runtimeType == String) {
-        responseJSON = jsonDecode(responseJSON);
-      }
-      //print(data.toString());
-      if (responseJSON["result"] == false) {
-        ToastComponent.showDialog(
-          responseJSON["message"],
-        );
-        Navigator.pop(context);
-      } else if (responseJSON["result"] == true) {
-        ToastComponent.showDialog(
-          responseJSON["message"],
-        );
+          // var decodedJSON = jsonDecode(data);
+          var responseJSON = jsonDecode(data as String);
+          if (responseJSON.runtimeType == String) {
+            responseJSON = jsonDecode(responseJSON);
+          }
+          //print(data.toString());
+          if (responseJSON["result"] == false) {
+            ToastComponent.showDialog(responseJSON["message"]);
+            Navigator.pop(context);
+          } else if (responseJSON["result"] == true) {
+            ToastComponent.showDialog(responseJSON["message"]);
 
-        if (widget.payment_type == "cart_payment") {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return OrderList(from_checkout: true);
-          }));
-        } else if (widget.payment_type == "order_re_payment") {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return OrderList(from_checkout: true);
-          }));
-        } else if (widget.payment_type == "wallet_payment") {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Wallet(from_recharge: true);
-          }));
-        } else if (widget.payment_type == "customer_package_payment") {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) {
-            return Profile();
-          }));
-        }
-      }
-    });
+            if (widget.payment_type == "cart_payment") {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return OrderList(from_checkout: true);
+                  },
+                ),
+              );
+            } else if (widget.payment_type == "order_re_payment") {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return OrderList(from_checkout: true);
+                  },
+                ),
+              );
+            } else if (widget.payment_type == "wallet_payment") {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return Wallet(from_recharge: true);
+                  },
+                ),
+              );
+            } else if (widget.payment_type == "customer_package_payment") {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return Profile();
+                  },
+                ),
+              );
+            }
+          }
+        });
   }
 
   buildBody() {
@@ -173,24 +191,18 @@ class _FlutterwaveScreenState extends State<FlutterwaveScreen> {
         _combined_order_id == 0 &&
         widget.payment_type == "cart_payment") {
       return Container(
-        child: Center(
-          child: Text(LangText(context).local.creating_order),
-        ),
+        child: Center(child: Text(LangText(context).local.creating_order)),
       );
     } else if (_initial_url_fetched == false) {
       return Container(
-        child: Center(
-          child: Text("Fetching Flutterwave url ..."),
-        ),
+        child: Center(child: Text("Fetching Flutterwave url ...")),
       );
     } else {
       return SingleChildScrollView(
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          child: WebViewWidget(
-            controller: _webViewController,
-          ),
+          child: WebViewWidget(controller: _webViewController),
         ),
       );
     }
@@ -201,10 +213,11 @@ class _FlutterwaveScreenState extends State<FlutterwaveScreen> {
       backgroundColor: Colors.white,
       centerTitle: true,
       leading: Builder(
-        builder: (context) => IconButton(
-          icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        builder:
+            (context) => IconButton(
+              icon: Icon(CupertinoIcons.arrow_left, color: MyTheme.dark_grey),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
       ),
       title: Text(
         LangText(context).local.pay_with_flutterwave,

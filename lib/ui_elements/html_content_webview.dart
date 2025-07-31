@@ -1,5 +1,5 @@
-import 'package:active_ecommerce_cms_demo_app/app_config.dart';
-import 'package:active_ecommerce_cms_demo_app/custom/device_info.dart';
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/custom/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -18,11 +18,10 @@ class _HtmlContentWebViewState extends State<HtmlContentWebView> {
   makeHeight() async {
     await Future.delayed(Duration(seconds: 1));
     var h = await viewController.runJavaScriptReturningResult(
-        "document.getElementById('scaled-frame').clientHeight");
-
-    webViewHeight = double.parse(
-      (h).toString(),
+      "document.getElementById('scaled-frame').clientHeight",
     );
+
+    webViewHeight = double.parse((h).toString());
     setState(() {});
   }
 
@@ -43,9 +42,7 @@ class _HtmlContentWebViewState extends State<HtmlContentWebView> {
     return SizedBox(
       width: DeviceInfo(context).width,
       height: webViewHeight,
-      child: WebViewWidget(
-        controller: viewController,
-      ),
+      child: WebViewWidget(controller: viewController),
     );
   }
 
